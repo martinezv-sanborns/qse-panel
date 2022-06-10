@@ -1,0 +1,7 @@
+{
+  "name": "PANEL-QSE",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
