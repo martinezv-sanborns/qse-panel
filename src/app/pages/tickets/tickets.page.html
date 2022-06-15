@@ -1,0 +1,70 @@
+<ion-breadcrumbs color="primary">
+
+  <ion-breadcrumb href="/home">
+      <ion-icon slot="start" name="home"></ion-icon>
+      Inicio
+  </ion-breadcrumb>
+  <ion-breadcrumb href="/tickets">
+      <ion-icon slot="start" name="megaphone-outline"></ion-icon>
+      Tickets
+  </ion-breadcrumb>
+</ion-breadcrumbs>
+
+<ion-content>
+  <ion-grid fixed>
+      <ion-row class="ion-justify-content-center">
+          <ion-col size="12">
+              <ion-item class="round">
+                  <ion-col size="10">
+                      <ion-searchbar searchIcon="search" showcancelbutton="OK" class="forminput ion-margin" placeholder="Buscar por nombre del proveedor, comprador..."  [debounce]="250" showCancelButton="OK"></ion-searchbar>
+                  </ion-col>
+                  <ion-col size="2">
+                      <ion-row>
+                          <ion-col>
+                              <ion-button id="trigger-button">
+                                  <ion-icon size="default" name="add-circle-outline"></ion-icon>Nueva
+                              </ion-button>
+                          </ion-col>
+                      </ion-row>
+                  </ion-col>
+              </ion-item>
+          </ion-col>
+      </ion-row>
+      <ion-row class="ion-justify-content-center ion-align-items-center round fondo-white">
+
+          <ion-col size-md="3" size-sm="12">
+
+              <ion-item button="true" id="open-modal-ini">
+                  <ion-label>Fecha Inicio:
+                  </ion-label>
+                  <ion-input [value]=""></ion-input>
+                  <ion-icon name="calendar-outline"></ion-icon>
+
+              </ion-item>
+
+          </ion-col>
+          <ion-col size-md="3" size-sm="12">
+
+              <ion-item button="true" id="open-modal-fin">
+                  <ion-label>Fecha Fin:
+                  </ion-label>
+                  <ion-input [value]=""></ion-input>
+                  <ion-icon name="calendar-outline"></ion-icon>
+                  <ion-modal trigger="open-modal-fin" id="modal-bottom">
+                      <ng-template>
+                          <ion-content>
+                              <ion-datetime class="ion-text-center" #popoverDatetime presentation="date">
+                              </ion-datetime>
+                          </ion-content>
+                      </ng-template>
+                  </ion-modal>
+              </ion-item>
+
+          </ion-col>
+      </ion-row>
+
+
+
+</ion-grid>
+
+</ion-content>
