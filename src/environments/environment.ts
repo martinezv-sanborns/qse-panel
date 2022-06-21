@@ -5,6 +5,13 @@
 export const environment = {
   production: false,
   endPointApi: 'https://localhost:44394/',
+  tamPagina: 10,
+  estatusAtendido: 1,
+  estatusInicioado: 2,
+  estatusReabierto: 3,
+  estatusIntervenido: 4,
+  estatusCerradoCorpo: 5,
+  estatusCerradoTienda: 6,
 };
 
 /*

@@ -1,5 +1,7 @@
 import { ApiResponse } from './ApiResponse.model';
 import { EntidadMaestra } from './entidadmestra.model';
+import { EstatusResponse } from './estatus.model';
+import { TiendaResponse } from './tiendaresponse.model';
 
 
 export class TicketResponse extends EntidadMaestra {
@@ -13,8 +15,8 @@ export class TicketResponse extends EntidadMaestra {
     fechaVisita: Date;
     importe: number;
     empleado: string;
-    //tienda: TiendaResponse[];
-    //estatus: EstatusResponse[];
+    tienda: TiendaResponse;
+    estatus: EstatusResponse;
     //medioContacto: MedioContactoResponse[];
 
 }

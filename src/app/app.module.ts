@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ComunesModule } from './components/common/comunes.module';
 import { HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,7 +18,8 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     AppRoutingModule,
     HttpClientModule,
-    ComunesModule,],
+    ComunesModule,
+  CommonModule],
 
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

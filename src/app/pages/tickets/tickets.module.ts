@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { TicketsPageRoutingModule } from './tickets-routing.module';
 
 import { TicketsPage } from './tickets.page';
+import { TicketModule } from '../../components/ticket/ticket.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    TicketsPageRoutingModule
+    TicketsPageRoutingModule,
+    TicketModule
   ],
   declarations: [TicketsPage]
 })

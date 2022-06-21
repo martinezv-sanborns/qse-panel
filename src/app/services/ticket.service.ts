@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 
 
 // models
-import { TicketApiResponse} from '../models/response/ticket.model';
+import { TicketApiResponse, TicketsApiResponse} from '../models/response/ticket.model';
 import { GeneralService } from './general.service';
 
 
@@ -16,12 +16,22 @@ export class TicketService {
 
   constructor(private generalService: GeneralService) { }
 
-  obtenerTicketsListado(numberpage: number, pagesize: number) {
+  obtenerTicketsListado(cadenaid: string, numberpage: number, pagesize: number) {
     return this.generalService
-      .getQuery(`/api/ticket/listado/async/${numberpage}/${pagesize}`)
+      .getQuery(`/api/ticket/listado/async/${cadenaid}/${numberpage}/${pagesize}`)
       .pipe(
         map(
-          (laRespuesta: TicketApiResponse) => laRespuesta)
+          (laRespuesta: TicketsApiResponse) => laRespuesta)
+          
+      );
+  }
+
+  obtenerTicketsFiltro(cadenaid: string, filtro: string, numberpage: number, pagesize: number) {
+    return this.generalService
+      .getQuery(`/api/ticket/listado/cadena/filtros/async/${filtro}/${cadenaid}/${numberpage}/${pagesize}`)
+      .pipe(
+        map(
+          (laRespuesta: TicketsApiResponse) => laRespuesta)
           
       );
   }
