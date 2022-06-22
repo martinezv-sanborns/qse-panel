@@ -9,11 +9,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // components
 import { HeaderComponent } from './header/header.component';
+import { OlvidePasswordComponent } from './olvide-password/olvide-password.component';
+import { ShowPasswordHideComponent } from './show-password-hide/show-password-hide.component';
 
 
 @NgModule({
   declarations: [
-    HeaderComponent
+    HeaderComponent,
+    OlvidePasswordComponent,
+    ShowPasswordHideComponent
   ],
   imports: [
     IonicModule,
@@ -23,7 +27,9 @@ import { HeaderComponent } from './header/header.component';
     ReactiveFormsModule
   ],
   exports:[
-    HeaderComponent
+    HeaderComponent,
+    OlvidePasswordComponent,
+    ShowPasswordHideComponent
   ],
   providers:[DatePipe]
 })
