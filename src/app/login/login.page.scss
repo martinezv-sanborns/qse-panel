@@ -1,0 +1,96 @@
+ion-content {
+    --padding-top: 5%;
+    --padding-start: 5%;
+    --padding-end: 5%;
+}
+
+.input-group {
+    //background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.errors {
+    font-size: small;
+    color: #fff;
+    background: var(--ion-color-danger);
+    padding-left: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.login-img {
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 25px;
+}
+
+ion-item {
+    border-radius: 30px !important;
+    margin-bottom: 10px;
+    border: 1px solid #ffffff;
+    border-bottom: 0px !important;
+    box-shadow: none !important;
+}
+
+.square {
+    width: 30%;
+    margin: 1%;
+}
+
+.wrapper {
+    display: grid;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-items: center;
+}
+
+@media only screen and (max-width: 600px) {
+    .square {
+        width: 100%;
+        margin: 1%;
+    }
+    .wrapper {
+        display: grid;
+        height: 100%;
+        width: 100%;
+        align-items: center;
+        justify-items: center;
+    }
+}
+
+
+/* Medium devices (landscape tablets, 768px and up) */
+
+@media only screen and (min-width: 768px) {
+    .square {
+        width: 100%;
+        margin: 1%;
+    }
+    .wrapper {
+        display: grid;
+        height: 100%;
+        width: 100%;
+        align-items: center;
+        justify-items: center;
+    }
+}
+
+
+/* Large devices (laptops/desktops, 992px and up) */
+
+@media only screen and (min-width: 992px) {
+    .square {
+        width: 30%;
+        margin: 1%;
+    }
+    .wrapper {
+        display: grid;
+        height: 100%;
+        width: 100%;
+        align-items: center;
+        justify-items: center;
+    }
+}
