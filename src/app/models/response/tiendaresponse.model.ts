@@ -1,5 +1,5 @@
 import { ApiResponse } from './ApiResponse.model';
-import { EntidadMaestra, EntidadCatalogo } from './entidadmestra.model';
+import { EntidadCatalogo } from './entidadmestra.model';
 import { EstatusResponse } from './estatus.model';
 
 

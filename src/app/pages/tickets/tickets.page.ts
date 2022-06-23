@@ -2,6 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, ModalController, PopoverController } from '@ionic/angular';
 import { format, parseISO } from 'date-fns';
+import { DetalleTicketComponent } from 'src/app/components/ticket/detalle-ticket/detalle-ticket.component';
 import { MenuTicketComponent } from 'src/app/components/ticket/menu-ticket/menu-ticket.component';
 import { EstatusApiResponse } from 'src/app/models/response/estatus.model';
 import { TicketResponse, TicketsApiResponse } from 'src/app/models/response/ticket.model';
@@ -100,6 +101,9 @@ export class TicketsPage implements OnInit {
           break;
         case 'close-menu':
           break;
+          case 'detalle-ticket':
+            this.verDetalleTicket(ticketSelected);
+            break;
         default:
           break;
       }
@@ -109,7 +113,7 @@ export class TicketsPage implements OnInit {
   ObtenerEstatus(){
     this.catalogoService.obtenerEstatus(1,100).subscribe(
       (exito:EstatusApiResponse)=>{
-          console.log('Los Estatus', exito)
+          //console.log('Los Estatus', exito)
           this.LosEstatus = exito.dtoResult;
       },
       (error)=>{}
@@ -119,7 +123,7 @@ export class TicketsPage implements OnInit {
   ObtenerTipo(){
     this.catalogoService.obtenerTipos(1,100).subscribe(
       (exito:TipoApiResponse)=>{
-          console.log('Los Tipos', exito)
+          //console.log('Los Tipos', exito)
           this.LosTipos = exito.dtoResult;
       },
       (error)=>{}
@@ -186,6 +190,19 @@ export class TicketsPage implements OnInit {
 
     // ejecutar filtros
     this.ejecutarFiltros(environment.tamPagina, 1);
+  }
+
+  async verDetalleTicket(ticketSelected: TicketResponse) {
+    const modalShowPortal = await this.modalCtrl.create(
+      {
+        component: DetalleTicketComponent,
+        componentProps: {
+          elTicket: ticketSelected
+        }
+      }
+    );
+    await modalShowPortal.present();
+    const { data } = await modalShowPortal.onWillDismiss();
   }
 
   ejecutarFiltros(tamPagina: number, paginaActual: number) {

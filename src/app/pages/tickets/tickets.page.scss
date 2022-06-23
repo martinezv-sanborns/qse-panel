@@ -15,10 +15,7 @@ ion-grid {
     ion-col {
         border-right: 0px solid #dddddd;
     }
-    --ion-grid-padding-sm: 10px;
-    --ion-grid-padding-md: 10px;
-    --ion-grid-padding-lg: 10px;
-    --ion-grid-padding-xl: 10px;
+
 }
 
 .round {
@@ -36,7 +33,8 @@ ion-grid {
 
 
 ion-breadcrumbs{
-    padding: 50px;  
+    //padding: 40px;  
+    padding-top: 50px;
 }
 
 ion-modal#modal-bottom::part(content) {
@@ -52,3 +50,4 @@ ion-modal#modal-bottom::part(content) {
 .modal.closed {
     display: none;
 }
+

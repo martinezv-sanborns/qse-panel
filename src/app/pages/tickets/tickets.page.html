@@ -1,5 +1,4 @@
 <ion-breadcrumbs color="primary">
-
   <ion-breadcrumb href="/home">
       <ion-icon slot="start" name="home"></ion-icon>
       Inicio
@@ -11,11 +10,14 @@
 </ion-breadcrumbs>
 
 <ion-content>
-  <ion-grid fixed>
+  <ion-grid>
       <ion-row class="ion-justify-content-center">
           <ion-col size="12">
               <ion-item class="round">
-                  <ion-col size="11">
+                <ion-col size="2">
+                    <ion-label><b>Tickets</b></ion-label>
+                </ion-col>
+                  <ion-col size="9">
                       <ion-searchbar searchIcon="search" showcancelbutton="OK" class="forminput ion-margin" placeholder="Buscar por nombre o numero de tienda, o folio del ticket..." (ionChange)="onSearchChange($event)" [debounce]="250" showCancelButton="OK"></ion-searchbar>
                   </ion-col>
               </ion-item>
@@ -24,7 +26,7 @@
       <ion-row class="ion-justify-content-center ion-align-items-center round fondo-white">
         <ion-col size-md="3" size-sm="12">
             <ion-item>
-                <ion-label>Estatus</ion-label>
+                <ion-label><b>Estatus</b></ion-label>
                 <ion-select placeholder="Seleccione estatus" interface="popover" (ionChange)="onChangeEstatus(estatusTicket.value)" #estatusTicket>
                     <ion-select-option [value]="estatus.estatusId" *ngFor="let estatus of this.LosEstatus">{{ estatus.nombre }}
                     </ion-select-option>
@@ -43,7 +45,7 @@
           <ion-col size-md="3" size-sm="12">
 
               <ion-item button="true" id="open-modal-ini">
-                  <ion-label>Fecha Inicio:
+                  <ion-label><b>Fecha Inicio:</b>
                   </ion-label>
                   <ion-input [value]="dateFechaIni"></ion-input>
                   <ion-icon name="calendar-outline"></ion-icon>
@@ -61,7 +63,7 @@
           <ion-col size-md="3" size-sm="12">
 
               <ion-item button="true" id="open-modal-fin">
-                  <ion-label>Fecha Fin:
+                  <ion-label><b>Fecha Fin:</b>
                   </ion-label>
                   <ion-input [value]="dateFechaFin"></ion-input>
                   <ion-icon name="calendar-outline"></ion-icon>
@@ -93,7 +95,7 @@
                     </ion-row>
                     <ion-row *ngFor="let ticket of listadoTickets" class="border-grid-row">
                         <ion-col size="3">
-                            {{ ticket.numero}}
+                            {{ ticket.folio}}
                         </ion-col>
                         <ion-col size="1">
                             {{ ticket.fechaAlta | date: 'dd/MM/yy' }}
@@ -104,34 +106,25 @@
                         <ion-col size="2" class="ion-hide-sm-down">
                             {{ticket.email}}
                         </ion-col>
-                        <!-- <ion-col size="3">
-                            {{ticket.proveedor.proveedorId}}&nbsp;|&nbsp;{{ orden.proveedor.nombre | portion:15 }}
-                        </ion-col> -->
                         <ion-col size="2" class="ion-hide-sm-down" [ngSwitch]="ticket.estatus.nombre">
-                            <ion-chip outline="true" color="tertiary" *ngSwitchCase="'Autorizada'">
+                            <ion-chip outline="true" color="tertiary" *ngSwitchCase="'Iniciado'">
                                 <ion-label color="tertiary"> {{ ticket.estatus.nombre }}</ion-label>
                             </ion-chip>
-                            <!--<ion-chip outline="true" color="secondary" *ngSwitchCase="'Atendiendo'">
-                                <ion-label color="secondary"> {{ orden.estatus.nombre }}</ion-label>
+                            <ion-chip outline="true" color="secondary" *ngSwitchCase="'Atendiendo'">
+                                <ion-label color="secondary"> {{ ticket.estatus.nombre }}</ion-label>
                             </ion-chip>
-                            <ion-chip outline="true" color="primary" *ngSwitchCase="'Firmada'">
-                                <ion-label color="primary"> {{ orden.estatus.nombre }}</ion-label>
+                            <ion-chip outline="true" color="primary" *ngSwitchCase="'Reabierto'">
+                                <ion-label color="primary"> {{ ticket.estatus.nombre }}</ion-label>
                             </ion-chip>
-                            <ion-chip outline="true" color="warning" *ngSwitchCase="'Cancelada'">
-                                <ion-label color="warning"> {{ orden.estatus.nombre }}</ion-label>
+                            <ion-chip outline="true" color="warning" *ngSwitchCase="'Intervenido'">
+                                <ion-label color="warning"> {{ ticket.estatus.nombre }}</ion-label>
                             </ion-chip>
-                            <ion-chip outline="true" color="danger" *ngSwitchCase="'Rechazada'">
-                                <ion-label color="danger"> {{ orden.estatus.nombre }}</ion-label>
+                            <ion-chip outline="true" color="danger" *ngSwitchCase="'Cerrado Corporativo'">
+                                <ion-label color="danger"> {{ ticket.estatus.nombre }}</ion-label>
                             </ion-chip>
-                            <ion-chip outline="true" color="success" *ngSwitchCase="'Publicada'">
-                                <ion-label color="success"> {{ orden.estatus.nombre }}</ion-label>
+                            <ion-chip outline="true" color="success" *ngSwitchCase="'Cerrado en Tienda'">
+                                <ion-label color="success"> {{ ticket.estatus.nombre }}</ion-label>
                             </ion-chip>
-                            <ion-chip color="success" *ngSwitchCase="'Finalizada'">
-                                <ion-label color="success"> {{ orden.estatus.nombre }}</ion-label>
-                            </ion-chip>
-                            <ion-chip outline="true" color="medium" *ngSwitchDefault>
-                                <ion-label color="medium"> {{ orden.estatus.nombre }}</ion-label>
-                            </ion-chip> -->
                         </ion-col> 
                         <ion-col size="1">
                             <ion-buttons>

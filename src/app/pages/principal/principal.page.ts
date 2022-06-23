@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { MenuController, Platform } from '@ionic/angular';
 
 @Component({
@@ -27,7 +27,6 @@ export class PrincipalPage implements OnInit {
     },
  ];
 
-
  title = 'Home';
 
   constructor(private menuCtrl: MenuController, private plt: Platform) { }
@@ -37,6 +36,13 @@ export class PrincipalPage implements OnInit {
     this.toggleMenu(width);
   }
 
+   // eslint-disable-next-line @typescript-eslint/member-ordering
+ @HostListener('window:resize', ['$event'])
+ private onResize(event) {
+   const newWidth = event.target.innerWidth;
+   this.toggleMenu(newWidth);
+ }
+ 
   toggleMenu(width) {
     if (width > 768) {
       this.menuCtrl.enable(false, 'myMenu');

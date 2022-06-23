@@ -6,11 +6,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // components
 import { MenuTicketComponent } from './menu-ticket/menu-ticket.component';
 import { ComunesModule } from '../common/comunes.module';
+import { DetalleTicketComponent } from './detalle-ticket/detalle-ticket.component';
+import { SeguimientoTicketComponent } from './seguimiento-ticket/seguimiento-ticket.component';
 
 
 @NgModule({
   declarations: [
-    MenuTicketComponent
+    MenuTicketComponent,
+    DetalleTicketComponent,
+    SeguimientoTicketComponent
   ],
   imports: [
     CommonModule,
@@ -20,7 +24,9 @@ import { ComunesModule } from '../common/comunes.module';
     ComunesModule
   ],
   exports:[
-    MenuTicketComponent
+    MenuTicketComponent,
+    DetalleTicketComponent,
+    SeguimientoTicketComponent
   ]
 })
 export class TicketModule { }
