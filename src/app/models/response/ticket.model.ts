@@ -4,6 +4,7 @@ import { EstatusResponse } from './estatus.model';
 import { MedioContactoResponse } from './mediocontacto.model';
 import { TiendaResponse } from './tiendaresponse.model';
 import { TipoResponse } from './tipo.model';
+import { UsuarioResponse } from './usuario.model';
 
 
 export class TicketResponse extends EntidadMaestra {
@@ -49,14 +50,14 @@ export class TicketLogResponse extends EntidadMaestra {
   ticketLogId: string;
   observaciones: string;
   estatus: EstatusResponse;
-  //usuario: UsuarioResponse;
+  usuario: UsuarioResponse;
 
 }
 export interface TicketLogBaseResponse {
   ticketLogId: string;
   observaciones: string;
   estatus: EstatusResponse;
-  //usuario: UsuarioResponse;
+  usuario: UsuarioResponse;
 }
 export class TicketLogApiResponse extends ApiResponse {
 dtoResult: TicketLogResponse;
