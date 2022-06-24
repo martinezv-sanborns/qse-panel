@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { CadenasAPIResponse } from 'src/app/models/response/cadena.model';
 import { CadenaService } from 'src/app/services/cadena.service';
@@ -11,20 +11,23 @@ import { Cadena } from '../../../models/response/cadena.model';
 })
 export class CadenaSelectorComponent implements OnInit {
 
-  losPortales: Cadena[] = [];
-  portalIdSeleccionado: number;
-  portalName: string;
+  @Input() usuarioId;
 
-  constructor(private portalesAPI: CadenaService, private modalCtrl: ModalController) { }
+  lasCadenas: Cadena[] = [];
+  canalIdSeleccionado: number;
+  canalName: string;
+
+  constructor(private cadenasAPI: CadenaService, private modalCtrl: ModalController) { }
 
   ngOnInit() {
-    this.obtenerPortales();
+    this.obtenerCanales();
   }
 
-  obtenerPortales() {
-    this.portalesAPI.obtenerPortales().subscribe(
-      (exito: CadenasAPIResponse) => {
-        this.losPortales = exito.dtoResult;
+  obtenerCanales() {
+    console.log("obteniendo canales")
+    this.cadenasAPI.obtenerCanales(this.usuarioId).subscribe((exito: CadenasAPIResponse) => {
+        console.log("entreeee y tengo algo",exito)
+         this.lasCadenas = exito.dtoResult;
       },
       (error) => {
         console.log('error', error);
@@ -32,18 +35,18 @@ export class CadenaSelectorComponent implements OnInit {
     );
   }
 
-  onSelectedPortal(portalSelected: number, name: string) {
-    this.portalIdSeleccionado = portalSelected;
-    this.portalName = name;
-    this.savePortal();
+  onSelectedCanal(portalSelected: number, name: string) {
+    this.canalIdSeleccionado = portalSelected;
+    this.canalName = name;
+    this.saveCanal();
   }
 
-  savePortal() {
+  saveCanal() {
     this.modalCtrl.dismiss({
       close: true,
       portalSelected: true,
-      portalId: this.portalIdSeleccionado,
-      name: this.portalName
+      portalId: this.canalIdSeleccionado,
+      name: this.canalName
     });
   }
 

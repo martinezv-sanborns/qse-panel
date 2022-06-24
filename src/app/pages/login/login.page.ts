@@ -116,7 +116,9 @@ export class LoginPage implements OnInit {
             {
               backdropDismiss: false,
               component: CadenaSelectorComponent,
-              componentProps: {}
+              componentProps: {
+                usuarioId:  localStorage.getItem('UserId')
+              }
             }
           );
           await modalShowPortal.present();

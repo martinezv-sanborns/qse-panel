@@ -2,10 +2,10 @@ import { ApiResponse } from './ApiResponse.model';
 import { EntidadCatalogo } from './entidadmestra.model';
 
 export class Cadena extends EntidadCatalogo{
-    portalId: number;
+    cadenaId: number;
 }
 export interface CadenaBaseResponse {
-  portalId: number;
+    cadenaId: number;
   nombre: string;
   nombreCorto: string;
   iconName?: any;

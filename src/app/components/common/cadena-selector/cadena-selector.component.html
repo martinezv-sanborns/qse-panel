@@ -1,3 +1,27 @@
-<p>
-  cadena-selector works!
-</p>
+<ion-header>
+  <ion-toolbar>
+      <ion-title>Selección de portal</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-card class="fullscreen">
+      <ion-list>
+          <ion-list-header>
+              <ion-card color="secondary">
+                  <ion-text>
+                      Seleccione la cadena por favor.
+                  </ion-text>
+              </ion-card>
+          </ion-list-header>
+          <ion-radio-group>
+              <ion-item *ngFor="let cadena of lasCadenas">
+                  <ion-avatar slot="start">
+                      <img src="{{ 'assets/' + cadena.cadenaId + '.png' }}">
+                  </ion-avatar>
+                  <ion-label>{{ cadena.cadena.nombre }}</ion-label>
+                  <ion-radio (click)="onSelectedPortal(cadena.cadenaId, cadena.cadena.nombre)" color="success" [value]="cadena.cadenaId" slot="start"></ion-radio>
+              </ion-item>
+          </ion-radio-group>
+      </ion-list>
+  </ion-card>
+</ion-content>
