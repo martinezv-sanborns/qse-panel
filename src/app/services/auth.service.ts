@@ -1,13 +1,9 @@
-/* eslint-disable @typescript-eslint/member-ordering */
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-// models
 import { Autenticado, UserRole } from '../models/auth.model';
-
-// service
 import { GeneralService } from './general.service';
 
 
@@ -22,7 +18,7 @@ export class AuthService {
   user!: UserRole;
 
   get token(): any {
-    return localStorage.getItem('sonidera');
+    return localStorage.getItem('token');
   }
 
   constructor(private generalService: GeneralService, private router: Router) {
@@ -36,6 +32,7 @@ export class AuthService {
   }
 
   login(elUserName: string, elPassword: string) {
+
 
     const elbody = {
       usuario: elUserName,
