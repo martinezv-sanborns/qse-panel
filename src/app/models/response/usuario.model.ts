@@ -16,3 +16,13 @@ export class UsuariosApiResponse extends ApiResponse {
 export class UsuarioApiResponse extends ApiResponse {
   dtoResult: UsuarioResponse;
 }
+
+export class UsuarioLinkResponse{
+  message: string;
+  link: string;
+}
+
+
+export class UsuarioLinkApiResponse extends ApiResponse{
+  dtoResult: UsuarioLinkResponse;
+}

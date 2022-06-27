@@ -12,7 +12,7 @@ import { HeaderComponent } from './header/header.component';
 import { OlvidePasswordComponent } from './olvide-password/olvide-password.component';
 import { ShowPasswordHideComponent } from './show-password-hide/show-password-hide.component';
 import { CadenaSelectorComponent } from './cadena-selector/cadena-selector.component';
-import { EstablecerPasswordComponent } from './usuarios/establecer-password/establecer-password.component';
+
 
 
 @NgModule({
@@ -21,7 +21,7 @@ import { EstablecerPasswordComponent } from './usuarios/establecer-password/esta
     OlvidePasswordComponent,
     ShowPasswordHideComponent,
     CadenaSelectorComponent,
-    EstablecerPasswordComponent
+    
   ],
   imports: [
     IonicModule,
@@ -35,7 +35,7 @@ import { EstablecerPasswordComponent } from './usuarios/establecer-password/esta
     OlvidePasswordComponent,
     ShowPasswordHideComponent,
     CadenaSelectorComponent,
-    EstablecerPasswordComponent
+    
   ],
   providers:[DatePipe]
 })
