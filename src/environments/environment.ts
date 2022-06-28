@@ -12,6 +12,7 @@ export const environment = {
   estatusIntervenido: 4,
   estatusCerradoCorpo: 5,
   estatusCerradoTienda: 6,
+  minimumCharactersPassword: 8,
 };
 
 /*

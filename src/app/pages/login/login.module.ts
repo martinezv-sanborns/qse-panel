@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { LoginPageRoutingModule } from './login-routing.module';
 
 import { LoginPage } from './login.page';
-import { ComunesModule } from '../components/common/comunes.module';
+import { ComunesModule } from '../../components/common/comunes.module';
 
 @NgModule({
   imports: [
