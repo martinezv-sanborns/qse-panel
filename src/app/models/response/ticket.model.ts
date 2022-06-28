@@ -22,9 +22,11 @@ export class TicketResponse extends EntidadMaestra {
     estatus: EstatusResponse;
     medioContacto: MedioContactoResponse;
     ticketLogs: TicketLogResponse[];
-    ticketTipos: TicketTipoResponse;
-
+    ticketTipos: TicketTipoResponse[];
+    listaTiposNombreCorto: string;
+    listaTiposNombre: string;
 }
+
 export interface TicketBaseResponse {
     ticketId: string;
     numero: string;
@@ -69,7 +71,8 @@ dtoResult: TicketLogResponse[];
 
 export class TicketTipoResponse extends EntidadMaestra {
   ticketId: string;
-  tipoId: TipoResponse[];
+  tipoId: string;
+  tipo: TipoResponse[]
 }
 
 export class TicketTipoApiResponse extends ApiResponse {

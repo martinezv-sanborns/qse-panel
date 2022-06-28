@@ -104,7 +104,7 @@
                             {{ ticket.tienda.nombre }}
                         </ion-col>
                         <ion-col size="2" class="ion-hide-sm-down">
-                            {{ticket.email}}
+                            {{ticket.listaTiposNombreCorto}}
                         </ion-col>
                         <ion-col size="2" class="ion-hide-sm-down" [ngSwitch]="ticket.estatus.nombre">
                             <ion-chip outline="true" color="tertiary" *ngSwitchCase="'Iniciado'">

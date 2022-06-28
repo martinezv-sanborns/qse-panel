@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-title>{{ title }}</ion-title>
+      <ion-buttons slot="end">
+          <ion-button (click)="cerrarModal()">
+              <ion-icon color="danger" class="icon-close" slot="icon-only" name="close-circle-outline"></ion-icon>
+          </ion-button>
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <form [formGroup]="estatusForm" (ngSubmit)="enviarMotivoEstatus()">
+      <ion-card>
+          <ion-grid class="ion-text-center">
+              <ion-row>
+                  <ion-col size="12">
+                      <ion-item>
+                          <ion-icon size="large" name="help-circle-outline"></ion-icon>
+                          <ion-label position="floating">{{ mensajeMotivo}}</ion-label>
+                          <ion-label position="floating">Motivo:</ion-label>
+                          <ion-textarea formControlName="motivo" type="text"></ion-textarea>
+                      </ion-item>
+                  </ion-col>
+              </ion-row>
+          </ion-grid>
+      </ion-card>
+      <ion-footer>
+          <ion-grid fixed>
+              <ion-row class="ion-text-center">
+                  <ion-col size="6">
+                      <ion-button shape="round" color="primary" type="submit" expand="block">
+                          Estoy Seguro
+                      </ion-button>
+                  </ion-col>
+                  <ion-col size="6">
+                      <ion-button shape="round" color="medium" type="button" expand="block" (click)="cerrarModal()">
+                          Cancelar
+                      </ion-button>
+                  </ion-col>
+              </ion-row>
+          </ion-grid>
+      </ion-footer>
+  </form>
+</ion-content>

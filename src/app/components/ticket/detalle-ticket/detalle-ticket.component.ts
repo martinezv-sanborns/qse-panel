@@ -1,7 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, PopoverController } from '@ionic/angular';
 import { TicketResponse } from 'src/app/models/response/ticket.model';
 import { TicketLogResponse } from '../../../models/response/ticket.model';
+import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.all.js';
+import { EstatusMotivoTicketComponent } from '../estatus-motivo-ticket/estatus-motivo-ticket.component';
 
 @Component({
   selector: 'app-detalle-ticket',
@@ -16,7 +19,7 @@ export class DetalleTicketComponent implements OnInit {
   losticketLogs: TicketLogResponse[]=[];
   descripcion: string;
 
-  constructor(private modalCrtl: ModalController) { }
+  constructor(private modalCrtl: ModalController, private popVerCtrl: PopoverController) { }
 
   ngOnInit() {
 
@@ -41,4 +44,29 @@ export class DetalleTicketComponent implements OnInit {
     this.tabActivo = event.detail.value;
     console.log('Que tab es:', this.tabActivo);
   }
+
+  async cerrarCaso(ticketSelected: TicketResponse)
+  {
+    const modalShow = await this.modalCrtl.create(
+    {
+      component: EstatusMotivoTicketComponent,
+     componentProps: {
+      title: 'Cerrar Caso',
+      mensajeMotivo: '¿Está seguro que desea Cerrar el Q&SE?',
+     }
+    });
+    await modalShow.present();
+    const { data } = await modalShow.onWillDismiss();
+
+    if (data.motivoSend) {
+      this.cancelarTicket(ticketSelected, data.motivo);
+    }
+  }
+
+  async cancelarTicket(ticketSelected: TicketResponse, elMotivo: string) {
+
+
+    
+  }
+
 }
