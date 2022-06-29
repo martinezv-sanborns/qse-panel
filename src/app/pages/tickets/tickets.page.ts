@@ -13,6 +13,7 @@ import { TicketService } from 'src/app/services/ticket.service';
 import { environment } from 'src/environments/environment';
 import { EstatusResponse } from '../../models/response/estatus.model';
 import { TipoResponse } from '../../models/response/tipo.model';
+import { TicketTipoResponse } from '../../models/response/ticket.model';
 
 @Component({
   selector: 'app-tickets',
@@ -48,6 +49,14 @@ export class TicketsPage implements OnInit {
       this. getTickets();
       this.ObtenerEstatus();
       this.ObtenerTipo();
+
+      for (let item of this.listadoTickets) {
+        if (item.ticketTipos) {
+            return;
+        }
+
+        console.log('Tiposs', item.ticketTipos);
+    } 
   }
 
 
@@ -58,6 +67,7 @@ export class TicketsPage implements OnInit {
       if (exito.result === 'OK') {
         this.listadoTickets = exito.dtoResult;
         console.log(exito.dtoResult);
+
       }
     }, (errr) => {
       console.log(errr);

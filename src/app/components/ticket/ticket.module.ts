@@ -8,13 +8,15 @@ import { MenuTicketComponent } from './menu-ticket/menu-ticket.component';
 import { ComunesModule } from '../common/comunes.module';
 import { DetalleTicketComponent } from './detalle-ticket/detalle-ticket.component';
 import { SeguimientoTicketComponent } from './seguimiento-ticket/seguimiento-ticket.component';
+import { EstatusMotivoTicketComponent } from './estatus-motivo-ticket/estatus-motivo-ticket.component';
 
 
 @NgModule({
   declarations: [
     MenuTicketComponent,
     DetalleTicketComponent,
-    SeguimientoTicketComponent
+    SeguimientoTicketComponent,
+    EstatusMotivoTicketComponent
   ],
   imports: [
     CommonModule,
@@ -26,7 +28,8 @@ import { SeguimientoTicketComponent } from './seguimiento-ticket/seguimiento-tic
   exports:[
     MenuTicketComponent,
     DetalleTicketComponent,
-    SeguimientoTicketComponent
+    SeguimientoTicketComponent,
+    EstatusMotivoTicketComponent
   ]
 })
 export class TicketModule { }
