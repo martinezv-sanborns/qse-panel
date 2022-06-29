@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { map } from 'rxjs/operators';
+import { LinkAPIResponse } from '../models/response/link.response.model';
 import { GeneralService } from './general.service';
 
 @Injectable({
@@ -18,6 +20,20 @@ export class HelperService {
   logout() {
     localStorage.clear();
     this.router.navigateByUrl('/login');
+  }
+
+
+  validarLink(idlink: string) {
+
+
+    console.log("entre a validar link");
+
+    return this.generalAPI.getQueryOmitInterceptor(`/api/link/validar/${idlink}`)
+      .pipe(
+        map((laRespuesta: LinkAPIResponse) => laRespuesta)
+      );
+
+      
   }
 
 }
