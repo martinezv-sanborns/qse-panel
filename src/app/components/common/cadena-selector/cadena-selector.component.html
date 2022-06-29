@@ -19,7 +19,7 @@
                       <img src="{{ 'assets/' + cadena.cadenaId + '.png' }}">
                   </ion-avatar>
                   <ion-label>{{ cadena.cadena.nombre }}</ion-label>
-                  <ion-radio (click)="onSelectedPortal(cadena.cadenaId, cadena.cadena.nombre)" color="success" [value]="cadena.cadenaId" slot="start"></ion-radio>
+                  <ion-radio (click)="onSelectedCanal(cadena.cadenaId, cadena.cadena.nombre)" color="success" [value]="cadena.cadenaId" slot="start"></ion-radio>
               </ion-item>
           </ion-radio-group>
       </ion-list>

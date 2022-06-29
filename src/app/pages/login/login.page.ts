@@ -127,12 +127,12 @@ export class LoginPage implements OnInit {
           if (data !== undefined) {
 
             if (data.portalSelected) {
-              localStorage.setItem('portalSelected', data.portalId);
-              localStorage.setItem('portalName', data.name);
+              localStorage.setItem('cadenaSelected', data.portalId);
+              localStorage.setItem('cadenaName', data.name);
 
               this.canalService.onChangeadena();
 
-              this.elrouter.navigate(['/home']);
+              this.elrouter.navigate(['/principal']);
             } else {
               const alertMsj = await this.alertCtrl.create({
                 cssClass: 'alertDanger',
