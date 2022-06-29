@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, ModalController } from '@ionic/angular';
 import { NuevaPassWordUser } from 'src/app/models/request/usuario.model';
 import { UsuarioApiResponse } from 'src/app/models/response/usuario.model';
@@ -19,13 +19,20 @@ export class EstablecerPasswordPage implements OnInit {
 
   @Input() titulo: string;
   @Input() esModal: boolean;
-  @Input() entidadId: string;
+  //@Input() entidadId: string;
+
+
+  entidadId: string;
+  linkExpiro: boolean;
+  mensajeErr: string;
+
 
   establecerPasswordForm: FormGroup;
   estableciendo = false;
 
   constructor(private formB: FormBuilder,
     private elrouter: Router,
+    private route: ActivatedRoute,
     private modalCtrl: ModalController,
     private alertCtrl: AlertController,
     private helperService: HelperService,
@@ -43,9 +50,17 @@ export class EstablecerPasswordPage implements OnInit {
 
   ngOnInit() {
 
-    console.log('entra aqui entidad id', this.entidadId);
-    console.log('entra aqui modal', this.esModal);
-    console.log('entra aqui titulo', this.titulo);
+
+
+    const idLink = this.route.snapshot.paramMap.get('id');
+    this.validateLink(idLink);
+    this.entidadId = idLink;
+
+
+    console.log('entra aqui entidad id',idLink);
+
+   // console.log('entra aqui modal', this.esModal);
+    //console.log('entra aqui titulo', this.titulo);
 
     const patternPassword = '((?=.*[0-9])|(?=.*\W+))(?![.\n])(?=.*[.$@$!%*?&_])(?=.*[A-Z])(?=.*[a-z]).{8,}$';
 
@@ -229,4 +244,40 @@ export class EstablecerPasswordPage implements OnInit {
 
   }
 
+  validateLink(elLink: string) {
+
+
+    
+    this.helperService.validarLink(elLink).subscribe(async (exito) => {
+
+      if (exito.result === 'OK') {
+        this.linkExpiro = exito.dtoResult.vigente;
+
+        if (this.linkExpiro === false) {
+          this.mensajeErr = exito.dtoResult.message;
+          const alertMsj = await this.alertCtrl.create({
+            cssClass: 'alertDanger',
+            message: this.helperService
+              .getMessageAlert(`${exito.dtoResult.message}`
+                , 'danger'),
+            buttons: [
+              {
+                text: 'Aceptar',
+                cssClass: 'alertButton',
+                id: 'confirm-button',
+                handler: () => {
+                }
+              }]
+          });
+          await alertMsj.present();
+        }
+      }
+
+    }
+    );
+  }
+
+
+
 }
+
