@@ -21,3 +21,16 @@ export class NuevaPassWordUser{
     correo: string;
   }
   
+
+  export class UsuarioEditRequest {
+    usuarioId: string;
+    nombreUsuario: string;
+    nombre: string;
+    email: string;
+    activo: boolean;
+    rolId: string;
+  }
+  export class UsuarioEstatusRequest {
+    usuarioId: string;
+    esActivo: boolean;
+  }

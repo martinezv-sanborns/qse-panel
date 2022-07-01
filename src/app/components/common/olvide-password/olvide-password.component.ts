@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 // controllers
 import { AlertController, ModalController } from '@ionic/angular';
+import { OlvidePasswordRequest } from 'src/app/models/request/usuario.model';
+import { UsuarioLinkApiResponse } from 'src/app/models/response/usuario.model';
 
 // models
 //import { OlvidePasswordRequest } from 'src/app/models/request/usuario.request.model';
@@ -10,6 +12,8 @@ import { AlertController, ModalController } from '@ionic/angular';
 
 // services
 import { HelperService } from 'src/app/services/helper.service';
+import { SpinnerService } from 'src/app/services/spinner.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
 //import { UsuarioService } from '../../../services/usuario.service';
 //import { SpinnerService } from '../../../services/spinner.service';
 
@@ -26,8 +30,8 @@ export class OlvidePasswordComponent implements OnInit {
     private modalCtrl: ModalController,
     private alertCtrl: AlertController,
     private helperService: HelperService,
-    //private userService: UsuarioService,
-   // private spinnerService: SpinnerService
+    private userService: UsuarioService,
+    private spinnerService: SpinnerService
    )
 
     { }
@@ -51,7 +55,7 @@ export class OlvidePasswordComponent implements OnInit {
   }
 
   onSendCorreoUser() {
-/*
+
     if (this.olvidePasswordForm.invalid) {
 
       return Object.values(this.olvidePasswordForm.controls).forEach(async (control, index) => {
@@ -147,6 +151,6 @@ export class OlvidePasswordComponent implements OnInit {
       await alertValidateData.present();
     });
 
-    */
+    
   }
 }

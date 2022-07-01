@@ -24,9 +24,7 @@ export class CadenaSelectorComponent implements OnInit {
   }
 
   obtenerCanales() {
-    console.log("obteniendo canales")
     this.cadenasAPI.obtenerCanales(this.usuarioId).subscribe((exito: CadenasAPIResponse) => {
-        console.log("entreeee y tengo algo",exito)
          this.lasCadenas = exito.dtoResult;
       },
       (error) => {

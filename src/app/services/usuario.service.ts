@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
-import { NuevaPassWordUser, UsuarioLinkRequest, UsuarioLockRequest } from '../models/request/usuario.model';
+import { NuevaPassWordUser, OlvidePasswordRequest, UsuarioLinkRequest, UsuarioLockRequest } from '../models/request/usuario.model';
 import { UsuarioApiResponse, UsuarioLinkApiResponse } from '../models/response/usuario.model';
 import { GeneralService } from './general.service';
 
@@ -58,6 +58,16 @@ export class UsuarioService {
       .pipe(
         map(
           (laRespuesta: UsuarioApiResponse) => laRespuesta)
+      );
+  }
+
+
+  sendCorreoOlvidePass(correoUser: OlvidePasswordRequest) {
+    return this.generalService
+      .postOmitInterceptor(`/api/usuario/olvide/password/async`, correoUser)
+      .pipe(
+        map(
+          (laRespuesta: UsuarioLinkApiResponse) => laRespuesta)
       );
   }
 
