@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, NgZone, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController, ModalController } from '@ionic/angular';
 import { HelperService } from 'src/app/services/helper.service';
@@ -8,7 +8,6 @@ import { OlvidePasswordComponent } from '../../components/common/olvide-password
 import { AuthService } from '../../services/auth.service';
 import { CadenaSelectorComponent } from '../../components/common/cadena-selector/cadena-selector.component';
 import { CambioCadenaService } from 'src/app/services/cambio-cadena.service';
-
 
 @Component({
   selector: 'app-login',
@@ -19,6 +18,10 @@ export class LoginPage implements OnInit {
 
   loginForm: FormGroup;
   logueando = false;
+  private captchaPassed: boolean = false;
+  private captchaResponse: string;
+  token: string|undefined;
+
 
   constructor(private formB: FormBuilder,
     private authService: AuthService,
@@ -27,18 +30,23 @@ export class LoginPage implements OnInit {
     private alertCtrl: AlertController,
     private modalCtrl: ModalController,
     private elrouter: Router,
-    private canalService: CambioCadenaService
-  ) { }
+    private canalService: CambioCadenaService,
+  ) { 
 
 
+    this.token = undefined;
+
+  }
 
 
   
   ngOnInit() {
+
     this.loginForm = this.formB.group({
       nickname: ['', [Validators.required]],
       password: ['', [Validators.required]],
     });
+
   }
 
   get nickNameValido() {
@@ -202,6 +210,16 @@ export class LoginPage implements OnInit {
         });
         await msjErr.present();
       });
+  }
+
+
+
+  resolvedCaptcha(response: string) {
+    if (response != null) {
+      if (response !== null && response !== undefined) {
+        this.captchaPassed = !this.captchaPassed;
+      }
+    }
   }
 
 
