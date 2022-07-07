@@ -13,6 +13,7 @@ export const environment = {
   estatusCerradoCorpo: 5,
   estatusCerradoTienda: 6,
   minimumCharactersPassword: 8,
+  recaptcha:'6Ld3k5ogAAAAAMWEpHVpjWX_RaHliBXb2_0PuNFm',
 };
 
 /*

@@ -36,8 +36,18 @@
                                 Por favor escriba su password.
                             </ion-label>
                         </ion-item>
-                    </ion-item-group>
+                        
+                       
+                        
 
+
+                    
+                    </ion-item-group>
+                    
+                    <div class="captcha">   
+
+                        <re-captcha (resolved)="resolvedCaptcha($event)" ></re-captcha>
+                    </div>
                     <ion-button class="ion-margin-top" type="submit" expand="block" color="danger">Iniciar</ion-button>
                     <ion-button type="button" expand="block" color="secondary" fill="clear" (click)="onShowOlvidePassword()">Olvide contraseña
                     </ion-button>
