@@ -36,6 +36,7 @@ export class TicketsPage implements OnInit {
   losEstatus: EstatusResponse[] = [];
   losTipos: TipoResponse[] = [];
   elEstatusIdSeleccionado = '';
+  elTipoIdSeleccionado = '';
   losFiltrosOk = '';
   filtrosFinales: string[] = [];
   elFiltroEstablecido = '';
@@ -141,40 +142,6 @@ export class TicketsPage implements OnInit {
     }
   }
 
-  obtenerEstatus() {
-    this.catalogoService.obtenerEstatus(1, 100).subscribe(
-      (exito: EstatusApiResponse) => {
-        //console.log('Los Estatus', exito)
-        this.losEstatus = exito.dtoResult;
-        const estatusTodos: EstatusResponse = {
-          estatusId: 0,
-          nombre: 'Todos los estatus',
-          nombreCorto: 'Todos',
-          iconName: 'search-outline'
-        };
-        this.losEstatus.unshift(estatusTodos);
-      },
-      (error) => { }
-    );
-  }
-
-  obtenerTipo() {
-    this.catalogoService.obtenerTipos(1, 100).subscribe(
-      (exito: TipoApiResponse) => {
-        //console.log('Los Tipos', exito)
-        this.losTipos = exito.dtoResult;
-        const tiposTodos: TipoResponse = {
-          tipoId: 0,
-          nombre: 'Todos los tipos',
-          nombreCorto: 'Todos',
-          iconName: 'search-outline'
-        };
-        this.losTipos.unshift(tiposTodos);
-      },
-      (error) => { }
-    );
-  }
-
   async onFechaFinSelected(event) {
     this.dateFechaFin = this.formatDate(event.detail.value);
     this.modalCtrl.dismiss({});
@@ -232,12 +199,102 @@ export class TicketsPage implements OnInit {
     const { data } = await modalShowTicket.onWillDismiss();
   }
 
+  getTicketsFiltro(cadenaId: string, filtros: string, numberPage: number, pageSize: number) {
+    //this.spinnerService.setTitulo = 'Espere un momento, estamos cargando las tickets';
+    this.cargando = true;
+    this.ticketService.obtenerTicketsFiltro(cadenaId, filtros, numberPage, pageSize)
+      .subscribe((exito: TicketsApiResponse) => {
+        this.cargando = false;
+        //this.spinnerService.setTitulo = '';
+
+        if (exito.result === 'OK') {
+
+          console.log('Tickets Filtro', exito.dtoResult);
+
+          this.listadoTickets = exito.dtoResult;
+          this.paginaActual = exito.paginaActual;
+          this.totalPaginasArray = new Array((exito.totalPaginas > 10 ? 10 : exito.totalPaginas));
+          this.totalRegistros = exito.totalRegistros;
+          this.noPaginas = exito.totalPaginas;
+        }
+      },
+        (err) => {
+          //this.spinnerService.setTitulo = '';
+          this.cargando = false;
+          console.log(err);
+        });
+  }
+
+  obtenerEstatus() {
+    this.catalogoService.obtenerEstatus(1, 100).subscribe(
+      (exito: EstatusApiResponse) => {
+        //console.log('Los Estatus', exito)
+        this.losEstatus = exito.dtoResult;
+        const estatusTodos: EstatusResponse = {
+          estatusId: 0,
+          nombre: 'Todos los estatus',
+          nombreCorto: 'Todos',
+          iconName: 'search-outline'
+        };
+        this.losEstatus.unshift(estatusTodos);
+      },
+      (error) => { }
+    );
+  }
+
+  obtenerTipo() {
+    this.catalogoService.obtenerTipos(1, 100).subscribe(
+      (exito: TipoApiResponse) => {
+        //console.log('Los Tipos', exito)
+        this.losTipos = exito.dtoResult;
+        const tiposTodos: TipoResponse = {
+          tipoId: 0,
+          nombre: 'Todos los tipos',
+          nombreCorto: 'Todos',
+          iconName: 'search-outline'
+        };
+        this.losTipos.unshift(tiposTodos);
+      },
+      (error) => { }
+    );
+  }
+
+  cambiarPagina(pagina: number) {
+
+    if (pagina > this.noPaginas) {
+      this.paginaActual = this.noPaginas;
+    } else {
+      this.paginaActual = pagina;
+    }
+
+    this.activePage = (pagina) - 1;
+
+    // Consultar listado siguiente
+    this.ejecutarFiltros(environment.tamPagina, this.paginaActual);
+  }
+
+  onChangeEstatus(estatusSelected: number) {
+    this.elEstatusIdSeleccionado = estatusSelected.toString();
+    // ejecutar filtros
+    this.ejecutarFiltros(environment.tamPagina, 1);
+  }
+
+  onChangeTipo(tipoId: number){
+    this.elTipoIdSeleccionado = tipoId.toString();
+    // ejecutar filtros
+    this.ejecutarFiltros(environment.tamPagina, 1);
+  }
+
   ejecutarFiltros(tamPagina: number, paginaActual: number) {
     this.losFiltrosOk = '';
     this.filtrosFinales = [];
 
     if (this.elEstatusIdSeleccionado.trim().length > 0) {
       this.filtrosFinales.push(`'estatus':'${this.elEstatusIdSeleccionado}'`);
+    }
+
+    if (this.elTipoIdSeleccionado.trim().length > 0) {
+      this.filtrosFinales.push(`'tipo':'${this.elTipoIdSeleccionado}'`);
     }
 
     if (this.elFiltroEstablecido.trim().length >= 3) {
@@ -273,52 +330,6 @@ export class TicketsPage implements OnInit {
       this.getTicketsFiltro(this.lacadenaSelectedId, resultado, paginaActual, tamPagina);
     }
 
-  }
-
-  getTicketsFiltro(cadenaId: string, filtros: string, numberPage: number, pageSize: number) {
-    //this.spinnerService.setTitulo = 'Espere un momento, estamos cargando las tickets';
-    this.cargando = true;
-    this.ticketService.obtenerTicketsFiltro(cadenaId, filtros, numberPage, pageSize)
-      .subscribe((exito: TicketsApiResponse) => {
-        this.cargando = false;
-        //this.spinnerService.setTitulo = '';
-
-        if (exito.result === 'OK') {
-
-          console.log('Tickets Filtro', exito.dtoResult);
-
-          this.listadoTickets = exito.dtoResult;
-          this.paginaActual = exito.paginaActual;
-          this.totalPaginasArray = new Array((exito.totalPaginas > 10 ? 10 : exito.totalPaginas));
-          this.totalRegistros = exito.totalRegistros;
-          this.noPaginas = exito.totalPaginas;
-        }
-      },
-        (err) => {
-          //this.spinnerService.setTitulo = '';
-          this.cargando = false;
-          console.log(err);
-        });
-  }
-
-  cambiarPagina(pagina: number) {
-
-    if (pagina > this.noPaginas) {
-      this.paginaActual = this.noPaginas;
-    } else {
-      this.paginaActual = pagina;
-    }
-
-    this.activePage = (pagina) - 1;
-
-    // Consultar listado siguiente
-    this.ejecutarFiltros(environment.tamPagina, this.paginaActual);
-  }
-
-  onChangeEstatus(estatusSelected: number) {
-    this.elEstatusIdSeleccionado = estatusSelected.toString();
-    // ejecutar filtros
-    this.ejecutarFiltros(environment.tamPagina, 1);
   }
 
   formatDate(value: string) {

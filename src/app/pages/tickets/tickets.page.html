@@ -39,7 +39,7 @@
       <ion-col size-md="3" size-sm="12">
         <ion-item>
           <ion-label> <b>Tipo</b></ion-label>
-          <ion-select placeholder="Seleccione tipo" interface="popover">
+          <ion-select placeholder="Seleccione tipo" interface="popover" (ionChange)="onChangeTipo(tipoTicket.value)" #tipoTicket>
             <ion-select-option *ngFor="let tipos of this.losTipos" [value]="tipos.tipoId">
               {{tipos.nombre }}</ion-select-option>
           </ion-select>
