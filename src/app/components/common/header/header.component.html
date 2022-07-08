@@ -15,7 +15,7 @@
 </ion-header>
 
 
-<ion-grid fixed>
+<ion-grid>
     <ion-row class="ion-align-items-center">
     <ion-col size="8" class="ion-text-left">
         <ion-button fill="clear" color="dark" routerLink="/home" routerDirection="root" routerLinkActive="active-item" [routerLinkActiveOptions]="{exact: true}">
@@ -36,9 +36,9 @@
             <ion-chip color="primary" *ngIf="entradaCadenaName">
                 <label>{{ entradaCadenaName }}</label>
             </ion-chip>
-            <ion-button>
-                <ion-icon color="dark" slot="icon-only" name="menu-outline"></ion-icon>
-            </ion-button>
+            <ion-button (click)="mostrarMenu($event)">
+              <ion-icon color="dark" slot="icon-only" name="menu-outline"></ion-icon>
+          </ion-button>
         </ion-buttons>
     </ion-col>
     </ion-row>
