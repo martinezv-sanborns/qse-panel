@@ -135,7 +135,7 @@ export class LoginPage implements OnInit {
           if (data !== undefined) {
 
             if (data.portalSelected) {
-              localStorage.setItem('cadenaSelected', data.portalId);
+              localStorage.setItem('cadenaSelectedId', data.portalId);
               localStorage.setItem('cadenaName', data.name);
 
               this.canalService.onChangeadena();
