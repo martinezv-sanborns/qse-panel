@@ -7,7 +7,8 @@ import { MenuController, Platform } from '@ionic/angular';
   styleUrls: ['./principal.page.scss'],
 })
 export class PrincipalPage implements OnInit {
-
+  cadenaSelectedId: string='';
+  cadenaSelectedName : string ='';
   
   menuItems = [
     {
@@ -32,6 +33,10 @@ export class PrincipalPage implements OnInit {
   constructor(private menuCtrl: MenuController, private plt: Platform) { }
 
   ngOnInit() {
+
+    this.cadenaSelectedName = localStorage.getItem('cadenaName');
+    this.cadenaSelectedId = localStorage.getItem('cadenaSelectedId');
+    
     const width = this.plt.width();
     this.toggleMenu(width);
   }
