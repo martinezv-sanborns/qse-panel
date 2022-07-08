@@ -9,15 +9,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { ComunesModule } from './components/common/comunes.module';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { RecaptchaFormsModule, RecaptchaModule, RecaptchaSettings, RECAPTCHA_SETTINGS } from 'ng-recaptcha';
-import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
-    BrowserModule, 
+    BrowserModule,
 
-    IonicModule.forRoot(), 
+    IonicModule.forRoot(),
 
     AppRoutingModule,
     AppRoutingModule,
