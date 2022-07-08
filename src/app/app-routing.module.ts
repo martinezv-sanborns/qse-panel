@@ -22,7 +22,11 @@ const routes: Routes = [
   {
     path: 'establecer-password/:id',
     loadChildren: () =>import('./pages/establecer-password/establecer-password.module').then( m => m.EstablecerPasswordPageModule)
+  },  {
+    path: 'usuarios',
+    loadChildren: () => import('./pages/usuarios/usuarios.module').then( m => m.UsuariosPageModule)
   }
+
 
 
 

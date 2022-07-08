@@ -3,7 +3,9 @@
       <ion-buttons slot="start">
           <ion-menu-button menu="myMenu"></ion-menu-button>
       </ion-buttons>
-      <ion-title></ion-title>
+      <ion-title>
+        Panel de administración para el  Libro electronico de quejas, sugerencias y recomendaciones |  {{ entradaCadenaName }}
+      </ion-title>
       <ion-buttons slot="end">
           <ion-button>
               <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
@@ -12,34 +14,32 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-row class="ion-align-items-center">
-  <ion-col size="2" class="ion-align-items-center">
-      Q&SE |
-      <ion-icon color="primary" name="person-circle-outline"></ion-icon> 
-  </ion-col>
-  <ion-col size="8" class="ion-text-left">
-      <ion-button fill="clear" color="dark" routerLink="/home" routerDirection="root" routerLinkActive="active-item" [routerLinkActiveOptions]="{exact: true}">
-          <ion-icon name="home" slot="start"></ion-icon>
-          Inicio
-      </ion-button>
-      <ion-button fill="clear" color="dark" routerLink="/tickets" routerDirection="root" routerLinkActive="active-item" [routerLinkActiveOptions]="{exact: true}">
-          <ion-icon name="megaphone-outline" slot="start"></ion-icon>
-          Tickets
-      </ion-button>
-      <ion-button fill="clear" color="dark" routerLink="/usuarios" routerDirection="root" routerLinkActive="active-item" [routerLinkActiveOptions]="{exact: true}">
-          <ion-icon name="person-circle-outline" slot="start"></ion-icon>
-          Usuarios
-      </ion-button>
 
-  </ion-col>
-  <ion-col size="2" class="ion-text-right">
-      <ion-buttons>
-          <ion-chip color="primary" *ngIf="portalName">
-              <label>{{ portalName }}</label>
-          </ion-chip>
-          <ion-button>
-              <ion-icon color="dark" slot="icon-only" name="menu-outline"></ion-icon>
-          </ion-button>
-      </ion-buttons>
-  </ion-col>
-</ion-row>
+<ion-grid fixed>
+    <ion-row class="ion-align-items-center">
+    <ion-col size="8" class="ion-text-left">
+        <ion-button fill="clear" color="dark" routerLink="/home" routerDirection="root" routerLinkActive="active-item" [routerLinkActiveOptions]="{exact: true}">
+            <ion-icon name="home" slot="start"></ion-icon>
+            Inicio
+        </ion-button>
+        <ion-button fill="clear" color="dark" routerLink="/tickets" routerDirection="root" routerLinkActive="active-item" [routerLinkActiveOptions]="{exact: true}">
+            <ion-icon name="megaphone-outline" slot="start"></ion-icon>
+            Tickets
+        </ion-button>
+        <ion-button fill="clear" color="dark" routerLink="/usuarios" routerDirection="root" routerLinkActive="active-item" [routerLinkActiveOptions]="{exact: true}">
+            <ion-icon name="person-circle-outline" slot="start"></ion-icon>
+            Usuarios
+        </ion-button>
+    </ion-col>
+    <ion-col size="2" class="ion-text-right">
+        <ion-buttons>
+            <ion-chip color="primary" *ngIf="entradaCadenaName">
+                <label>{{ entradaCadenaName }}</label>
+            </ion-chip>
+            <ion-button>
+                <ion-icon color="dark" slot="icon-only" name="menu-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-col>
+    </ion-row>
+</ion-grid>
