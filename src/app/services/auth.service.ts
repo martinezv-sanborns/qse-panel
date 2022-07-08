@@ -51,7 +51,7 @@ export class AuthService {
 
             this.user = this.getUser(laRespuesta.dtoResult.token);
             localStorage.setItem('token', laRespuesta.dtoResult.token);
-            localStorage.setItem('rol', this.user.rol);
+            localStorage.setItem('rolName', this.user.rol);
             localStorage.setItem('userName', this.user.nombre);
             localStorage.setItem('UserId', this.user.id);
           }

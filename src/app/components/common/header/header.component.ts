@@ -10,6 +10,7 @@ import { MenuPerfilComponent } from '../menu-perfil/menu-perfil.component';
 })
 export class HeaderComponent implements OnInit {
   @Input() entradaCadenaName: string;
+  @Input() entradaRolName: string;
 
   @ViewChild('productbtn', { read: ElementRef }) productbtn: ElementRef;
   dropdown = false;
