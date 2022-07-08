@@ -3,7 +3,7 @@ export class EntidadMaestra {
     fechaModificacion: Date;
     activo: boolean;
   }
-  export class EntidadCatalogo extends EntidadMaestra {
+  export class EntidadCatalogoResponse extends EntidadMaestra {
     nombre: string;
     nombreCorto: string;
     iconName: string;
