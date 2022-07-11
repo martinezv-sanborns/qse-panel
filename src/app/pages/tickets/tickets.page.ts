@@ -88,6 +88,8 @@ export class TicketsPage implements OnInit {
         this.totalRegistros = exito.totalRegistros;
         this.noPaginas = exito.totalPaginas;
 
+        console.log('el listado de tickets', this.listadoTickets);
+
       }
       this.cargando = false;
     }, (errr) => {
