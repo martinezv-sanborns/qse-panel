@@ -194,11 +194,11 @@ export class TicketsPage implements OnInit {
         component: DetalleTicketComponent,
         componentProps: {
           elTicket: ticketSelected
-        }
+        },
+        backdropDismiss:false
       }
     );
     await modalShowTicket.present();
-    const { data } = await modalShowTicket.onWillDismiss();
   }
 
   getTicketsFiltro(cadenaId: string, filtros: string, numberPage: number, pageSize: number) {

@@ -1,6 +1,11 @@
+<ion-item text-center *ngFor="let ticketlog of losTicketLogs">
+  <ion-text class="ion-no-padding">
+    <ion-label class="my-label">{{ ticketlog.fechaAlta | date: 'dd/MM/yy' }} {{ticketlog.usuario.nombreUsuario}}
+    </ion-label> {{this.ticketlog.observaciones}}
+  </ion-text>
+</ion-item>
 
-  <ion-item text-center *ngFor="let ticketlog of losTicketLogs">
-    <ion-text class="ion-no-padding"> <ion-label class="my-label">{{ ticketlog.fechaAlta | date: 'dd/MM/yy' }}  {{ticketlog.usuario.nombreUsuario}}</ion-label>  {{this.ticketlog.observaciones}}</ion-text>
-  </ion-item>
-
-
+<div class="center" *ngIf="losTicketLogs.length === 0">
+  <ion-icon name="warning" size="large" color="warning"></ion-icon>
+  <ion-label>No hay comentarios...</ion-label>
+</div>
