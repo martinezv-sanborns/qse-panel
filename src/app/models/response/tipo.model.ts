@@ -1,3 +1,4 @@
+
 import { ApiResponse } from './ApiResponse.model';
 
 export class TipoResponse {

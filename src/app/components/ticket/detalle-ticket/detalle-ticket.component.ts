@@ -1,10 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController, PopoverController } from '@ionic/angular';
-import { TicketResponse } from 'src/app/models/response/ticket.model';
-import { TicketLogResponse } from '../../../models/response/ticket.model';
 import Swal from 'sweetalert2';
-import 'sweetalert2/dist/sweetalert2.all.js';
+
+// components
 import { EstatusMotivoTicketComponent } from '../estatus-motivo-ticket/estatus-motivo-ticket.component';
+
+// models
+import { TicketLogResponse, TicketResponse } from 'src/app/models/response/ticket.model';
+
 
 @Component({
   selector: 'app-detalle-ticket',
@@ -16,21 +19,22 @@ export class DetalleTicketComponent implements OnInit {
   @Input() elTicket: TicketResponse;
 
   tabActivo = 'relato';
-  losticketLogs: TicketLogResponse[]=[];
+  losticketLogs: TicketLogResponse[] = [];
   descripcion: string;
 
-  constructor(private modalCrtl: ModalController, private popVerCtrl: PopoverController) { }
+  constructor(private modalCrtl: ModalController,
+    private popVerCtrl: PopoverController) { }
 
   ngOnInit() {
 
     //this.losticketLogs = this.elTicket.ticketLogs;
 
-    for (let ticketlog of this.elTicket.ticketLogs) {
-      //console.log(i); // 4, 5, 6
-      if (ticketlog.estatus.nombre === 'Iniciado'){
-        this.descripcion = ticketlog.observaciones;
-      }
-    }
+    // for (let ticketlog of this.elTicket.ticketLogs) {
+    //   //console.log(i); // 4, 5, 6
+    //   if (ticketlog.estatus.nombre === 'Iniciado'){
+    //     this.descripcion = ticketlog.observaciones;
+    //   }
+    // }
 
   }
 
@@ -40,21 +44,20 @@ export class DetalleTicketComponent implements OnInit {
     });
   }
 
-  segmentChange(event: any){
+  segmentChange(event: any) {
     this.tabActivo = event.detail.value;
     console.log('Que tab es:', this.tabActivo);
   }
 
-  async cerrarCaso(ticketSelected: TicketResponse)
-  {
+  async cerrarCaso(ticketSelected: TicketResponse) {
     const modalShow = await this.modalCrtl.create(
-    {
-      component: EstatusMotivoTicketComponent,
-     componentProps: {
-      title: 'Cerrar Caso',
-      mensajeMotivo: '¿Está seguro que desea Cerrar el Q&SE?',
-     }
-    });
+      {
+        component: EstatusMotivoTicketComponent,
+        componentProps: {
+          title: 'Cerrar Caso',
+          mensajeMotivo: '¿Está seguro que desea Cerrar el Q&SE?',
+        }
+      });
     await modalShow.present();
     const { data } = await modalShow.onWillDismiss();
 
@@ -66,7 +69,7 @@ export class DetalleTicketComponent implements OnInit {
   async cancelarTicket(ticketSelected: TicketResponse, elMotivo: string) {
 
 
-    
+
   }
 
 }

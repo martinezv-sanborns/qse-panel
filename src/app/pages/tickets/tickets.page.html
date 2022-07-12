@@ -41,7 +41,8 @@
           <ion-label> <b>Tipo</b></ion-label>
           <ion-select placeholder="Seleccione tipo" interface="popover" (ionChange)="onChangeTipo(tipoTicket.value)" #tipoTicket>
             <ion-select-option *ngFor="let tipos of this.losTipos" [value]="tipos.tipoId">
-              {{tipos.nombre }}</ion-select-option>
+              <ion-icon slot="start" name="caret-forward-outline"></ion-icon> {{tipos.nombre }}
+            </ion-select-option>
           </ion-select>
         </ion-item>
       </ion-col>
@@ -109,7 +110,7 @@
                 {{ ticket.tienda.nombre }}
               </ion-col>
               <ion-col size="2" class="ion-hide-sm-down">
-                {{ticket.listaTiposNombreCorto}}
+                <app-tipos-ticket [ticketTipos] ="ticket.ticketTipos"></app-tipos-ticket>
               </ion-col>
               <ion-col size="2" class="ion-hide-sm-down" [ngSwitch]="ticket.estatus.nombre">
                 <ion-chip outline="true" color="tertiary" *ngSwitchCase="'Iniciado'">
