@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
+import { MenuPerfilComponent } from '../menu-perfil/menu-perfil.component';
 
 
 @Component({
@@ -9,6 +10,7 @@ import { PopoverController } from '@ionic/angular';
 })
 export class HeaderComponent implements OnInit {
   @Input() entradaCadenaName: string;
+  @Input() entradaRolName: string;
 
   @ViewChild('productbtn', { read: ElementRef }) productbtn: ElementRef;
   dropdown = false;
@@ -20,38 +22,37 @@ export class HeaderComponent implements OnInit {
   }
 
   async mostrarMenu(evento: any) {
-    // const popover = await this.popVerCtrl.create({
-    //   component: LoginMenuComponent,
-    //   componentProps: {
-    //   },
-    //   cssClass: 'my-custom-class',
-    //   event: evento,
-    //   mode: 'ios',
-    //   backdropDismiss: true,
-    //   translucent: true
-    // });
-    // await popover.present();
+    const popover = await this.popVerCtrl.create({
+      component: MenuPerfilComponent,
+      componentProps: {
+      },
+      cssClass: 'my-custom-class',
+      event: evento,
+      mode: 'ios',
+      backdropDismiss: true,
+      translucent: true
+    });
+    await popover.present();
 
-    // const { data } = await popover.onDidDismiss();
+    const { data } = await popover.onDidDismiss();
 
-    // if (data !== undefined) {
-    //   switch (data.item.id) {
-    //     case 'close-sesion':
+    if (data !== undefined) {
+      switch (data.item.id) {
+        case 'close':
+          break;
+        case 'changepassword':
 
-    //       break;
-    //     case 'show-perfil':
+          break;
+        case 'cadena':
 
-    //       break;
-    //     case 'change-cadena':
+          break;
+        case 'perfil':
 
-    //       break;
-    //     case 'change-password':
-
-    //       break;
-    //     default:
-    //       break;
-    //   }
-    // }
+          break;
+        default:
+          break;
+      }
+    }
 
   }
 

@@ -8,36 +8,34 @@ import { UsuarioResponse } from './usuario.model';
 
 
 export class TicketResponse extends EntidadMaestra {
-    ticketId: string;
-    numero: string;
-    nombre: string;
-    email: string;
-    telefono: string;
-    comentarios: string;
-    folio: string;
-    fechaVisita: Date;
-    importe: number;
-    empleado: string;
-    tienda: TiendaResponse;
-    estatus: EstatusResponse;
-    medioContacto: MedioContactoResponse;
-    ticketLogs: TicketLogResponse[];
-    ticketTipos: TicketTipoResponse[];
-    listaTiposNombreCorto: string;
-    listaTiposNombre: string;
+  ticketId: string;
+  numero: string;
+  nombre: string;
+  email: string;
+  telefono: string;
+  comentarios: string;
+  folio: string;
+  fechaVisita: Date;
+  importe: number;
+  empleado: string;
+  tienda: TiendaResponse;
+  estatus: EstatusResponse;
+  medioContacto: MedioContactoResponse;
+  ticketLogs: TicketLogResponse[];
+  ticketTipos: TicketTipoResponse[];
 }
 
 export interface TicketBaseResponse {
-    ticketId: string;
-    numero: string;
-    nombre: string;
-    email: string;
-    telefono: string;
-    comentarios: string;
-    folio: string;
-    fechaVisita: Date;
-    importe: number;
-    empleado?: string;
+  ticketId: string;
+  numero: string;
+  nombre: string;
+  email: string;
+  telefono: string;
+  comentarios: string;
+  folio: string;
+  fechaVisita: Date;
+  importe: number;
+  empleado?: string;
 }
 export class TicketApiResponse extends ApiResponse {
   dtoResult: TicketResponse;
@@ -61,24 +59,24 @@ export interface TicketLogBaseResponse {
   estatus: EstatusResponse;
   usuario: UsuarioResponse;
 }
-export class TicketLogApiResponse extends ApiResponse {
-dtoResult: TicketLogResponse;
-}
-
-export class TicketLogsApiResponse extends ApiResponse {
-dtoResult: TicketLogResponse[];
-}
 
 export class TicketTipoResponse extends EntidadMaestra {
   ticketId: string;
   tipoId: string;
-  tipo: TipoResponse[]
+  tipo: TipoResponse;
+}
+export class TicketLogApiResponse extends ApiResponse {
+  dtoResult: TicketLogResponse;
+}
+
+export class TicketLogsApiResponse extends ApiResponse {
+  dtoResult: TicketLogResponse[];
 }
 
 export class TicketTipoApiResponse extends ApiResponse {
-dtoResult: TicketLogResponse;
+  dtoResult: TicketLogResponse;
 }
 
 export class TicketTiposApiResponse extends ApiResponse {
-dtoResult: TicketLogResponse[];
+  dtoResult: TicketLogResponse[];
 }

@@ -16,9 +16,9 @@ import { AuthInterceptor } from './guards/auth.interceptor';
 @NgModule({
   declarations: [AppComponent],
   imports: [
-    BrowserModule, 
+    BrowserModule,
 
-    IonicModule.forRoot(), 
+    IonicModule.forRoot(),
 
     AppRoutingModule,
     AppRoutingModule,

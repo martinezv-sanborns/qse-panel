@@ -3,12 +3,14 @@ import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { ComunesModule } from '../common/comunes.module';
+
 // components
 import { MenuTicketComponent } from './menu-ticket/menu-ticket.component';
-import { ComunesModule } from '../common/comunes.module';
 import { DetalleTicketComponent } from './detalle-ticket/detalle-ticket.component';
 import { SeguimientoTicketComponent } from './seguimiento-ticket/seguimiento-ticket.component';
 import { EstatusMotivoTicketComponent } from './estatus-motivo-ticket/estatus-motivo-ticket.component';
+import { TiposTicketComponent } from './tipos-ticket/tipos-ticket.component';
 
 
 @NgModule({
@@ -16,7 +18,8 @@ import { EstatusMotivoTicketComponent } from './estatus-motivo-ticket/estatus-mo
     MenuTicketComponent,
     DetalleTicketComponent,
     SeguimientoTicketComponent,
-    EstatusMotivoTicketComponent
+    EstatusMotivoTicketComponent,
+    TiposTicketComponent
   ],
   imports: [
     CommonModule,
@@ -29,7 +32,8 @@ import { EstatusMotivoTicketComponent } from './estatus-motivo-ticket/estatus-mo
     MenuTicketComponent,
     DetalleTicketComponent,
     SeguimientoTicketComponent,
-    EstatusMotivoTicketComponent
+    EstatusMotivoTicketComponent,
+    TiposTicketComponent
   ]
 })
 export class TicketModule { }

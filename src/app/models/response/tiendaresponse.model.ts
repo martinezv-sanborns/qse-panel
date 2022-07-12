@@ -1,9 +1,9 @@
 import { ApiResponse } from './ApiResponse.model';
-import { EntidadCatalogo } from './entidadmestra.model';
+import { EntidadCatalogoResponse } from './entidadmestra.model';
 import { EstatusResponse } from './estatus.model';
 
 
-export class TiendaResponse extends EntidadCatalogo {
+export class TiendaResponse extends EntidadCatalogoResponse {
     tiendaId: string;
     identificarExterno: string;
     coordenadas: string;

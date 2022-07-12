@@ -1,7 +1,7 @@
 import { ApiResponse } from './ApiResponse.model';
-import { EntidadCatalogo } from './entidadmestra.model';
+import { EntidadCatalogoResponse } from './entidadmestra.model';
 
-export class Cadena extends EntidadCatalogo{
+export class Cadena extends EntidadCatalogoResponse{
     cadenaId: number;
 }
 export interface CadenaBaseResponse {
