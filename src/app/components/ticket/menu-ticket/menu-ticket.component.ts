@@ -1,8 +1,8 @@
-import { Component, Input, OnInit } from "@angular/core";
-import { PopoverController } from "@ionic/angular";
-import { ItemMenu } from "src/app/models/item-menu.model";
-import { EstatusResponse } from "src/app/models/response/estatus.model";
-import { environment } from "src/environments/environment";
+import { Component, Input, OnInit } from '@angular/core';
+import { PopoverController } from '@ionic/angular';
+import { ItemMenu } from 'src/app/models/item-menu.model';
+import { EstatusResponse } from 'src/app/models/response/estatus.model';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -25,9 +25,9 @@ export class MenuTicketComponent implements OnInit {
 
   constructor(private popCtrl: PopoverController) { }
 
-  ngOnInit() 
+  ngOnInit()
   {
-    if ((this.elEstatus.estatusId === environment.estatusAtendido)) {
+    if ((this.elEstatus.estatusId === environment.estatusIntervenido)) {
     this.itemsMenu.push(
       {
       id: 'intervenido-ticket',

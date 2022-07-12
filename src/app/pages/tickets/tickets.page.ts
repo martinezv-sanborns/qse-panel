@@ -233,7 +233,7 @@ export class TicketsPage implements OnInit {
         //console.log('Los Estatus', exito)
         this.losEstatus = exito.dtoResult;
         const estatusTodos: EstatusResponse = {
-          estatusId: 0,
+          estatusId: '0',
           nombre: 'Todos los estatus',
           nombreCorto: 'Todos',
           iconName: 'search-outline'

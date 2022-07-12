@@ -10,6 +10,8 @@ import { TicketService } from '../../../services/ticket.service';
 
 // models
 import { TicketLogResponse, TicketResponse } from 'src/app/models/response/ticket.model';
+import { TicketStatusRequest } from 'src/app/models/request/ticket.model';
+import { environment } from '../../../../environments/environment';
 
 
 
@@ -59,7 +61,7 @@ export class DetalleTicketComponent implements OnInit {
     const { data } = await modalShow.onWillDismiss();
 
     if (data.motivoSend) {
-      this.cancelarTicket(ticketSelected, data.motivo);
+      this.intervenirTicket(ticketSelected, data.motivo);
     }
   }
 
@@ -90,8 +92,24 @@ export class DetalleTicketComponent implements OnInit {
   }
 
   async intervenirTicket(ticketSelected: TicketResponse, elMotivo: string) {
-    console.log('ticketSelected', ticketSelected);
-    console.log('motivo', elMotivo);
+
+    const elNuevoStatusTicket: TicketStatusRequest = {
+      ticketId: ticketSelected.ticketId,
+      estatusId: environment.estatusAtendido,
+      observaciones: elMotivo,
+      activo: true
+    };
+
+    this.ticketService.intervenir(elNuevoStatusTicket).subscribe((exito)=>{
+
+      if(exito.result === 'OK'){
+
+      }
+
+    }, (err)=>{
+      console.log(err);
+    });
+
   }
 
 }
