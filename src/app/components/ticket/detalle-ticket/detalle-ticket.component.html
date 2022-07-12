@@ -17,7 +17,7 @@
           <ion-label><b>Tipo:</b></ion-label>
         </ion-col>
         <ion-col size="10">
-          <app-tipos-ticket [ticketTipos]="elTicket.ticketTipos" ></app-tipos-ticket>
+          <app-tipos-ticket [ticketTipos]="elTicket.ticketTipos"></app-tipos-ticket>
         </ion-col>
       </ion-row>
       <ion-row>
@@ -75,25 +75,14 @@
               </ion-segment-button>
             </ion-segment>
           </ion-toolbar>
-          <ion-card class="p-0 m-0" *ngIf="tabActivo === 'relato'">
-            <ion-item text-center>
-              <ion-text class="ion-no-padding">{{this.descripcion}}</ion-text>
+          <ion-card *ngIf="tabActivo === 'relato'">
+            <ion-item class="ion-text-center">
+              <ion-text class="ion-padding">{{elTicket.comentarios}}</ion-text>
             </ion-item>
           </ion-card>
-          <ion-card class="p-0 m-0" *ngIf="tabActivo === 'seguimiento'">
-            <ion-item text-center>
-              <!-- <ion-label class="ion-no-padding">{{elTicket.comentarios}}</ion-label> -->
+          <ion-card *ngIf="tabActivo === 'seguimiento'">
               <app-seguimiento-ticket [losTicketLogs]="elTicket.ticketLogs"></app-seguimiento-ticket>
-            </ion-item>
           </ion-card>
-          <!-- <ion-content>
-                <ion-card class="p-0 m-0">
-                  <ion-item text-center>
-                    <ion-label>Text centered</ion-label>
-                  </ion-item>
-                </ion-card>
-                <ion-card class="p-0 m-0" *ngIf="tabActivo === 'seguimiento'"></ion-card>
-              </ion-content> -->
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -103,7 +92,7 @@
 
   <ion-row>
     <ion-col size="6">
-      <ion-button *ngIf="tabActivo === 'seguimiento'" color="success" (click)="cerrarModal()" shape="round"
+      <ion-button *ngIf="tabActivo === 'seguimiento'" color="success" (click)="intervenir(elTicket)" shape="round"
         expand="full">
         Intervenir
       </ion-button>
@@ -111,7 +100,6 @@
     <ion-col size="6">
       <ion-button *ngIf="tabActivo === 'seguimiento'" color="primary" (click)="cerrarCaso(elTicket)" shape="round"
         expand="full">
-
         Cerrar Caso
       </ion-button>
     </ion-col>

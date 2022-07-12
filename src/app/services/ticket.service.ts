@@ -2,11 +2,10 @@ import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 
 // services
-
+import { GeneralService } from './general.service';
 
 // models
 import { TicketApiResponse, TicketsApiResponse} from '../models/response/ticket.model';
-import { GeneralService } from './general.service';
 
 
 @Injectable({
@@ -22,7 +21,6 @@ export class TicketService {
       .pipe(
         map(
           (laRespuesta: TicketsApiResponse) => laRespuesta)
-          
       );
   }
 
@@ -32,7 +30,11 @@ export class TicketService {
       .pipe(
         map(
           (laRespuesta: TicketsApiResponse) => laRespuesta)
-          
       );
   }
+
+  cerrar(){}
+  intervenir(){}
+  reabrir(){}
+
 }
