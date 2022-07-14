@@ -1,7 +1,7 @@
 import { ApiResponse } from './ApiResponse.model';
 
 export class EstatusResponse {
-  estatusId: number;
+  estatusId: string;
   nombre: string;
   nombreCorto: string;
   iconName?: string;

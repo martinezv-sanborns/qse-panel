@@ -6,6 +6,7 @@ import { GeneralService } from './general.service';
 
 // models
 import { TicketApiResponse, TicketsApiResponse} from '../models/response/ticket.model';
+import { TicketStatusRequest } from '../models/request/ticket.model';
 
 
 @Injectable({
@@ -33,8 +34,21 @@ export class TicketService {
       );
   }
 
-  cerrar(){}
-  intervenir(){}
-  reabrir(){}
+  cerrar(ticketStatus: TicketStatusRequest){
+
+  }
+
+  intervenir(ticketStatus: TicketStatusRequest){
+    return this.generalService
+    .Put(`/api/Ticket/intervenir/async`, ticketStatus)
+    .pipe(
+      map(
+        (laRespuesta: TicketApiResponse) => laRespuesta)
+    );
+  }
+
+  reabrir(ticketStatus: TicketStatusRequest){
+
+  }
 
 }
