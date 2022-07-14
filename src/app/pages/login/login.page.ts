@@ -73,11 +73,38 @@ export class LoginPage implements OnInit {
     console.log('data seleccionada', data);
   }
 
-  login(){
+ async login(){
 
     localStorage.clear();
 
-    if (this.loginForm.invalid) {
+    if(!this.captchaPassed){
+
+
+    const alertValidateData = await this.alertCtrl.create({
+        cssClass: 'alertWarning',
+        message: this.helperService.getMessageAlert('Valide el captcha primero!', 'warning'),
+        animated: true,
+        buttons: [
+          {
+            text: 'Aceptar',
+            cssClass: 'alertButton',
+            id: 'confirm-button',
+            handler: () => {
+            }
+          }]
+      });
+
+      await alertValidateData.present();
+
+      const { data } = await alertValidateData.onDidDismiss();
+    
+  
+  }
+
+
+    
+
+    else if (this.loginForm.invalid) {
 
       return Object.values(this.loginForm.controls).forEach(async (control, index) => {
 
@@ -111,40 +138,63 @@ export class LoginPage implements OnInit {
       });
     }
 
-    this.logueando = true;
-    this.spinnerService.setTitulo = 'Iniciando sesión...';
-    this.authService.login(this.loginForm.value.nickname, this.loginForm.value.password)
-      .subscribe(async (exito) => {
-        this.logueando = false;
-        this.spinnerService.setTitulo = '';
+    else{
 
-        if (exito.result === 'OK') {
-          // mostrar portal
-          const modalShowPortal = await this.modalCtrl.create(
-            {
-              backdropDismiss: false,
-              component: CadenaSelectorComponent,
-              componentProps: {
-                usuarioId:  localStorage.getItem('UserId')
+
+      this.logueando = true;
+      this.spinnerService.setTitulo = 'Iniciando sesión...';
+      this.authService.login(this.loginForm.value.nickname, this.loginForm.value.password)
+        .subscribe(async (exito) => {
+          this.logueando = false;
+          this.spinnerService.setTitulo = '';
+  
+          if (exito.result === 'OK') {
+            // mostrar portal
+            const modalShowPortal = await this.modalCtrl.create(
+              {
+                backdropDismiss: false,
+                component: CadenaSelectorComponent,
+                componentProps: {
+                  usuarioId:  localStorage.getItem('UserId')
+                }
+              }
+            );
+            await modalShowPortal.present();
+            const { data } = await modalShowPortal.onWillDismiss();
+  
+            if (data !== undefined) {
+  
+              if (data.portalSelected) {
+                localStorage.setItem('cadenaSelectedId', data.portalId);
+                localStorage.setItem('cadenaName', data.name);
+  
+                this.canalService.onChangeadena();
+  
+                this.elrouter.navigate(['/principal']);
+              } else {
+                const alertMsj = await this.alertCtrl.create({
+                  cssClass: 'alertDanger',
+                  message: this.helperService.getMessageAlert(`Debe seleccionar un portal`, 'danger'),
+                  buttons: [
+                    {
+                      text: 'Aceptar',
+                      cssClass: 'alertButton',
+                      id: 'confirm-button',
+                      handler: () => {
+                      }
+                    }]
+                });
+                await alertMsj.present();
               }
             }
-          );
-          await modalShowPortal.present();
-          const { data } = await modalShowPortal.onWillDismiss();
-
-          if (data !== undefined) {
-
-            if (data.portalSelected) {
-              localStorage.setItem('cadenaSelectedId', data.portalId);
-              localStorage.setItem('cadenaName', data.name);
-
-              this.canalService.onChangeadena();
-
-              this.elrouter.navigate(['/principal']);
-            } else {
+          }
+  
+          if (exito.result === 'KO') {
+            if (exito.error === 'Not authorized') {
+  
               const alertMsj = await this.alertCtrl.create({
                 cssClass: 'alertDanger',
-                message: this.helperService.getMessageAlert(`Debe seleccionar un portal`, 'danger'),
+                message: this.helperService.getMessageAlert(`Verifique sus datos de acceso`, 'danger'),
                 buttons: [
                   {
                     text: 'Aceptar',
@@ -154,62 +204,48 @@ export class LoginPage implements OnInit {
                     }
                   }]
               });
+  
               await alertMsj.present();
-            }
-          }
-        }
-
-        if (exito.result === 'KO') {
-          if (exito.error === 'Not authorized') {
-
-            const alertMsj = await this.alertCtrl.create({
-              cssClass: 'alertDanger',
-              message: this.helperService.getMessageAlert(`Verifique sus datos de acceso`, 'danger'),
-              buttons: [
-                {
+  
+            } else {
+  
+  
+              const msjErr = await this.alertCtrl.create({
+                cssClass: 'alertDanger',
+                message: this.helperService.getMessageAlert(`${exito.error}`, 'danger'),
+                buttons: [{
                   text: 'Aceptar',
                   cssClass: 'alertButton',
                   id: 'confirm-button',
                   handler: () => {
                   }
                 }]
-            });
-
-            await alertMsj.present();
-
-          } else {
-            const msjErr = await this.alertCtrl.create({
-              cssClass: 'alertDanger',
-              message: this.helperService.getMessageAlert(`${exito.error}`, 'danger'),
-              buttons: [{
-                text: 'Aceptar',
-                cssClass: 'alertButton',
-                id: 'confirm-button',
-                handler: () => {
-                }
-              }]
-            });
-            await msjErr.present();
-          }
-        }
-
-      }, async (err) => {
-        console.log(err);
-        this.spinnerService.setTitulo = '';
-        this.logueando = false;
-        const msjErr = await this.alertCtrl.create({
-          cssClass: 'alertDanger',
-          message: this.helperService.getMessageAlert(`Ocurrió un error por favor comuníquese con el administrador.`, 'danger'),
-          buttons: [{
-            text: 'Aceptar',
-            cssClass: 'alertButton',
-            id: 'confirm-button',
-            handler: () => {
+              });
+              await msjErr.present();
             }
-          }]
+  
+  
+          }
+  
+        }, async (err) => {
+          console.log(err);
+          this.spinnerService.setTitulo = '';
+          this.logueando = false;
+          const msjErr = await this.alertCtrl.create({
+            cssClass: 'alertDanger',
+            message: this.helperService.getMessageAlert(`Ocurrió un error por favor comuníquese con el administrador.`, 'danger'),
+            buttons: [{
+              text: 'Aceptar',
+              cssClass: 'alertButton',
+              id: 'confirm-button',
+              handler: () => {
+              }
+            }]
+          });
+          await msjErr.present();
         });
-        await msjErr.present();
-      });
+    }
+
   }
 
 
