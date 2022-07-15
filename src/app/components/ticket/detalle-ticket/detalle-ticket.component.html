@@ -81,7 +81,7 @@
             </ion-item>
           </ion-card>
           <ion-card *ngIf="tabActivo === 'seguimiento'">
-              <app-seguimiento-ticket [losTicketLogs]="elTicket.ticketLogs"></app-seguimiento-ticket>
+              <app-seguimiento-ticket [losTicketLogs]="losticketLogs"></app-seguimiento-ticket>
           </ion-card>
         </ion-col>
       </ion-row>
@@ -89,7 +89,6 @@
   </ion-card>
 </ion-content>
 <ion-footer>
-
   <ion-row>
     <ion-col size="6">
       <ion-button *ngIf="tabActivo === 'seguimiento'" color="success" (click)="intervenir(elTicket)" shape="round"

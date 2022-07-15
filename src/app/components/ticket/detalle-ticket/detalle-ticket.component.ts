@@ -2,6 +2,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import Swal from 'sweetalert2';
 
+// globals
+import { environment } from '../../../../environments/environment';
+
 // components
 import { EstatusMotivoTicketComponent } from '../estatus-motivo-ticket/estatus-motivo-ticket.component';
 
@@ -9,10 +12,8 @@ import { EstatusMotivoTicketComponent } from '../estatus-motivo-ticket/estatus-m
 import { TicketService } from '../../../services/ticket.service';
 
 // models
-import { TicketLogResponse, TicketResponse } from 'src/app/models/response/ticket.model';
+import { TicketApiResponse, TicketLogResponse, TicketResponse } from 'src/app/models/response/ticket.model';
 import { TicketStatusRequest } from 'src/app/models/request/ticket.model';
-import { environment } from '../../../../environments/environment';
-
 
 
 @Component({
@@ -31,6 +32,7 @@ export class DetalleTicketComponent implements OnInit {
   constructor(private modalCrtl: ModalController, private ticketService: TicketService) { }
 
   ngOnInit() {
+    this.losticketLogs = this.elTicket.ticketLogs.filter(t=> t.estatus.estatusId !== environment.estatusIniciado);
   }
 
   cerrarModal() {
@@ -49,19 +51,19 @@ export class DetalleTicketComponent implements OnInit {
       {
         component: EstatusMotivoTicketComponent,
         componentProps: {
-          icon:'help-circle-outline',
+          icon: 'help-circle-outline',
           titleWindow: 'Intervenir Caso',
-          titleMessage: 'Nueva observación sobre el caso:',
-          txtMessage:'Escriba observación',
-          titleErr: 'Nueva observación',
-          messageErr:'Escriba una observación'
+          titleMessage: 'Nueva intervención sobre el caso:',
+          txtMessage: 'Escriba intervención',
+          titleErr: 'Nueva intervención',
+          messageErr: 'Escriba una intervención'
         }
       });
     await modalShow.present();
     const { data } = await modalShow.onWillDismiss();
 
     if (data.motivoSend) {
-      this.intervenirTicket(ticketSelected, data.motivo);
+      this.onIntervenirCaso(ticketSelected, data.motivo);
     }
   }
 
@@ -70,23 +72,23 @@ export class DetalleTicketComponent implements OnInit {
       {
         component: EstatusMotivoTicketComponent,
         componentProps: {
-          icon:'chatbox-outline',
+          icon: 'chatbox-outline',
           titleWindow: 'Cerrar Caso',
           titleMessage: '¿Está seguro que desea Cerrar el Q&SE?',
-          txtMessage:'Escriba aquí el motivo',
-          titleErr:'¿Motivo?',
-          messageErr:'Por favor escriba el motivo'
+          txtMessage: 'Escriba aquí el motivo',
+          titleErr: '¿Motivo?',
+          messageErr: 'Por favor escriba el motivo'
         }
       });
     await modalShow.present();
     const { data } = await modalShow.onWillDismiss();
 
     if (data.motivoSend) {
-      this.cancelarTicket(ticketSelected, data.motivo);
+      this.onCerrarCaso(ticketSelected, data.motivo);
     }
   }
 
-  async cancelarTicket(ticketSelected: TicketResponse, elMotivo: string) {
+  async onCerrarCaso(ticketSelected: TicketResponse, elMotivo: string) {
     const elNuevoStatusTicket: TicketStatusRequest = {
       ticketId: ticketSelected.ticketId,
       estatusId: environment.estatusAtendido,
@@ -94,18 +96,47 @@ export class DetalleTicketComponent implements OnInit {
       activo: true
     };
 
-    this.ticketService.cerrar(elNuevoStatusTicket).subscribe((exito)=>{
+    this.ticketService.cerrar(elNuevoStatusTicket).subscribe((exito: TicketApiResponse) => {
 
-      if(exito.result === 'OK'){
+      if (exito.result === 'OK') {
+        // actualizar ticket
+        this.elTicket = exito.dtoResult;
 
+        Swal.fire({
+          icon: 'success',
+          title: 'Cerrar Caso',
+          text: 'El caso fue cerrado exitosamente',
+          heightAuto: false
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // algo
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Cerrar Caso',
+          text: exito.error,
+          heightAuto: false
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // algo
+          }
+        });
       }
 
-    }, (err)=>{
+    }, (err) => {
       console.log(err);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Ocurrió un error de comunicación, reinténtelo nuevamente.',
+        heightAuto: false
+      });
     });
   }
 
-  async intervenirTicket(ticketSelected: TicketResponse, elMotivo: string) {
+  async onIntervenirCaso(ticketSelected: TicketResponse, elMotivo: string) {
 
     const elNuevoStatusTicket: TicketStatusRequest = {
       ticketId: ticketSelected.ticketId,
@@ -114,14 +145,41 @@ export class DetalleTicketComponent implements OnInit {
       activo: true
     };
 
-    this.ticketService.intervenir(elNuevoStatusTicket).subscribe((exito)=>{
+    this.ticketService.intervenir(elNuevoStatusTicket).subscribe((exito: TicketApiResponse) => {
 
-      if(exito.result === 'OK'){
-
+      if (exito.result === 'OK') {
+        this.elTicket = exito.dtoResult;
+        Swal.fire({
+          icon: 'success',
+          title: 'Intervenir Caso',
+          text: 'El caso fue intervinido exitosamente',
+          heightAuto: false
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // algo
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Intervenir Caso',
+          text: exito.error,
+          heightAuto: false
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // algo
+          }
+        });
       }
 
-    }, (err)=>{
+    }, (err) => {
       console.log(err);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Ocurrió un error de comunicación, reinténtelo nuevamente.',
+        heightAuto: false
+      });
     });
 
   }
