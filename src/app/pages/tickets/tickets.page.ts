@@ -1,6 +1,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { format, parseISO } from 'date-fns';
+import Swal from 'sweetalert2';
 
 // controllers
 import { AlertController, ModalController, PopoverController } from '@ionic/angular';
@@ -11,6 +12,7 @@ import { environment } from 'src/environments/environment';
 // components
 import { DetalleTicketComponent } from 'src/app/components/ticket/detalle-ticket/detalle-ticket.component';
 import { MenuTicketComponent } from 'src/app/components/ticket/menu-ticket/menu-ticket.component';
+import { EstatusMotivoTicketComponent } from 'src/app/components/ticket/estatus-motivo-ticket/estatus-motivo-ticket.component';
 
 // services
 import { CatalogoService } from 'src/app/services/catalogo.service';
@@ -20,7 +22,8 @@ import { TicketService } from 'src/app/services/ticket.service';
 // models
 import { EstatusApiResponse, EstatusResponse } from '../../models/response/estatus.model';
 import { TipoApiResponse, TipoResponse } from '../../models/response/tipo.model';
-import { TicketResponse, TicketsApiResponse } from 'src/app/models/response/ticket.model';
+import { TicketApiResponse, TicketResponse, TicketsApiResponse } from 'src/app/models/response/ticket.model';
+import { TicketStatusRequest } from 'src/app/models/request/ticket.model';
 
 
 @Component({
@@ -38,6 +41,7 @@ export class TicketsPage implements OnInit {
   elEstatusIdSeleccionado = '';
   elTipoIdSeleccionado = '';
   losFiltrosOk = '';
+  elRolUser = '';
   filtrosFinales: string[] = [];
   elFiltroEstablecido = '';
   losFiltros = {};
@@ -51,28 +55,22 @@ export class TicketsPage implements OnInit {
   activePage = 0;
 
   constructor(private catalogoService: CatalogoService,
-              private ticketService: TicketService,
-              private helperService: HelperService,
-              private popVerCtrl: PopoverController,
-              private modalCtrl: ModalController,
-              private alertCtrl: AlertController
-              ) { }
+    private ticketService: TicketService,
+    private helperService: HelperService,
+    private popVerCtrl: PopoverController,
+    private modalCtrl: ModalController,
+    private alertCtrl: AlertController,
+    private modalCrtl: ModalController
+  ) { }
 
   ngOnInit() {
 
     this.lacadenaSelectedId = localStorage.getItem('cadenaSelectedId');
+    this.elRolUser = localStorage.getItem('rolName');
 
     this.getTickets();
     this.obtenerEstatus();
     this.obtenerTipo();
-
-    //   for (const item of this.listadoTickets) {
-    //     if (item.ticketTipos) {
-    //         return;
-    //     }
-
-    //     console.log('Tiposs', item.ticketTipos);
-    // }
   }
 
 
@@ -104,6 +102,9 @@ export class TicketsPage implements OnInit {
   }
 
   async mostrarMenu(evento, ticketSelected: TicketResponse) {
+
+    console.log('ticket seleccionado', ticketSelected);
+
     const popover = await this.popVerCtrl.create({
       component: MenuTicketComponent,
       componentProps: {
@@ -121,22 +122,22 @@ export class TicketsPage implements OnInit {
 
     if (data !== undefined) {
       switch (data) {
-        case 'intervenido-ticket':
-          // this.atenderSolicitud(ordenSelected);
-          break;
-        case 'cerradocorporativo-ticket':
-          // this.autorizarSolicitud(ordenSelected);
-          break;
-        case 'cerradotienda-ticket':
-          // this.mostrarModalRechazarSolicitud(ordenSelected);
-          break;
-        case 'atendido-ticket':
-          // this.mostrarModalCancelarSolicitud(ordenSelected);
-          break;
-        case 'close-menu':
-          break;
         case 'detalle-ticket':
           this.verDetalleTicket(ticketSelected);
+          break;
+        case 'atender-ticket':
+          this.atenderCasoModal(ticketSelected);
+          break;
+        case 'intervenir-ticket':
+          this.intervenirModal(ticketSelected);
+          break;
+        case 'reabrir-ticket':
+
+          break;
+        case 'cerrar-caso':
+          this.cerrarCasoModal(ticketSelected);
+          break;
+        case 'close-menu':
           break;
         default:
           break;
@@ -149,38 +150,33 @@ export class TicketsPage implements OnInit {
     this.modalCtrl.dismiss({});
 
     if (this.dateFechaIni === '') {
-      const alertMsj = await this.alertCtrl.create({
-        cssClass: 'alertDanger',
-        message: this.helperService.getMessageAlert(`Primero seleccione una fecha de inicio`, 'danger'),
-        buttons: [
-          {
-            text: 'Aceptar',
-            cssClass: 'alertButton',
-            id: 'confirm-button',
-            handler: () => {
-            }
-          }]
+      Swal.fire({
+        icon: 'warning',
+        title: 'Fecha inicio',
+        text: 'Primero seleccione una fecha de inicio',
+        heightAuto: false
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // algo
+        }
       });
 
-      await alertMsj.present();
       return;
     }
 
     if (this.dateFechaIni > this.dateFechaFin) {
-      const alertMsj = await this.alertCtrl.create({
-        cssClass: 'alertDanger',
-        message: this.helperService.getMessageAlert(`La fecha de inicio no puede ser mayor a la fecha fin`, 'danger'),
-        buttons: [
-          {
-            text: 'Aceptar',
-            cssClass: 'alertButton',
-            id: 'confirm-button',
-            handler: () => {
-            }
-          }]
+      Swal.fire({
+        icon: 'warning',
+        title: 'Fecha inicio',
+        text: 'La fecha de inicio no puede ser mayor a la fecha fin',
+        heightAuto: false
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // algo
+        }
       });
 
-      await alertMsj.present();
+
       return;
     }
 
@@ -195,19 +191,248 @@ export class TicketsPage implements OnInit {
         componentProps: {
           elTicket: ticketSelected
         },
-        backdropDismiss:false
+        backdropDismiss: false
       }
     );
     await modalShowTicket.present();
+
+    // TODO: se tiene que propagar el cambio del estatus en el listado cuando se cierre la modal
+    const { data } = await modalShowTicket.onWillDismiss();
+
+  }
+
+  async intervenirModal(ticketSelected: TicketResponse) {
+    const modalShow = await this.modalCrtl.create(
+      {
+        component: EstatusMotivoTicketComponent,
+        componentProps: {
+          icon: 'help-circle-outline',
+          titleWindow: 'Intervenir Caso',
+          titleMessage: 'Nueva intervención sobre el caso:',
+          txtMessage: 'Escriba aquí su intervención:',
+          titleErr: 'Nueva intervención',
+          messageErr: 'Escriba una intervención'
+        }
+      });
+    await modalShow.present();
+    const { data } = await modalShow.onWillDismiss();
+
+    if (data.motivoSend) {
+      this.onIntervenirCaso(ticketSelected, data.motivo);
+    }
+  }
+
+  async cerrarCasoModal(ticketSelected: TicketResponse) {
+    const modalShow = await this.modalCrtl.create(
+      {
+        component: EstatusMotivoTicketComponent,
+        componentProps: {
+          icon: 'chatbox-outline',
+          titleWindow: 'Cerrar Caso',
+          titleMessage: '¿Está seguro que desea Cerrar el Q&SE?',
+          txtMessage: 'Escriba aquí el motivo',
+          titleErr: '¿Motivo?',
+          messageErr: 'Por favor escriba el motivo'
+        }
+      });
+    await modalShow.present();
+    const { data } = await modalShow.onWillDismiss();
+
+    if (data.motivoSend) {
+      this.onCerrarCaso(ticketSelected, data.motivo);
+    }
+  }
+
+  async atenderCasoModal(ticketSelected: TicketResponse) {
+    const modalShow = await this.modalCrtl.create(
+      {
+        component: EstatusMotivoTicketComponent,
+        componentProps: {
+          icon: 'help-circle-outline',
+          titleWindow: 'Atender Caso',
+          titleMessage: 'Nueva observación sobre el caso:',
+          txtMessage: 'Escriba aquí su observación:',
+          titleErr: 'Nueva observación',
+          messageErr: 'Escriba una observación'
+        }
+      });
+    await modalShow.present();
+    const { data } = await modalShow.onWillDismiss();
+
+    if (data.motivoSend) {
+      this.onAtenderCaso(ticketSelected, data.motivo);
+    }
+  }
+
+  async onCerrarCaso(ticketSelected: TicketResponse, elMotivo: string) {
+    const elNuevoStatusTicket: TicketStatusRequest = {
+      ticketId: ticketSelected.ticketId,
+      estatusId: environment.estatusAtendido,
+      observaciones: elMotivo,
+      activo: true
+    };
+
+    this.helperService.showLoading('Cerrando caso...','bubbles');
+    this.ticketService.cerrar(elNuevoStatusTicket).subscribe((exito: TicketApiResponse) => {
+
+      if (exito.result === 'OK') {
+        // actualizar estatatus en el listado
+        const ordenIndex = this.listadoTickets.findIndex(e => e.ticketId === exito.dtoResult.ticketId);
+        this.listadoTickets[ordenIndex] = exito.dtoResult;
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Cerrar Caso',
+          text: 'El caso fue cerrado exitosamente',
+          heightAuto: false
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // algo
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Cerrar Caso',
+          text: exito.error,
+          heightAuto: false
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // algo
+          }
+        });
+      }
+
+      this.helperService.hideLoading();
+    }, (err) => {
+      this.helperService.hideLoading();
+      console.log(err);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Ocurrió un error de comunicación, reinténtelo nuevamente.',
+        heightAuto: false
+      });
+    });
+  }
+
+  async onIntervenirCaso(ticketSelected: TicketResponse, elMotivo: string) {
+
+    const elNuevoStatusTicket: TicketStatusRequest = {
+      ticketId: ticketSelected.ticketId,
+      estatusId: environment.estatusAtendido,
+      observaciones: elMotivo,
+      activo: true
+    };
+
+    this.helperService.showLoading('Interviniendo...','bubbles');
+    this.ticketService.intervenir(elNuevoStatusTicket).subscribe((exito) => {
+
+      if (exito.result === 'OK') {
+        // actualizar estatatus en el listado
+        const ordenIndex = this.listadoTickets.findIndex(e => e.ticketId === exito.dtoResult.ticketId);
+        this.listadoTickets[ordenIndex] = exito.dtoResult;
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Intervenir Caso',
+          text: 'El caso fue intervinido exitosamente',
+          heightAuto: false
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // algo
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Intervenir Caso',
+          text: exito.error,
+          heightAuto: false
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // algo
+          }
+        });
+      }
+
+      this.helperService.hideLoading();
+
+    }, (err) => {
+      console.log(err);
+      this.helperService.hideLoading();
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Ocurrió un error de comunicación, reinténtelo nuevamente.',
+        heightAuto: false
+      });
+    });
+
+  }
+
+  async onAtenderCaso(ticketSelected: TicketResponse, elMotivo: string) {
+
+    const elNuevoStatusTicket: TicketStatusRequest = {
+      ticketId: ticketSelected.ticketId,
+      estatusId: environment.estatusAtendido,
+      observaciones: elMotivo,
+      activo: true
+    };
+
+    this.helperService.showLoading('Atendiendo...','bubbles');
+    this.ticketService.intervenir(elNuevoStatusTicket).subscribe((exito) => {
+
+      if (exito.result === 'OK') {
+        // actualizar estatatus en el listado
+        const ordenIndex = this.listadoTickets.findIndex(e => e.ticketId === exito.dtoResult.ticketId);
+        this.listadoTickets[ordenIndex] = exito.dtoResult;
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Atender Caso',
+          text: 'El caso fue atendido exitosamente',
+          heightAuto: false
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // algo
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Atender Caso',
+          text: exito.error,
+          heightAuto: false
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // algo
+          }
+        });
+      }
+
+      this.helperService.hideLoading();
+
+    }, (err) => {
+      this.helperService.hideLoading();
+      console.log(err);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Ocurrió un error de comunicación, reinténtelo nuevamente.',
+        heightAuto: false
+      });
+    });
+
   }
 
   getTicketsFiltro(cadenaId: string, filtros: string, numberPage: number, pageSize: number) {
-    //this.spinnerService.setTitulo = 'Espere un momento, estamos cargando las tickets';
+
+    this.helperService.showLoading('Espere un momento, estamos cargando las tickets','bubbles');
     this.cargando = true;
     this.ticketService.obtenerTicketsFiltro(cadenaId, filtros, numberPage, pageSize)
       .subscribe((exito: TicketsApiResponse) => {
         this.cargando = false;
-        //this.spinnerService.setTitulo = '';
 
         if (exito.result === 'OK') {
 
@@ -219,9 +444,11 @@ export class TicketsPage implements OnInit {
           this.totalRegistros = exito.totalRegistros;
           this.noPaginas = exito.totalPaginas;
         }
+
+        this.helperService.hideLoading();
       },
         (err) => {
-          //this.spinnerService.setTitulo = '';
+          this.helperService.hideLoading();
           this.cargando = false;
           console.log(err);
         });
@@ -281,7 +508,7 @@ export class TicketsPage implements OnInit {
     this.ejecutarFiltros(environment.tamPagina, 1);
   }
 
-  onChangeTipo(tipoId: number){
+  onChangeTipo(tipoId: number) {
     this.elTipoIdSeleccionado = tipoId.toString();
     // ejecutar filtros
     this.ejecutarFiltros(environment.tamPagina, 1);
