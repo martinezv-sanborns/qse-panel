@@ -11,6 +11,7 @@ import { environment } from 'src/environments/environment';
 // components
 import { DetalleTicketComponent } from 'src/app/components/ticket/detalle-ticket/detalle-ticket.component';
 import { MenuTicketComponent } from 'src/app/components/ticket/menu-ticket/menu-ticket.component';
+import { EstatusMotivoTicketComponent } from 'src/app/components/ticket/estatus-motivo-ticket/estatus-motivo-ticket.component';
 
 // services
 import { CatalogoService } from 'src/app/services/catalogo.service';
@@ -21,6 +22,8 @@ import { TicketService } from 'src/app/services/ticket.service';
 import { EstatusApiResponse, EstatusResponse } from '../../models/response/estatus.model';
 import { TipoApiResponse, TipoResponse } from '../../models/response/tipo.model';
 import { TicketResponse, TicketsApiResponse } from 'src/app/models/response/ticket.model';
+import { TicketStatusRequest } from 'src/app/models/request/ticket.model';
+
 
 
 @Component({
@@ -55,7 +58,8 @@ export class TicketsPage implements OnInit {
               private helperService: HelperService,
               private popVerCtrl: PopoverController,
               private modalCtrl: ModalController,
-              private alertCtrl: AlertController
+              private alertCtrl: AlertController,
+              private modalCrtl: ModalController
               ) { }
 
   ngOnInit() {
@@ -65,14 +69,6 @@ export class TicketsPage implements OnInit {
     this.getTickets();
     this.obtenerEstatus();
     this.obtenerTipo();
-
-    //   for (const item of this.listadoTickets) {
-    //     if (item.ticketTipos) {
-    //         return;
-    //     }
-
-    //     console.log('Tiposs', item.ticketTipos);
-    // }
   }
 
 
@@ -104,6 +100,9 @@ export class TicketsPage implements OnInit {
   }
 
   async mostrarMenu(evento, ticketSelected: TicketResponse) {
+
+    console.log('ticket seleccionado', ticketSelected);
+
     const popover = await this.popVerCtrl.create({
       component: MenuTicketComponent,
       componentProps: {
@@ -121,22 +120,22 @@ export class TicketsPage implements OnInit {
 
     if (data !== undefined) {
       switch (data) {
-        case 'intervenido-ticket':
-          // this.atenderSolicitud(ordenSelected);
-          break;
-        case 'cerradocorporativo-ticket':
-          // this.autorizarSolicitud(ordenSelected);
-          break;
-        case 'cerradotienda-ticket':
-          // this.mostrarModalRechazarSolicitud(ordenSelected);
-          break;
-        case 'atendido-ticket':
-          // this.mostrarModalCancelarSolicitud(ordenSelected);
-          break;
-        case 'close-menu':
-          break;
         case 'detalle-ticket':
           this.verDetalleTicket(ticketSelected);
+          break;
+        case 'atender-ticket':
+          this.atenderCasoModal(ticketSelected);
+          break;
+        case 'intervenir-ticket':
+          this.intervenirModal(ticketSelected);
+          break;
+        case 'reabrir-ticket':
+          // this.mostrarModalRechazarSolicitud(ordenSelected);
+          break;
+        case 'cerrar-caso':
+           this.cerrarCasoModal(ticketSelected);
+          break;
+        case 'close-menu':
           break;
         default:
           break;
@@ -199,6 +198,109 @@ export class TicketsPage implements OnInit {
       }
     );
     await modalShowTicket.present();
+  }
+
+  async intervenirModal(ticketSelected: TicketResponse) {
+    const modalShow = await this.modalCrtl.create(
+      {
+        component: EstatusMotivoTicketComponent,
+        componentProps: {
+          icon:'help-circle-outline',
+          titleWindow: 'Intervenir Caso',
+          titleMessage: 'Nueva observación sobre el caso:',
+          txtMessage:'Escriba aquí su observación:',
+          titleErr: 'Nueva observación',
+          messageErr:'Escriba una observación'
+        }
+      });
+    await modalShow.present();
+    const { data } = await modalShow.onWillDismiss();
+
+    if (data.motivoSend) {
+      this.onIntervenirTicket(ticketSelected, data.motivo);
+    }
+  }
+
+  async cerrarCasoModal(ticketSelected: TicketResponse) {
+    const modalShow = await this.modalCrtl.create(
+      {
+        component: EstatusMotivoTicketComponent,
+        componentProps: {
+          icon:'chatbox-outline',
+          titleWindow: 'Cerrar Caso',
+          titleMessage: '¿Está seguro que desea Cerrar el Q&SE?',
+          txtMessage:'Escriba aquí el motivo',
+          titleErr:'¿Motivo?',
+          messageErr:'Por favor escriba el motivo'
+        }
+      });
+    await modalShow.present();
+    const { data } = await modalShow.onWillDismiss();
+
+    if (data.motivoSend) {
+      this.onCerrarTicket(ticketSelected, data.motivo);
+    }
+  }
+
+  async atenderCasoModal(ticketSelected: TicketResponse) {
+    const modalShow = await this.modalCrtl.create(
+      {
+        component: EstatusMotivoTicketComponent,
+        componentProps: {
+          icon:'help-circle-outline',
+          titleWindow: 'Atender Caso',
+          titleMessage: 'Nueva observación sobre el caso:',
+          txtMessage:'Escriba aquí su observación:',
+          titleErr: 'Nueva observación',
+          messageErr:'Escriba una observación'
+        }
+      });
+    await modalShow.present();
+    const { data } = await modalShow.onWillDismiss();
+
+    if (data.motivoSend) {
+      this.onIntervenirTicket(ticketSelected, data.motivo);
+    }
+  }
+
+  async onCerrarTicket(ticketSelected: TicketResponse, elMotivo: string) {
+    const elNuevoStatusTicket: TicketStatusRequest = {
+      ticketId: ticketSelected.ticketId,
+      estatusId: environment.estatusAtendido,
+      observaciones: elMotivo,
+      activo: true
+    };
+
+    this.ticketService.cerrar(elNuevoStatusTicket).subscribe((exito)=>{
+
+      if(exito.result === 'OK'){
+
+      }
+
+    }, (err)=>{
+      console.log(err);
+    });
+  }
+
+  async onIntervenirTicket(ticketSelected: TicketResponse, elMotivo: string) {
+
+    const elNuevoStatusTicket: TicketStatusRequest = {
+      ticketId: ticketSelected.ticketId,
+      estatusId: environment.estatusAtendido,
+      observaciones: elMotivo,
+      activo: true
+    };
+
+    this.ticketService.intervenir(elNuevoStatusTicket).subscribe((exito)=>{
+
+      if(exito.result === 'OK'){
+
+      }
+
+    }, (err)=>{
+      console.log(err);
+    });
+
   }
 
   getTicketsFiltro(cadenaId: string, filtros: string, numberPage: number, pageSize: number) {

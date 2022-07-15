@@ -94,12 +94,14 @@
     <ion-col size="6">
       <ion-button *ngIf="tabActivo === 'seguimiento'" color="success" (click)="intervenir(elTicket)" shape="round"
         expand="full">
+        <ion-icon slot="start" name="hand-right-outline"></ion-icon>
         Intervenir
       </ion-button>
     </ion-col>
     <ion-col size="6">
       <ion-button *ngIf="tabActivo === 'seguimiento'" color="primary" (click)="cerrarCaso(elTicket)" shape="round"
         expand="full">
+        <ion-icon slot="start" name="close-outline"></ion-icon>
         Cerrar Caso
       </ion-button>
     </ion-col>

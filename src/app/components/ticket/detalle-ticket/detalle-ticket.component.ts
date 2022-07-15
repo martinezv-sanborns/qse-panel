@@ -87,8 +87,22 @@ export class DetalleTicketComponent implements OnInit {
   }
 
   async cancelarTicket(ticketSelected: TicketResponse, elMotivo: string) {
-    console.log('ticketSelected', ticketSelected);
-    console.log('motivo', elMotivo);
+    const elNuevoStatusTicket: TicketStatusRequest = {
+      ticketId: ticketSelected.ticketId,
+      estatusId: environment.estatusAtendido,
+      observaciones: elMotivo,
+      activo: true
+    };
+
+    this.ticketService.cerrar(elNuevoStatusTicket).subscribe((exito)=>{
+
+      if(exito.result === 'OK'){
+
+      }
+
+    }, (err)=>{
+      console.log(err);
+    });
   }
 
   async intervenirTicket(ticketSelected: TicketResponse, elMotivo: string) {
