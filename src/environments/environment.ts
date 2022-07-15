@@ -14,6 +14,9 @@ export const environment = {
   estatusReabierto: '21B21911-3603-4E36-B26E-37093FB27B85',
   minimumCharactersPassword: 8,
   recaptcha:'6Ld3k5ogAAAAAMWEpHVpjWX_RaHliBXb2_0PuNFm',
+  admin : 'ADMIN',
+  corp: 'CORP',
+  tda: 'TDA'
 };
 
 /*

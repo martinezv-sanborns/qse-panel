@@ -13,6 +13,7 @@ import { environment } from 'src/environments/environment';
 export class MenuTicketComponent implements OnInit {
 
   @Input() elEstatus: EstatusResponse;
+  @Input() elRolUsuario: string;
 
   itemsMenu: ItemMenu[] = [
     {
@@ -27,7 +28,8 @@ export class MenuTicketComponent implements OnInit {
 
   ngOnInit() {
 
-    if (this.elEstatus.estatusId.toUpperCase() === environment.estatusIniciado) {
+    if (this.elEstatus.estatusId.toUpperCase() === environment.estatusIniciado
+      || this.elEstatus.estatusId.toUpperCase() === environment.estatusReabierto) {
       this.itemsMenu.push({
         id: 'atender-ticket',
         valor: 'Atender',
@@ -42,7 +44,11 @@ export class MenuTicketComponent implements OnInit {
         valor: 'Intervenir',
         icono: 'hand-right-outline'
       });
+    }
 
+    if (this.elEstatus.estatusId.toUpperCase() === environment.estatusAtendido &&
+      (this.elRolUsuario.toUpperCase() === environment.admin || this.elRolUsuario.toUpperCase() === environment.corp
+        || this.elRolUsuario.toUpperCase() === environment.tda)) {
       this.itemsMenu.push({
         id: 'cerrar-caso',
         valor: 'Cerrar caso',
@@ -50,17 +56,9 @@ export class MenuTicketComponent implements OnInit {
       });
     }
 
-    if (this.elEstatus.estatusId.toUpperCase() === environment.estatusReabierto) {
-
-      this.itemsMenu.push({
-        id: 'atender-ticket',
-        valor: 'Atender',
-        icono: 'time-outline'
-      });
-    }
-
     if ((this.elEstatus.estatusId.toUpperCase() === environment.estatusCerradoTienda
-    || this.elEstatus.estatusId.toUpperCase() === environment.estatusCerradoCorpo)) {
+      || this.elEstatus.estatusId.toUpperCase() === environment.estatusCerradoCorpo) &&
+      (this.elRolUsuario.toUpperCase() === environment.corp || this.elRolUsuario.toUpperCase() === environment.admin)) {
       this.itemsMenu.push({
         id: 'reabrir-ticket',
         valor: 'Reabrir',

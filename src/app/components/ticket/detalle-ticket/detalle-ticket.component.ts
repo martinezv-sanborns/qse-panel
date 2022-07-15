@@ -31,8 +31,9 @@ export class DetalleTicketComponent implements OnInit {
   tabActivo = 'relato';
   losticketLogs: TicketLogResponse[] = [];
   descripcion: string;
-  statusCerradoTienda = '';
-  statusCerradoCorpo = '';
+  sizeBotonIn: number;
+  permisoCerrado: boolean;
+  permisoAbierto: boolean;
 
   constructor(private modalCrtl: ModalController,
     private ticketService: TicketService,
@@ -40,8 +41,9 @@ export class DetalleTicketComponent implements OnInit {
 
   ngOnInit() {
     this.losticketLogs = this.elTicket.ticketLogs.filter(t => t.estatus.estatusId !== environment.estatusIniciado);
-    this.statusCerradoCorpo = environment.estatusCerradoCorpo;
-    this.statusCerradoTienda = environment.estatusCerradoTienda;
+    this.sizeBotonIn = 6;
+    this.permisoCerrado = false;
+    this.permisoAbierto = false;
   }
 
   cerrarModal() {
@@ -55,7 +57,7 @@ export class DetalleTicketComponent implements OnInit {
     console.log('Que tab es:', this.tabActivo);
   }
 
-  async reabrirCaso(ticketSelected: TicketResponse) {
+  async reabrirCasoModal(ticketSelected: TicketResponse) {
     const modalShow = await this.modalCrtl.create(
       {
         component: EstatusMotivoTicketComponent,
@@ -76,7 +78,7 @@ export class DetalleTicketComponent implements OnInit {
     }
   }
 
-  async intervenirCaso(ticketSelected: TicketResponse) {
+  async intervenirCasoModal(ticketSelected: TicketResponse) {
     const modalShow = await this.modalCrtl.create(
       {
         component: EstatusMotivoTicketComponent,
@@ -97,7 +99,8 @@ export class DetalleTicketComponent implements OnInit {
     }
   }
 
-  async cerrarCaso(ticketSelected: TicketResponse) {
+  async cerrarCasoModal(ticketSelected: TicketResponse) {
+
     const modalShow = await this.modalCrtl.create(
       {
         component: EstatusMotivoTicketComponent,
@@ -137,7 +140,7 @@ export class DetalleTicketComponent implements OnInit {
         Swal.fire({
           icon: 'success',
           title: 'Cerrar Caso',
-          text: 'El caso fue cerrado exitosamente',
+          text: `${ exito.message }`,
           heightAuto: false
         }).then((result) => {
           if (result.isConfirmed) {
@@ -188,7 +191,7 @@ export class DetalleTicketComponent implements OnInit {
         Swal.fire({
           icon: 'success',
           title: 'Intervenir Caso',
-          text: 'El caso fue intervinido exitosamente',
+          text: `${ exito.message}`,
           heightAuto: false
         }).then((result) => {
           if (result.isConfirmed) {
@@ -224,7 +227,6 @@ export class DetalleTicketComponent implements OnInit {
 
   }
 
-
   async onReabrirCaso(ticketSelected: TicketResponse, elMotivo: string) {
     const elNuevoStatusTicket: TicketStatusRequest = {
       ticketId: ticketSelected.ticketId,
@@ -241,7 +243,7 @@ export class DetalleTicketComponent implements OnInit {
         Swal.fire({
           icon: 'success',
           title: 'Reabrir Caso',
-          text: 'El caso fue abierto exitosamente',
+          text: `${ exito.message}`,
           heightAuto: false
         }).then((result) => {
           if (result.isConfirmed) {
@@ -274,5 +276,33 @@ export class DetalleTicketComponent implements OnInit {
         heightAuto: false
       });
     });
+  }
+
+  onTienePermisoReabrir(elTicket: TicketResponse): boolean {
+    const resultado = (elTicket.estatus.estatusId.toUpperCase() === environment.estatusCerradoCorpo
+      || elTicket.estatus.estatusId.toUpperCase() === environment.estatusCerradoTienda)
+      && (this.elRolUsuario === environment.corp || this.elRolUsuario === environment.admin);
+
+    if (resultado) {
+      this.permisoAbierto = true;
+    }
+    else {
+      this.sizeBotonIn = 12;
+    }
+    return resultado;
+  }
+
+  onTienePermisoCerrado(elTicket: TicketResponse): boolean {
+
+    const resultado = (elTicket.estatus.estatusId.toUpperCase() === environment.estatusAtendido
+      || elTicket.estatus.estatusId.toUpperCase() === environment.estatusReabierto)
+      && (this.elRolUsuario === environment.corp || this.elRolUsuario === environment.admin || this.elRolUsuario === environment.tda);
+
+    if (resultado) {
+      this.permisoCerrado = true;
+    } else {
+      this.sizeBotonIn = 12;
+    }
+    return resultado;
   }
 }

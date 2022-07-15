@@ -4,7 +4,7 @@ import { format, parseISO } from 'date-fns';
 import Swal from 'sweetalert2';
 
 // controllers
-import { AlertController, ModalController, PopoverController } from '@ionic/angular';
+import { ModalController, PopoverController } from '@ionic/angular';
 
 // globals
 import { environment } from 'src/environments/environment';
@@ -59,7 +59,6 @@ export class TicketsPage implements OnInit {
     private helperService: HelperService,
     private popVerCtrl: PopoverController,
     private modalCtrl: ModalController,
-    private alertCtrl: AlertController,
     private modalCrtl: ModalController
   ) { }
 
@@ -71,8 +70,6 @@ export class TicketsPage implements OnInit {
     this.getTickets();
     this.obtenerEstatus();
     this.obtenerTipo();
-
-
   }
 
 
@@ -110,7 +107,8 @@ export class TicketsPage implements OnInit {
     const popover = await this.popVerCtrl.create({
       component: MenuTicketComponent,
       componentProps: {
-        elEstatus: ticketSelected.estatus
+        elEstatus: ticketSelected.estatus,
+        elRolUsuario: this.elRolUser
       },
       event: evento,
       cssClass: 'my-custom-class',
@@ -134,7 +132,7 @@ export class TicketsPage implements OnInit {
           this.intervenirModal(ticketSelected);
           break;
         case 'reabrir-ticket':
-
+          this.reabrirCasoModal(ticketSelected);
           break;
         case 'cerrar-caso':
           this.cerrarCasoModal(ticketSelected);
@@ -267,6 +265,27 @@ export class TicketsPage implements OnInit {
     }
   }
 
+  async reabrirCasoModal(ticketSelected: TicketResponse) {
+    const modalShow = await this.modalCrtl.create(
+      {
+        component: EstatusMotivoTicketComponent,
+        componentProps: {
+          icon: 'help-circle-outline',
+          titleWindow: 'Reabrir Caso',
+          titleMessage: 'Reabrir caso',
+          txtMessage: 'Escriba aquí ¿Por qué reabrió el caso?',
+          titleErr: 'Reabrir caso',
+          messageErr: 'Por favor escriba un motivo.'
+        }
+      });
+    await modalShow.present();
+    const { data } = await modalShow.onWillDismiss();
+
+    if (data.motivoSend) {
+      this.onReabrirCaso(ticketSelected, data.motivo);
+    }
+  }
+
   async onCerrarCaso(ticketSelected: TicketResponse, elMotivo: string) {
     const elNuevoStatusTicket: TicketStatusRequest = {
       ticketId: ticketSelected.ticketId,
@@ -286,7 +305,7 @@ export class TicketsPage implements OnInit {
         Swal.fire({
           icon: 'success',
           title: 'Cerrar Caso',
-          text: 'El caso fue cerrado exitosamente',
+          text: `${ exito.message}`,
           heightAuto: false
         }).then((result) => {
           if (result.isConfirmed) {
@@ -339,7 +358,7 @@ export class TicketsPage implements OnInit {
         Swal.fire({
           icon: 'success',
           title: 'Intervenir Caso',
-          text: 'El caso fue intervinido exitosamente',
+          text: `${ exito.message}`,
           heightAuto: false
         }).then((result) => {
           if (result.isConfirmed) {
@@ -394,7 +413,7 @@ export class TicketsPage implements OnInit {
         Swal.fire({
           icon: 'success',
           title: 'Atender Caso',
-          text: 'El caso fue atendido exitosamente',
+          text: `${ exito.message}`,
           heightAuto: false
         }).then((result) => {
           if (result.isConfirmed) {
@@ -427,6 +446,60 @@ export class TicketsPage implements OnInit {
       });
     });
 
+  }
+
+  async onReabrirCaso(ticketSelected: TicketResponse, elMotivo: string) {
+    const elNuevoStatusTicket: TicketStatusRequest = {
+      ticketId: ticketSelected.ticketId,
+      estatusId: environment.estatusReabierto,
+      observaciones: elMotivo,
+      activo: true
+    };
+
+    this.helperService.showLoading('Reabriendo caso...', 'bubbles');
+    this.ticketService.reabrir(elNuevoStatusTicket).subscribe((exito: TicketApiResponse) => {
+
+      if (exito.result === 'OK') {
+        // actualizar estatatus en el listado
+        const ordenIndex = this.listadoTickets.findIndex(e => e.ticketId === exito.dtoResult.ticketId);
+        this.listadoTickets[ordenIndex] = exito.dtoResult;
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Reabrir Caso',
+          text: `${ exito.message}`,
+          heightAuto: false
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // algo
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Reabrir Caso',
+          text: exito.error,
+          heightAuto: false
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // algo
+          }
+        });
+      }
+
+      this.helperService.hideLoading();
+
+    }, (err) => {
+
+      this.helperService.hideLoading();
+      console.log(err);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Ocurrió un error de comunicación, reinténtelo nuevamente.',
+        heightAuto: false
+      });
+    });
   }
 
   getTicketsFiltro(cadenaId: string, filtros: string, numberPage: number, pageSize: number) {
