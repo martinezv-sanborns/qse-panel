@@ -7,4 +7,5 @@ export class EntidadMaestra {
     nombre: string;
     nombreCorto: string;
     iconName: string;
+    
   }
