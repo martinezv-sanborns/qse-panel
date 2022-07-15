@@ -71,6 +71,8 @@ export class TicketsPage implements OnInit {
     this.getTickets();
     this.obtenerEstatus();
     this.obtenerTipo();
+
+
   }
 
 
@@ -189,7 +191,8 @@ export class TicketsPage implements OnInit {
       {
         component: DetalleTicketComponent,
         componentProps: {
-          elTicket: ticketSelected
+          elTicket: ticketSelected,
+          elRolUsuario: this.elRolUser
         },
         backdropDismiss: false
       }

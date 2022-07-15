@@ -91,7 +91,7 @@
 <ion-footer>
   <ion-row>
     <ion-col size="6">
-      <ion-button *ngIf="tabActivo === 'seguimiento'" color="success" (click)="intervenir(elTicket)" shape="round"
+      <ion-button *ngIf="tabActivo === 'seguimiento'" color="success" (click)="intervenirCaso(elTicket)" shape="round"
         expand="full">
         <ion-icon slot="start" name="hand-right-outline"></ion-icon>
         Intervenir
@@ -103,6 +103,11 @@
         <ion-icon slot="start" name="close-outline"></ion-icon>
         Cerrar Caso
       </ion-button>
+      <ion-button *ngIf="tabActivo === 'seguimiento' && (elTicket.estatus.estatusId === statusCerradoTienda || elTicket.estatus.estatusId === statusCerradoCorpo)" color="primary" (click)="reabrirCaso(elTicket)" shape="round"
+      expand="full">
+      <ion-icon slot="start" name="folder-open-outline"></ion-icon>
+        Reabrir Caso
+    </ion-button>
     </ion-col>
   </ion-row>
 
