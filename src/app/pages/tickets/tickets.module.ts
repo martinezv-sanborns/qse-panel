@@ -8,6 +8,7 @@ import { TicketsPageRoutingModule } from './tickets-routing.module';
 
 import { TicketsPage } from './tickets.page';
 import { TicketModule } from '../../components/ticket/ticket.module';
+import { ComunesModule } from '../../components/common/comunes.module';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { TicketModule } from '../../components/ticket/ticket.module';
     FormsModule,
     IonicModule,
     TicketsPageRoutingModule,
-    TicketModule
+    TicketModule,
+    ComunesModule
   ],
   declarations: [TicketsPage]
 })

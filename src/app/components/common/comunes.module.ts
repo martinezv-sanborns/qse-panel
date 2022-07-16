@@ -13,6 +13,8 @@ import { OlvidePasswordComponent } from './olvide-password/olvide-password.compo
 import { ShowPasswordHideComponent } from './show-password-hide/show-password-hide.component';
 import { CadenaSelectorComponent } from './cadena-selector/cadena-selector.component';
 import { MenuPerfilComponent } from './menu-perfil/menu-perfil.component';
+import { NoHayResultadosComponent } from './no-hay-resultados/no-hay-resultados.component';
+import { EstatusColorComponent } from './estatus-color/estatus-color.component';
 
 
 
@@ -22,8 +24,9 @@ import { MenuPerfilComponent } from './menu-perfil/menu-perfil.component';
     OlvidePasswordComponent,
     ShowPasswordHideComponent,
     CadenaSelectorComponent,
-    MenuPerfilComponent
-    
+    MenuPerfilComponent,
+    NoHayResultadosComponent,
+    EstatusColorComponent
   ],
   imports: [
     IonicModule,
@@ -37,7 +40,9 @@ import { MenuPerfilComponent } from './menu-perfil/menu-perfil.component';
     OlvidePasswordComponent,
     ShowPasswordHideComponent,
     CadenaSelectorComponent,
-    MenuPerfilComponent
+    MenuPerfilComponent,
+    NoHayResultadosComponent,
+    EstatusColorComponent
   ],
   providers:[DatePipe]
 })
