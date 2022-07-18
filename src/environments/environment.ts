@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  endPointApi: 'https://localhost:44394/',
+  endPointApi: 'https://localhost:7106/',
   tamPagina: 10,
   estatusAtendido: '5B101D13-91E5-4BED-A092-184745E9740D',
   estatusIniciado: 'E3B8E202-CE53-452F-A263-30C84A8C6240',
