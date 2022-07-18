@@ -50,9 +50,7 @@
           <ion-label><strong>Último estatus:</strong></ion-label>
         </ion-col>
         <ion-col size="4">
-          <ion-chip outline="true" color="secondary">
-            <ion-label color="secondary"> {{ elTicket.estatus.nombre }}</ion-label>
-          </ion-chip>
+          <app-estatus-color [status]="elTicket.estatus.nombre "></app-estatus-color>
         </ion-col>
       </ion-row>
       <ion-row>
