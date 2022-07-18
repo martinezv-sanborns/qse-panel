@@ -14,6 +14,8 @@ import { ShowPasswordHideComponent } from './show-password-hide/show-password-hi
 import { CadenaSelectorComponent } from './cadena-selector/cadena-selector.component';
 import { MenuPerfilComponent } from './menu-perfil/menu-perfil.component';
 import { TopTenComponent } from './top-ten/top-ten.component';
+import { NoHayResultadosComponent } from './no-hay-resultados/no-hay-resultados.component';
+import { EstatusColorComponent } from './estatus-color/estatus-color.component';
 
 
 
@@ -24,8 +26,9 @@ import { TopTenComponent } from './top-ten/top-ten.component';
     ShowPasswordHideComponent,
     CadenaSelectorComponent,
     MenuPerfilComponent,
-    TopTenComponent
-    
+    TopTenComponent,
+    NoHayResultadosComponent,
+    EstatusColorComponent
   ],
   imports: [
     IonicModule,
@@ -40,7 +43,9 @@ import { TopTenComponent } from './top-ten/top-ten.component';
     ShowPasswordHideComponent,
     CadenaSelectorComponent,
     MenuPerfilComponent,
-    TopTenComponent
+    TopTenComponent,
+    NoHayResultadosComponent,
+    EstatusColorComponent
   ],
   providers:[DatePipe]
 })

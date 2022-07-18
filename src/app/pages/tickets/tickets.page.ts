@@ -1,9 +1,10 @@
 
 import { Component, OnInit } from '@angular/core';
 import { format, parseISO } from 'date-fns';
+import Swal from 'sweetalert2';
 
 // controllers
-import { AlertController, ModalController, PopoverController } from '@ionic/angular';
+import { ModalController, PopoverController } from '@ionic/angular';
 
 // globals
 import { environment } from 'src/environments/environment';
@@ -21,9 +22,8 @@ import { TicketService } from 'src/app/services/ticket.service';
 // models
 import { EstatusApiResponse, EstatusResponse } from '../../models/response/estatus.model';
 import { TipoApiResponse, TipoResponse } from '../../models/response/tipo.model';
-import { TicketResponse, TicketsApiResponse } from 'src/app/models/response/ticket.model';
+import { TicketApiResponse, TicketResponse, TicketsApiResponse } from 'src/app/models/response/ticket.model';
 import { TicketStatusRequest } from 'src/app/models/request/ticket.model';
-
 
 
 @Component({
@@ -41,6 +41,7 @@ export class TicketsPage implements OnInit {
   elEstatusIdSeleccionado = '';
   elTipoIdSeleccionado = '';
   losFiltrosOk = '';
+  elRolUser = '';
   filtrosFinales: string[] = [];
   elFiltroEstablecido = '';
   losFiltros = {};
@@ -54,17 +55,17 @@ export class TicketsPage implements OnInit {
   activePage = 0;
 
   constructor(private catalogoService: CatalogoService,
-              private ticketService: TicketService,
-              private helperService: HelperService,
-              private popVerCtrl: PopoverController,
-              private modalCtrl: ModalController,
-              private alertCtrl: AlertController,
-              private modalCrtl: ModalController
-              ) { }
+    private ticketService: TicketService,
+    private helperService: HelperService,
+    private popVerCtrl: PopoverController,
+    private modalCtrl: ModalController,
+    private modalCrtl: ModalController
+  ) { }
 
   ngOnInit() {
 
     this.lacadenaSelectedId = localStorage.getItem('cadenaSelectedId');
+    this.elRolUser = localStorage.getItem('rolName');
 
     this.getTickets();
     this.obtenerEstatus();
@@ -106,7 +107,8 @@ export class TicketsPage implements OnInit {
     const popover = await this.popVerCtrl.create({
       component: MenuTicketComponent,
       componentProps: {
-        elEstatus: ticketSelected.estatus
+        elEstatus: ticketSelected.estatus,
+        elRolUsuario: this.elRolUser
       },
       event: evento,
       cssClass: 'my-custom-class',
@@ -130,10 +132,10 @@ export class TicketsPage implements OnInit {
           this.intervenirModal(ticketSelected);
           break;
         case 'reabrir-ticket':
-          // this.mostrarModalRechazarSolicitud(ordenSelected);
+          this.reabrirCasoModal(ticketSelected);
           break;
         case 'cerrar-caso':
-           this.cerrarCasoModal(ticketSelected);
+          this.cerrarCasoModal(ticketSelected);
           break;
         case 'close-menu':
           break;
@@ -148,38 +150,33 @@ export class TicketsPage implements OnInit {
     this.modalCtrl.dismiss({});
 
     if (this.dateFechaIni === '') {
-      const alertMsj = await this.alertCtrl.create({
-        cssClass: 'alertDanger',
-        message: this.helperService.getMessageAlert(`Primero seleccione una fecha de inicio`, 'danger'),
-        buttons: [
-          {
-            text: 'Aceptar',
-            cssClass: 'alertButton',
-            id: 'confirm-button',
-            handler: () => {
-            }
-          }]
+      Swal.fire({
+        icon: 'warning',
+        title: 'Fecha inicio',
+        text: 'Primero seleccione una fecha de inicio',
+        heightAuto: false
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // algo
+        }
       });
 
-      await alertMsj.present();
       return;
     }
 
     if (this.dateFechaIni > this.dateFechaFin) {
-      const alertMsj = await this.alertCtrl.create({
-        cssClass: 'alertDanger',
-        message: this.helperService.getMessageAlert(`La fecha de inicio no puede ser mayor a la fecha fin`, 'danger'),
-        buttons: [
-          {
-            text: 'Aceptar',
-            cssClass: 'alertButton',
-            id: 'confirm-button',
-            handler: () => {
-            }
-          }]
+      Swal.fire({
+        icon: 'warning',
+        title: 'Fecha inicio',
+        text: 'La fecha de inicio no puede ser mayor a la fecha fin',
+        heightAuto: false
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // algo
+        }
       });
 
-      await alertMsj.present();
+
       return;
     }
 
@@ -192,12 +189,17 @@ export class TicketsPage implements OnInit {
       {
         component: DetalleTicketComponent,
         componentProps: {
-          elTicket: ticketSelected
+          elTicket: ticketSelected,
+          elRolUsuario: this.elRolUser
         },
-        backdropDismiss:false
+        backdropDismiss: false
       }
     );
     await modalShowTicket.present();
+
+    // TODO: se tiene que propagar el cambio del estatus en el listado cuando se cierre la modal
+    const { data } = await modalShowTicket.onWillDismiss();
+
   }
 
   async intervenirModal(ticketSelected: TicketResponse) {
@@ -205,19 +207,19 @@ export class TicketsPage implements OnInit {
       {
         component: EstatusMotivoTicketComponent,
         componentProps: {
-          icon:'help-circle-outline',
+          icon: 'help-circle-outline',
           titleWindow: 'Intervenir Caso',
-          titleMessage: 'Nueva observación sobre el caso:',
-          txtMessage:'Escriba aquí su observación:',
-          titleErr: 'Nueva observación',
-          messageErr:'Escriba una observación'
+          titleMessage: 'Nueva intervención sobre el caso:',
+          txtMessage: 'Escriba aquí su intervención:',
+          titleErr: 'Nueva intervención',
+          messageErr: 'Escriba una intervención'
         }
       });
     await modalShow.present();
     const { data } = await modalShow.onWillDismiss();
 
     if (data.motivoSend) {
-      this.onIntervenirTicket(ticketSelected, data.motivo);
+      this.onIntervenirCaso(ticketSelected, data.motivo);
     }
   }
 
@@ -226,19 +228,19 @@ export class TicketsPage implements OnInit {
       {
         component: EstatusMotivoTicketComponent,
         componentProps: {
-          icon:'chatbox-outline',
+          icon: 'chatbox-outline',
           titleWindow: 'Cerrar Caso',
           titleMessage: '¿Está seguro que desea Cerrar el Q&SE?',
-          txtMessage:'Escriba aquí el motivo',
-          titleErr:'¿Motivo?',
-          messageErr:'Por favor escriba el motivo'
+          txtMessage: 'Escriba aquí el motivo',
+          titleErr: '¿Motivo?',
+          messageErr: 'Por favor escriba el motivo'
         }
       });
     await modalShow.present();
     const { data } = await modalShow.onWillDismiss();
 
     if (data.motivoSend) {
-      this.onCerrarTicket(ticketSelected, data.motivo);
+      this.onCerrarCaso(ticketSelected, data.motivo);
     }
   }
 
@@ -247,23 +249,44 @@ export class TicketsPage implements OnInit {
       {
         component: EstatusMotivoTicketComponent,
         componentProps: {
-          icon:'help-circle-outline',
+          icon: 'help-circle-outline',
           titleWindow: 'Atender Caso',
           titleMessage: 'Nueva observación sobre el caso:',
-          txtMessage:'Escriba aquí su observación:',
+          txtMessage: 'Escriba aquí su observación:',
           titleErr: 'Nueva observación',
-          messageErr:'Escriba una observación'
+          messageErr: 'Escriba una observación'
         }
       });
     await modalShow.present();
     const { data } = await modalShow.onWillDismiss();
 
     if (data.motivoSend) {
-      this.onIntervenirTicket(ticketSelected, data.motivo);
+      this.onAtenderCaso(ticketSelected, data.motivo);
     }
   }
 
-  async onCerrarTicket(ticketSelected: TicketResponse, elMotivo: string) {
+  async reabrirCasoModal(ticketSelected: TicketResponse) {
+    const modalShow = await this.modalCrtl.create(
+      {
+        component: EstatusMotivoTicketComponent,
+        componentProps: {
+          icon: 'help-circle-outline',
+          titleWindow: 'Reabrir Caso',
+          titleMessage: 'Reabrir caso',
+          txtMessage: 'Escriba aquí ¿Por qué reabrió el caso?',
+          titleErr: 'Reabrir caso',
+          messageErr: 'Por favor escriba un motivo.'
+        }
+      });
+    await modalShow.present();
+    const { data } = await modalShow.onWillDismiss();
+
+    if (data.motivoSend) {
+      this.onReabrirCaso(ticketSelected, data.motivo);
+    }
+  }
+
+  async onCerrarCaso(ticketSelected: TicketResponse, elMotivo: string) {
     const elNuevoStatusTicket: TicketStatusRequest = {
       ticketId: ticketSelected.ticketId,
       estatusId: environment.estatusAtendido,
@@ -271,18 +294,51 @@ export class TicketsPage implements OnInit {
       activo: true
     };
 
-    this.ticketService.cerrar(elNuevoStatusTicket).subscribe((exito)=>{
+    this.helperService.showLoading('Cerrando caso...','bubbles');
+    this.ticketService.cerrar(elNuevoStatusTicket).subscribe((exito: TicketApiResponse) => {
 
-      if(exito.result === 'OK'){
+      if (exito.result === 'OK') {
+        // actualizar estatatus en el listado
+        const ordenIndex = this.listadoTickets.findIndex(e => e.ticketId === exito.dtoResult.ticketId);
+        this.listadoTickets[ordenIndex] = exito.dtoResult;
 
+        Swal.fire({
+          icon: 'success',
+          title: 'Cerrar Caso',
+          text: `${ exito.message}`,
+          heightAuto: false
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // algo
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Cerrar Caso',
+          text: exito.error,
+          heightAuto: false
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // algo
+          }
+        });
       }
 
-    }, (err)=>{
+      this.helperService.hideLoading();
+    }, (err) => {
+      this.helperService.hideLoading();
       console.log(err);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Ocurrió un error de comunicación, reinténtelo nuevamente.',
+        heightAuto: false
+      });
     });
   }
 
-  async onIntervenirTicket(ticketSelected: TicketResponse, elMotivo: string) {
+  async onIntervenirCaso(ticketSelected: TicketResponse, elMotivo: string) {
 
     const elNuevoStatusTicket: TicketStatusRequest = {
       ticketId: ticketSelected.ticketId,
@@ -291,25 +347,168 @@ export class TicketsPage implements OnInit {
       activo: true
     };
 
-    this.ticketService.intervenir(elNuevoStatusTicket).subscribe((exito)=>{
+    this.helperService.showLoading('Interviniendo...','bubbles');
+    this.ticketService.intervenir(elNuevoStatusTicket).subscribe((exito) => {
 
-      if(exito.result === 'OK'){
+      if (exito.result === 'OK') {
+        // actualizar estatatus en el listado
+        const ordenIndex = this.listadoTickets.findIndex(e => e.ticketId === exito.dtoResult.ticketId);
+        this.listadoTickets[ordenIndex] = exito.dtoResult;
 
+        Swal.fire({
+          icon: 'success',
+          title: 'Intervenir Caso',
+          text: `${ exito.message}`,
+          heightAuto: false
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // algo
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Intervenir Caso',
+          text: exito.error,
+          heightAuto: false
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // algo
+          }
+        });
       }
 
-    }, (err)=>{
+      this.helperService.hideLoading();
+
+    }, (err) => {
       console.log(err);
+      this.helperService.hideLoading();
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Ocurrió un error de comunicación, reinténtelo nuevamente.',
+        heightAuto: false
+      });
     });
 
+  }
+
+  async onAtenderCaso(ticketSelected: TicketResponse, elMotivo: string) {
+
+    const elNuevoStatusTicket: TicketStatusRequest = {
+      ticketId: ticketSelected.ticketId,
+      estatusId: environment.estatusAtendido,
+      observaciones: elMotivo,
+      activo: true
+    };
+
+    this.helperService.showLoading('Atendiendo...','bubbles');
+    this.ticketService.intervenir(elNuevoStatusTicket).subscribe((exito) => {
+
+      if (exito.result === 'OK') {
+        // actualizar estatatus en el listado
+        const ordenIndex = this.listadoTickets.findIndex(e => e.ticketId === exito.dtoResult.ticketId);
+        this.listadoTickets[ordenIndex] = exito.dtoResult;
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Atender Caso',
+          text: `${ exito.message}`,
+          heightAuto: false
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // algo
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Atender Caso',
+          text: exito.error,
+          heightAuto: false
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // algo
+          }
+        });
+      }
+
+      this.helperService.hideLoading();
+
+    }, (err) => {
+      this.helperService.hideLoading();
+      console.log(err);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Ocurrió un error de comunicación, reinténtelo nuevamente.',
+        heightAuto: false
+      });
+    });
+
+  }
+
+  async onReabrirCaso(ticketSelected: TicketResponse, elMotivo: string) {
+    const elNuevoStatusTicket: TicketStatusRequest = {
+      ticketId: ticketSelected.ticketId,
+      estatusId: environment.estatusReabierto,
+      observaciones: elMotivo,
+      activo: true
+    };
+
+    this.helperService.showLoading('Reabriendo caso...', 'bubbles');
+    this.ticketService.reabrir(elNuevoStatusTicket).subscribe((exito: TicketApiResponse) => {
+
+      if (exito.result === 'OK') {
+        // actualizar estatatus en el listado
+        const ordenIndex = this.listadoTickets.findIndex(e => e.ticketId === exito.dtoResult.ticketId);
+        this.listadoTickets[ordenIndex] = exito.dtoResult;
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Reabrir Caso',
+          text: `${ exito.message}`,
+          heightAuto: false
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // algo
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Reabrir Caso',
+          text: exito.error,
+          heightAuto: false
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // algo
+          }
+        });
+      }
+
+      this.helperService.hideLoading();
+
+    }, (err) => {
+
+      this.helperService.hideLoading();
+      console.log(err);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Ocurrió un error de comunicación, reinténtelo nuevamente.',
+        heightAuto: false
+      });
+    });
   }
 
   getTicketsFiltro(cadenaId: string, filtros: string, numberPage: number, pageSize: number) {
-    //this.spinnerService.setTitulo = 'Espere un momento, estamos cargando las tickets';
+
+    this.helperService.showLoading('Espere un momento, estamos cargando las tickets','bubbles');
     this.cargando = true;
     this.ticketService.obtenerTicketsFiltro(cadenaId, filtros, numberPage, pageSize)
       .subscribe((exito: TicketsApiResponse) => {
         this.cargando = false;
-        //this.spinnerService.setTitulo = '';
 
         if (exito.result === 'OK') {
 
@@ -321,9 +520,11 @@ export class TicketsPage implements OnInit {
           this.totalRegistros = exito.totalRegistros;
           this.noPaginas = exito.totalPaginas;
         }
+
+        this.helperService.hideLoading();
       },
         (err) => {
-          //this.spinnerService.setTitulo = '';
+          this.helperService.hideLoading();
           this.cargando = false;
           console.log(err);
         });
@@ -383,7 +584,7 @@ export class TicketsPage implements OnInit {
     this.ejecutarFiltros(environment.tamPagina, 1);
   }
 
-  onChangeTipo(tipoId: number){
+  onChangeTipo(tipoId: number) {
     this.elTipoIdSeleccionado = tipoId.toString();
     // ejecutar filtros
     this.ejecutarFiltros(environment.tamPagina, 1);

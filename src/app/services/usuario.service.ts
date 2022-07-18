@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { NuevaPassWordUser, OlvidePasswordRequest, UsuarioLinkRequest, UsuarioLockRequest } from '../models/request/usuario.model';
-import { UsuarioApiResponse, UsuarioLinkApiResponse } from '../models/response/usuario.model';
+import { UsuarioApiResponse, UsuarioLinkApiResponse, UsuariosApiResponse } from '../models/response/usuario.model';
 import { GeneralService } from './general.service';
 
 @Injectable({
@@ -68,6 +68,16 @@ export class UsuarioService {
       .pipe(
         map(
           (laRespuesta: UsuarioLinkApiResponse) => laRespuesta)
+      );
+  }
+
+
+  ObtenerListado(numberPage : number , pageSize: number ) {
+    return this.generalService
+    .getQuery(`/api/usuario/listado/async/${numberPage}/${pageSize}`)
+      .pipe(
+        map(
+          (laRespuesta: UsuariosApiResponse) => laRespuesta)
       );
   }
 
