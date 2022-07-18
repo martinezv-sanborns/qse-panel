@@ -13,6 +13,7 @@ import { environment } from 'src/environments/environment';
 export class MenuTicketComponent implements OnInit {
 
   @Input() elEstatus: EstatusResponse;
+  @Input() elRolUsuario: string;
 
   itemsMenu: ItemMenu[] = [
     {
@@ -25,63 +26,52 @@ export class MenuTicketComponent implements OnInit {
 
   constructor(private popCtrl: PopoverController) { }
 
-  ngOnInit()
-  {
-    if ((this.elEstatus.estatusId === environment.estatusIntervenido)) {
-    this.itemsMenu.push(
-      {
-      id: 'intervenido-ticket',
-      valor: 'Intervenido',
-      icono: 'add-outline'
-    },
-    {
-      id: 'cerradocorporativo-ticket',
-      valor: 'Cerrado Corporativo',
-      icono: 'add-outline'
-    },
-    {
-      id: 'cerradotienda-ticket',
-      valor: 'Cerrado en Tienda',
-      icono: 'add-outline'
-    },
-    );
-  }
+  ngOnInit() {
 
-  if (this.elEstatus.estatusId === environment.estatusInicioado) {
+    if (this.elEstatus.estatusId.toUpperCase() === environment.estatusIniciado
+      || this.elEstatus.estatusId.toUpperCase() === environment.estatusReabierto) {
+      this.itemsMenu.push({
+        id: 'atender-ticket',
+        valor: 'Atender',
+        icono: 'time-outline'
+      });
+    }
+
+    if (this.elEstatus.estatusId.toUpperCase() === environment.estatusAtendido) {
+
+      this.itemsMenu.push({
+        id: 'intervenir-ticket',
+        valor: 'Intervenir',
+        icono: 'hand-right-outline'
+      });
+    }
+
+    if (this.elEstatus.estatusId.toUpperCase() === environment.estatusAtendido &&
+      (this.elRolUsuario.toUpperCase() === environment.admin || this.elRolUsuario.toUpperCase() === environment.corp
+        || this.elRolUsuario.toUpperCase() === environment.tda)) {
+      this.itemsMenu.push({
+        id: 'cerrar-caso',
+        valor: 'Cerrar caso',
+        icono: 'close-outline'
+      });
+    }
+
+    if ((this.elEstatus.estatusId.toUpperCase() === environment.estatusCerradoTienda
+      || this.elEstatus.estatusId.toUpperCase() === environment.estatusCerradoCorpo) &&
+      (this.elRolUsuario.toUpperCase() === environment.corp || this.elRolUsuario.toUpperCase() === environment.admin)) {
+      this.itemsMenu.push({
+        id: 'reabrir-ticket',
+        valor: 'Reabrir',
+        icono: 'folder-open-outline'
+      });
+    }
+
     this.itemsMenu.push({
-      id: 'atendido-ticket',
-      valor: 'Atender',
-      icono: 'time-outline'
+      id: 'close-menu',
+      valor: 'Cerrar menú',
+      icono: 'exit-outline'
     });
   }
-
-  if (this.elEstatus.estatusId === environment.estatusReabierto ) {
-    this.itemsMenu.push(    {
-      id: 'cerradocorporativo-ticket',
-      valor: 'Cerrado Corporativo',
-      icono: 'add-outline'
-    },
-    {
-      id: 'cerradotienda-ticket',
-      valor: 'Cerrado en Tienda',
-      icono: 'add-outline'
-    },);
-  }
-
-  if ((this.elEstatus.estatusId !== environment.estatusCerradoTienda)) {
-    this.itemsMenu.push({
-      id: 'reabierto-ticket',
-      valor: 'Reabierto',
-      icono: 'close-outline'
-    });
-  }
-
-  this.itemsMenu.push({
-    id: 'close-menu',
-    valor: 'Cerrar menú',
-    icono: 'exit-outline'
-  });
-   }
 
   opcionSeleccionada(valor: ItemMenu) {
     this.popCtrl.dismiss(

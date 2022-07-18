@@ -2,16 +2,19 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import Swal from 'sweetalert2';
 
+// globals
+import { environment } from '../../../../environments/environment';
+
 // components
 import { EstatusMotivoTicketComponent } from '../estatus-motivo-ticket/estatus-motivo-ticket.component';
 
 // services
 import { TicketService } from '../../../services/ticket.service';
+import { HelperService } from '../../../services/helper.service';
 
 // models
-import { TicketLogResponse, TicketResponse } from 'src/app/models/response/ticket.model';
+import { TicketApiResponse, TicketLogResponse, TicketResponse } from 'src/app/models/response/ticket.model';
 import { TicketStatusRequest } from 'src/app/models/request/ticket.model';
-import { environment } from '../../../../environments/environment';
 
 
 
@@ -23,14 +26,24 @@ import { environment } from '../../../../environments/environment';
 export class DetalleTicketComponent implements OnInit {
 
   @Input() elTicket: TicketResponse;
+  @Input() elRolUsuario: string;
 
   tabActivo = 'relato';
   losticketLogs: TicketLogResponse[] = [];
   descripcion: string;
+  sizeBotonIn: number;
+  permisoCerrado: boolean;
+  permisoAbierto: boolean;
 
-  constructor(private modalCrtl: ModalController, private ticketService: TicketService) { }
+  constructor(private modalCrtl: ModalController,
+    private ticketService: TicketService,
+    private helperService: HelperService) { }
 
   ngOnInit() {
+    this.losticketLogs = this.elTicket.ticketLogs.filter(t => t.estatus.estatusId !== environment.estatusIniciado);
+    this.sizeBotonIn = 6;
+    this.permisoCerrado = false;
+    this.permisoAbierto = false;
   }
 
   cerrarModal() {
@@ -44,54 +57,124 @@ export class DetalleTicketComponent implements OnInit {
     console.log('Que tab es:', this.tabActivo);
   }
 
-  async intervenir(ticketSelected: TicketResponse) {
+  async reabrirCasoModal(ticketSelected: TicketResponse) {
     const modalShow = await this.modalCrtl.create(
       {
         component: EstatusMotivoTicketComponent,
         componentProps: {
-          icon:'help-circle-outline',
-          titleWindow: 'Intervenir Caso',
-          titleMessage: 'Nueva observación sobre el caso:',
-          txtMessage:'Escriba observación',
-          titleErr: 'Nueva observación',
-          messageErr:'Escriba una observación'
+          icon: 'help-circle-outline',
+          titleWindow: 'Reabrir Caso',
+          titleMessage: 'Reabrir caso',
+          txtMessage: 'Escriba aquí ¿Por qué reabrió el caso?',
+          titleErr: 'Reabrir caso',
+          messageErr: 'Por favor escriba un motivo.'
         }
       });
     await modalShow.present();
     const { data } = await modalShow.onWillDismiss();
 
     if (data.motivoSend) {
-      this.intervenirTicket(ticketSelected, data.motivo);
+      this.onReabrirCaso(ticketSelected, data.motivo);
     }
   }
 
-  async cerrarCaso(ticketSelected: TicketResponse) {
+  async intervenirCasoModal(ticketSelected: TicketResponse) {
     const modalShow = await this.modalCrtl.create(
       {
         component: EstatusMotivoTicketComponent,
         componentProps: {
-          icon:'chatbox-outline',
+          icon: 'help-circle-outline',
+          titleWindow: 'Intervenir Caso',
+          titleMessage: 'Nueva intervención sobre el caso:',
+          txtMessage: 'Escriba intervención',
+          titleErr: 'Nueva intervención',
+          messageErr: 'Escriba una intervención'
+        }
+      });
+    await modalShow.present();
+    const { data } = await modalShow.onWillDismiss();
+
+    if (data.motivoSend) {
+      this.onIntervenirCaso(ticketSelected, data.motivo);
+    }
+  }
+
+  async cerrarCasoModal(ticketSelected: TicketResponse) {
+
+    const modalShow = await this.modalCrtl.create(
+      {
+        component: EstatusMotivoTicketComponent,
+        componentProps: {
+          icon: 'chatbox-outline',
           titleWindow: 'Cerrar Caso',
           titleMessage: '¿Está seguro que desea Cerrar el Q&SE?',
-          txtMessage:'Escriba aquí el motivo',
-          titleErr:'¿Motivo?',
-          messageErr:'Por favor escriba el motivo'
+          txtMessage: 'Escriba aquí el motivo',
+          titleErr: '¿Motivo?',
+          messageErr: 'Por favor escriba el motivo'
         }
       });
     await modalShow.present();
     const { data } = await modalShow.onWillDismiss();
 
     if (data.motivoSend) {
-      this.cancelarTicket(ticketSelected, data.motivo);
+      this.onCerrarCaso(ticketSelected, data.motivo);
     }
   }
 
-  async cancelarTicket(ticketSelected: TicketResponse, elMotivo: string) {
-    console.log('ticketSelected', ticketSelected);
-    console.log('motivo', elMotivo);
+  async onCerrarCaso(ticketSelected: TicketResponse, elMotivo: string) {
+
+    const elNuevoStatusTicket: TicketStatusRequest = {
+      ticketId: ticketSelected.ticketId,
+      estatusId: environment.guidEmpty,
+      observaciones: elMotivo,
+      activo: true
+    };
+
+    this.helperService.showLoading('Cerrando caso...', 'bubbles');
+    this.ticketService.cerrar(elNuevoStatusTicket).subscribe((exito: TicketApiResponse) => {
+
+      if (exito.result === 'OK') {
+        // actualizar ticket
+        this.elTicket = exito.dtoResult;
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Cerrar Caso',
+          text: `${ exito.message }`,
+          heightAuto: false
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // algo
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Cerrar Caso',
+          text: exito.error,
+          heightAuto: false
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // algo
+          }
+        });
+      }
+
+      this.helperService.hideLoading();
+
+    }, (err) => {
+      console.log(err);
+      this.helperService.hideLoading();
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Ocurrió un error de comunicación, reinténtelo nuevamente.',
+        heightAuto: false
+      });
+    });
   }
 
-  async intervenirTicket(ticketSelected: TicketResponse, elMotivo: string) {
+  async onIntervenirCaso(ticketSelected: TicketResponse, elMotivo: string) {
 
     const elNuevoStatusTicket: TicketStatusRequest = {
       ticketId: ticketSelected.ticketId,
@@ -100,16 +183,126 @@ export class DetalleTicketComponent implements OnInit {
       activo: true
     };
 
-    this.ticketService.intervenir(elNuevoStatusTicket).subscribe((exito)=>{
+    this.helperService.showLoading('Interviniendo...', 'bubbles');
+    this.ticketService.intervenir(elNuevoStatusTicket).subscribe((exito: TicketApiResponse) => {
 
-      if(exito.result === 'OK'){
-
+      if (exito.result === 'OK') {
+        this.elTicket = exito.dtoResult;
+        Swal.fire({
+          icon: 'success',
+          title: 'Intervenir Caso',
+          text: `${ exito.message}`,
+          heightAuto: false
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // algo
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Intervenir Caso',
+          text: exito.error,
+          heightAuto: false
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // algo
+          }
+        });
       }
 
-    }, (err)=>{
+      this.helperService.hideLoading();
+
+    }, (err) => {
+
+      this.helperService.hideLoading();
       console.log(err);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Ocurrió un error de comunicación, reinténtelo nuevamente.',
+        heightAuto: false
+      });
     });
 
   }
 
+  async onReabrirCaso(ticketSelected: TicketResponse, elMotivo: string) {
+    const elNuevoStatusTicket: TicketStatusRequest = {
+      ticketId: ticketSelected.ticketId,
+      estatusId: environment.estatusReabierto,
+      observaciones: elMotivo,
+      activo: true
+    };
+
+    this.helperService.showLoading('Reabriendo caso...', 'bubbles');
+    this.ticketService.reabrir(elNuevoStatusTicket).subscribe((exito: TicketApiResponse) => {
+
+      if (exito.result === 'OK') {
+        this.elTicket = exito.dtoResult;
+        Swal.fire({
+          icon: 'success',
+          title: 'Reabrir Caso',
+          text: `${ exito.message}`,
+          heightAuto: false
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // algo
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Reabrir Caso',
+          text: exito.error,
+          heightAuto: false
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // algo
+          }
+        });
+      }
+
+      this.helperService.hideLoading();
+
+    }, (err) => {
+
+      this.helperService.hideLoading();
+      console.log(err);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Ocurrió un error de comunicación, reinténtelo nuevamente.',
+        heightAuto: false
+      });
+    });
+  }
+
+  onTienePermisoReabrir(elTicket: TicketResponse): boolean {
+    const resultado = (elTicket.estatus.estatusId.toUpperCase() === environment.estatusCerradoCorpo
+      || elTicket.estatus.estatusId.toUpperCase() === environment.estatusCerradoTienda)
+      && (this.elRolUsuario === environment.corp || this.elRolUsuario === environment.admin);
+
+    if (resultado) {
+      this.permisoAbierto = true;
+    }
+    else {
+      this.sizeBotonIn = 12;
+    }
+    return resultado;
+  }
+
+  onTienePermisoCerrado(elTicket: TicketResponse): boolean {
+
+    const resultado = (elTicket.estatus.estatusId.toUpperCase() === environment.estatusAtendido
+      || elTicket.estatus.estatusId.toUpperCase() === environment.estatusReabierto)
+      && (this.elRolUsuario === environment.corp || this.elRolUsuario === environment.admin || this.elRolUsuario === environment.tda);
+
+    if (resultado) {
+      this.permisoCerrado = true;
+    } else {
+      this.sizeBotonIn = 12;
+    }
+    return resultado;
+  }
 }

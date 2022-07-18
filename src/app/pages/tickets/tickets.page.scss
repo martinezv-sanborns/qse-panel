@@ -8,12 +8,20 @@ ion-grid {
     }
     ion-row {
         border: 0px solid #dddddd;
+        margin-top: 0px;
+        padding-top: 0px;
+        margin-bottom: 0px;
+        padding-bottom: 0px;
     }
     ion-row:nth-child(even) {
         background-color: #dddddd;
     }
     ion-col {
         border-right: 0px solid #dddddd;
+        margin-top: 1px;
+        padding-top: 1px;
+        margin-bottom: 1px;
+        padding-bottom: 1px;
     }
 
 }
@@ -31,11 +39,6 @@ ion-grid {
     padding: 10px;
 }
 
-
-ion-breadcrumbs{
-    //padding: 40px;  
-    padding-top: 50px;
-}
 
 ion-modal#modal-bottom::part(content) {
     top: unset !important;

@@ -35,7 +35,12 @@ export class TicketService {
   }
 
   cerrar(ticketStatus: TicketStatusRequest){
-
+    return this.generalService
+    .Put(`/api/Ticket/cerrar/async`, ticketStatus)
+    .pipe(
+      map(
+        (laRespuesta: TicketApiResponse) => laRespuesta)
+    );
   }
 
   intervenir(ticketStatus: TicketStatusRequest){
@@ -48,7 +53,12 @@ export class TicketService {
   }
 
   reabrir(ticketStatus: TicketStatusRequest){
-
+    return this.generalService
+    .Put(`/api/Ticket/reabrir/async`, ticketStatus)
+    .pipe(
+      map(
+        (laRespuesta: TicketApiResponse) => laRespuesta)
+    );
   }
 
 }
