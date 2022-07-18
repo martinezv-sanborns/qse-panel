@@ -13,6 +13,7 @@ import { OlvidePasswordComponent } from './olvide-password/olvide-password.compo
 import { ShowPasswordHideComponent } from './show-password-hide/show-password-hide.component';
 import { CadenaSelectorComponent } from './cadena-selector/cadena-selector.component';
 import { MenuPerfilComponent } from './menu-perfil/menu-perfil.component';
+import { TopTenComponent } from './top-ten/top-ten.component';
 
 
 
@@ -22,7 +23,8 @@ import { MenuPerfilComponent } from './menu-perfil/menu-perfil.component';
     OlvidePasswordComponent,
     ShowPasswordHideComponent,
     CadenaSelectorComponent,
-    MenuPerfilComponent
+    MenuPerfilComponent,
+    TopTenComponent
     
   ],
   imports: [
@@ -37,7 +39,8 @@ import { MenuPerfilComponent } from './menu-perfil/menu-perfil.component';
     OlvidePasswordComponent,
     ShowPasswordHideComponent,
     CadenaSelectorComponent,
-    MenuPerfilComponent
+    MenuPerfilComponent,
+    TopTenComponent
   ],
   providers:[DatePipe]
 })
