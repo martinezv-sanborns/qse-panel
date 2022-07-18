@@ -1,6 +1,11 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
+
+// components
 import { MenuPerfilComponent } from '../menu-perfil/menu-perfil.component';
+
+// services
+import { HelperService } from '../../../services/helper.service';
 
 
 @Component({
@@ -15,7 +20,7 @@ export class HeaderComponent implements OnInit {
   @ViewChild('productbtn', { read: ElementRef }) productbtn: ElementRef;
   dropdown = false;
 
-  constructor( private popVerCtrl: PopoverController,) { }
+  constructor( private popVerCtrl: PopoverController, private helperService: HelperService) { }
 
   ngOnInit() {
 
@@ -39,6 +44,7 @@ export class HeaderComponent implements OnInit {
     if (data !== undefined) {
       switch (data.item.id) {
         case 'close':
+          this.helperService.logout();
           break;
         case 'changepassword':
 
