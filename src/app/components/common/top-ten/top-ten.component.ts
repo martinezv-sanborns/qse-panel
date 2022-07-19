@@ -44,6 +44,10 @@ export class TopTenComponent implements OnInit, OnChanges {
     this.selectedOption = event.detail.value;
   }
 
+  selectedTicketChanged(elticket:TicketResponse){
+    this.salidaTicketSeleccionado.emit(elticket);
+  }
+
 
   ObtenerListados(){
 

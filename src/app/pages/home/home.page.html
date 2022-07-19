@@ -6,18 +6,7 @@
         <app-top-ten *ngIf="this.cadenaId!==undefined" (salidaTicketSeleccionado)="ticketSeleccionadoChanged($event)"  [entradaCadenaId]="this.cadenaId"  ></app-top-ten>
       </ion-col>
       <ion-col size="8">
-          <ion-grid >
-            <ion-row>
-              <ion-col>
-                     <app-detalle-ticket [elRolUsuario]="this.rolName" [elTicket]="this.ticketSeleccionado" [isModal]="false" ></app-detalle-ticket>   
-              </ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-col></ion-col>
-            </ion-row>            
-          </ion-grid>
-
-
+                     <app-detalle-ticket *ngIf="this.ticketSeleccionado" [elRolUsuario]="this.rolName" [elTicket]="this.ticketSeleccionado" [isModal]="false" ></app-detalle-ticket>   
       </ion-col>
     </ion-row>
   </ion-grid>

@@ -16,9 +16,9 @@
       </ion-segment-button>  
     </ion-segment>    
     <!--  -->
-    <app-top-ten-listado *ngIf="this.selectedOption===this.estatusInicial" [entradaListadoTickets]="this.listadoTicketsNuevos"></app-top-ten-listado>
-    <app-top-ten-listado *ngIf="this.selectedOption===this.estatusResuelto" [entradaListadoTickets]="this.listadoTicketsResueltos"></app-top-ten-listado>
-    <app-top-ten-listado *ngIf="this.selectedOption===this.estatusAtendiendo" [entradaListadoTickets]="this.listadoTicketsAtendiendo"></app-top-ten-listado>
+    <app-top-ten-listado (salidaTicketSeleccionado)="selectedTicketChanged($event)"  *ngIf="this.selectedOption===this.estatusInicial" [entradaListadoTickets]="this.listadoTicketsNuevos"></app-top-ten-listado>
+    <app-top-ten-listado (salidaTicketSeleccionado)="selectedTicketChanged($event)" *ngIf="this.selectedOption===this.estatusResuelto" [entradaListadoTickets]="this.listadoTicketsResueltos"></app-top-ten-listado>
+    <app-top-ten-listado (salidaTicketSeleccionado)="selectedTicketChanged($event)" *ngIf="this.selectedOption===this.estatusAtendiendo" [entradaListadoTickets]="this.listadoTicketsAtendiendo"></app-top-ten-listado>
 
   </ion-card-content>
 </ion-card>
