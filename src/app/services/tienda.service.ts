@@ -30,12 +30,12 @@ export class TiendaService {
       );
   }
 
-  cambiarActivo(laTienda: TiendaActivaRequest) {
+  obtenerTiendasUsuario(){
     return this.generalService
-      .Post(`/api/tienda/estatus/async`, laTienda)
-      .pipe(
-        map(
-          (laRespuesta: TiendaApiResponse) => laRespuesta)
-      );
+    .getQuery(`/api/Tienda/usuario/listado/async`)
+    .pipe(
+      map(
+        (laRespuesta: TiendasApiResponse) => laRespuesta)
+    );
   }
 }

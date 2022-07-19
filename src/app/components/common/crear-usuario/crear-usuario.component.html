@@ -1,0 +1,83 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-title>{{ title }}</ion-title>
+      <ion-buttons slot="end">
+          <ion-button (click)="cerrarModal()">
+              <ion-icon color="danger" class="icon-close" slot="icon-only" name="close-circle-outline"></ion-icon>
+          </ion-button>
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <form [formGroup]="usuarioForm" (ngSubmit)="registrarUsuario()">
+      <ion-card>
+          <ion-grid fixed>
+              <ion-row>
+                  <ion-col size="12">
+                      <ion-item>
+                          <ion-icon name="person-outline" slot="start"></ion-icon>
+                          <ion-label position="floating" class="ion-text-bold">Nombre</ion-label>
+                          <ion-input formControlName="nombre" type="text"></ion-input>
+                      </ion-item>
+                  </ion-col>
+              </ion-row>
+              <ion-row>
+                  <ion-col size="12">
+                      <ion-item>
+                          <ion-icon name="key-outline" slot="start"></ion-icon>
+                          <ion-label position="floating" class="ion-text-bold">NickName</ion-label>
+                          <ion-input formControlName="nickName" type="text"></ion-input>
+                      </ion-item>
+                  </ion-col>
+              </ion-row>
+              <ion-row>
+                  <ion-col size="12">
+                      <ion-item>
+                          <ion-icon name="mail-open-outline" slot="start"></ion-icon>
+                          <ion-label position="floating" class="ion-text-bold">Correo Electrónico</ion-label>
+                          <ion-input formControlName="email" type="text"></ion-input>
+                      </ion-item>
+                  </ion-col>
+              </ion-row>
+              <ion-row>
+                  <ion-col size="12">
+                      <ion-button (click)="onChangeStatus()" expand="full" [color]="esActivo? 'success':'medium'">{{ esActivo ? 'Activado':'Desactivado' }}</ion-button>
+                  </ion-col>
+              </ion-row>
+              <ion-row>
+                  <ion-col size="12">
+                      <ion-card class="ion-text-center p-5">
+                          <ion-label class="title-rol" class="ion-text-bold">Seleccione un Rol</ion-label>
+                      </ion-card>
+                      <swiper [config]="config" class="swiper">
+                          <ng-template swiperSlide *ngFor="let rol of listRoles">
+                              <ion-card class="cardSize cardX ion-text-center cursor" [title]="rol.nombre" [ngClass]="rol.isSelected === true ? 'seleccionado': 'noSeleccionado'" (click)="onRolSelected(rol)">
+                                  <ion-card-header>
+                                      <ion-icon size="large" [name]="rol.iconName"></ion-icon>
+                                      <ion-card-title class="size-carrucel-title"> {{ rol.nombre }} </ion-card-title>
+                                  </ion-card-header>
+                              </ion-card>
+                          </ng-template>
+                      </swiper>
+                  </ion-col>
+              </ion-row>
+          </ion-grid>
+      </ion-card>
+      <ion-footer>
+          <ion-grid fixed>
+              <ion-row class="ion-text-center">
+                  <ion-col size="6">
+                      <ion-button shape="round" color="primary" type="submit" expand="block">
+                          Guardar
+                      </ion-button>
+                  </ion-col>
+                  <ion-col size="6">
+                      <ion-button shape="round" color="medium" type="button" expand="block" (click)="cerrarModal()">
+                          Cancelar
+                      </ion-button>
+                  </ion-col>
+              </ion-row>
+          </ion-grid>
+      </ion-footer>
+  </form>
+</ion-content>

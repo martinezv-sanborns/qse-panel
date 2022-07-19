@@ -16,6 +16,10 @@ import { MenuPerfilComponent } from './menu-perfil/menu-perfil.component';
 import { TopTenComponent } from './top-ten/top-ten.component';
 import { NoHayResultadosComponent } from './no-hay-resultados/no-hay-resultados.component';
 import { EstatusColorComponent } from './estatus-color/estatus-color.component';
+import { PipesModule } from 'src/app/pipes/pipes.module';
+import { TopTenListadoComponent } from './top-ten-listado/top-ten-listado.component';
+import { MenuUsuarioComponent } from './menu-usuario/menu-usuario.component';
+import { TiposTicketComponent } from './tipos-ticket/tipos-ticket.component';
 
 
 
@@ -28,14 +32,18 @@ import { EstatusColorComponent } from './estatus-color/estatus-color.component';
     MenuPerfilComponent,
     TopTenComponent,
     NoHayResultadosComponent,
-    EstatusColorComponent
+    EstatusColorComponent,
+    TopTenListadoComponent,
+    MenuUsuarioComponent,
+    TiposTicketComponent
   ],
   imports: [
     IonicModule,
     CommonModule,
     RouterModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    PipesModule
   ],
   exports:[
     HeaderComponent,
@@ -45,7 +53,10 @@ import { EstatusColorComponent } from './estatus-color/estatus-color.component';
     MenuPerfilComponent,
     TopTenComponent,
     NoHayResultadosComponent,
-    EstatusColorComponent
+    EstatusColorComponent,
+    TopTenListadoComponent,
+    MenuUsuarioComponent,
+    TiposTicketComponent
   ],
   providers:[DatePipe]
 })

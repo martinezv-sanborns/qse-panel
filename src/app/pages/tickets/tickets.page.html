@@ -5,7 +5,7 @@
   </ion-breadcrumb>
   <ion-breadcrumb href="/tickets">
     <ion-icon slot="start" name="megaphone-outline"></ion-icon>
-    Tickets
+    Casos
   </ion-breadcrumb>
 </ion-breadcrumbs>
 
@@ -15,7 +15,7 @@
       <ion-col size="12">
         <ion-item class="round">
           <ion-col size="2">
-            <ion-label><b>Tickets</b></ion-label>
+            <ion-label><strong>Administrador de Casos</strong></ion-label>
           </ion-col>
           <ion-col size="9">
             <ion-searchbar searchIcon="search" showcancelbutton="OK" class="forminput ion-margin"
@@ -26,7 +26,17 @@
       </ion-col>
     </ion-row>
     <ion-row class="ion-justify-content-center ion-align-items-center round fondo-white">
-      <ion-col size-md="3" size-sm="12">
+      <ion-col size-md="2" size-sm="12">
+        <ion-item>
+          <ion-label><strong>Tiendas</strong></ion-label>
+          <ion-select placeholder="Seleccione tienda" interface="popover"
+            (ionChange)="onChangeTienda(tiendaTicket.value)" #tiendaTicket [(ngModel)]="laTiendaSeleccionadaId">
+            <ion-select-option [value]="tienda.tiendaId" *ngFor="let tienda of lasTiendasUser">{{ tienda.nombre }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+      <ion-col size-md="2" size-sm="12">
         <ion-item>
           <ion-label><b>Estatus</b></ion-label>
           <ion-select placeholder="Seleccione estatus" interface="popover"
@@ -36,7 +46,7 @@
           </ion-select>
         </ion-item>
       </ion-col>
-      <ion-col size-md="3" size-sm="12">
+      <ion-col size-md="2" size-sm="12">
         <ion-item>
           <ion-label> <b>Tipo</b></ion-label>
           <ion-select placeholder="Seleccione tipo" interface="popover" (ionChange)="onChangeTipo(tipoTicket.value)" #tipoTicket>
@@ -107,7 +117,7 @@
                 {{ ticket.fechaAlta | date: 'dd/MM/yy' }}
               </ion-col>
               <ion-col size="3">
-                {{ ticket.tienda.nombre }}
+                {{ ticket.tienda.nombre }} | {{ ticket.tienda.identificadorExterno }}
               </ion-col>
               <ion-col size="2" class="ion-hide-sm-down">
                 <app-tipos-ticket [ticketTipos] ="ticket.ticketTipos"></app-tipos-ticket>
@@ -117,7 +127,7 @@
               </ion-col>
               <ion-col size="1">
                 <ion-buttons>
-                  <ion-button slot="end" (click)="mostrarMenu($event, ticket)">
+                  <ion-button slot="end" color="danger" (click)="mostrarMenu($event, ticket)">
                     <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
                   </ion-button>
                 </ion-buttons>

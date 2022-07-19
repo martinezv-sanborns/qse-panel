@@ -1,8 +1,12 @@
 <ion-item text-center *ngFor="let ticketlog of losTicketLogs">
-  <ion-text class="ion-no-padding">
-    <ion-label class="my-label">{{ ticketlog.fechaAlta | date: 'dd/MM/yy' }} {{ticketlog.usuario.nombreUsuario}}
-    </ion-label> {{this.ticketlog.observaciones}}
+  <ion-text >
+    <ion-label class="ion-text-start" [color]="ticketlog.usuario.rol.nombreCorto === 'ADMIN' ? 'primary': (ticketlog.usuario.rol.nombreCorto === 'CORP'? 'danger' : (ticketlog.usuario.rol.nombreCorto === 'Cust' ? 'success' : 'secondary')) ">
+      {{ ticketlog.fechaAlta | date: 'dd/MM/yy' }} <ion-icon [name]="ticketlog.usuario.rol.iconName"></ion-icon> {{ticketlog.usuario.nombreUsuario}} ({{ ticketlog.usuario.rol.nombreCorto }}) | {{  ticketlog.estatus.nombre }}
+    </ion-label>
+
+    <ion-text><i>{{this.ticketlog.observaciones}}</i></ion-text>
   </ion-text>
+
 </ion-item>
 
 <div class="center" *ngIf="losTicketLogs.length === 0">

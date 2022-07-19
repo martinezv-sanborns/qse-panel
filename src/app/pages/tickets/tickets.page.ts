@@ -24,6 +24,8 @@ import { EstatusApiResponse, EstatusResponse } from '../../models/response/estat
 import { TipoApiResponse, TipoResponse } from '../../models/response/tipo.model';
 import { TicketApiResponse, TicketResponse, TicketsApiResponse } from 'src/app/models/response/ticket.model';
 import { TicketStatusRequest } from 'src/app/models/request/ticket.model';
+import { TiendaService } from '../../services/tienda.service';
+import { TiendasApiResponse, TiendaResponse } from '../../models/response/tiendaresponse.model';
 
 
 @Component({
@@ -38,8 +40,10 @@ export class TicketsPage implements OnInit {
   lacadenaSelectedId: string;
   losEstatus: EstatusResponse[] = [];
   losTipos: TipoResponse[] = [];
+  lasTiendasUser: TiendaResponse[] = [];
   elEstatusIdSeleccionado = '';
   elTipoIdSeleccionado = '';
+  laTiendaSeleccionadaId = '';
   losFiltrosOk = '';
   elRolUser = '';
   filtrosFinales: string[] = [];
@@ -57,6 +61,7 @@ export class TicketsPage implements OnInit {
   constructor(private catalogoService: CatalogoService,
     private ticketService: TicketService,
     private helperService: HelperService,
+    private tiendaService: TiendaService,
     private popVerCtrl: PopoverController,
     private modalCtrl: ModalController,
     private modalCrtl: ModalController
@@ -66,6 +71,7 @@ export class TicketsPage implements OnInit {
 
     this.lacadenaSelectedId = localStorage.getItem('cadenaSelectedId');
     this.elRolUser = localStorage.getItem('rolName');
+    this.obtenerTiendas();
 
     this.getTickets();
     this.obtenerEstatus();
@@ -84,9 +90,6 @@ export class TicketsPage implements OnInit {
         this.totalPaginasArray = new Array((exito.totalPaginas > 10 ? 10 : exito.totalPaginas));
         this.totalRegistros = exito.totalRegistros;
         this.noPaginas = exito.totalPaginas;
-
-        console.log('el listado de tickets', this.listadoTickets);
-
       }
       this.cargando = false;
     }, (errr) => {
@@ -101,8 +104,6 @@ export class TicketsPage implements OnInit {
   }
 
   async mostrarMenu(evento, ticketSelected: TicketResponse) {
-
-    console.log('ticket seleccionado', ticketSelected);
 
     const popover = await this.popVerCtrl.create({
       component: MenuTicketComponent,
@@ -190,16 +191,17 @@ export class TicketsPage implements OnInit {
         component: DetalleTicketComponent,
         componentProps: {
           elTicket: ticketSelected,
-          elRolUsuario: this.elRolUser
+          elRolUsuario: this.elRolUser,
+          isModal: true
         },
         backdropDismiss: false
       }
     );
     await modalShowTicket.present();
 
-    // TODO: se tiene que propagar el cambio del estatus en el listado cuando se cierre la modal
     const { data } = await modalShowTicket.onWillDismiss();
-
+    const indexTicket = this.listadoTickets.findIndex(t => t.ticketId === data.ticketModificado.ticketId);
+    this.listadoTickets[indexTicket] = data.ticketModificado;
   }
 
   async intervenirModal(ticketSelected: TicketResponse) {
@@ -294,18 +296,18 @@ export class TicketsPage implements OnInit {
       activo: true
     };
 
-    this.helperService.showLoading('Cerrando caso...','bubbles');
+    this.helperService.showLoading('Cerrando caso...', 'bubbles');
     this.ticketService.cerrar(elNuevoStatusTicket).subscribe((exito: TicketApiResponse) => {
 
       if (exito.result === 'OK') {
         // actualizar estatatus en el listado
-        const ordenIndex = this.listadoTickets.findIndex(e => e.ticketId === exito.dtoResult.ticketId);
-        this.listadoTickets[ordenIndex] = exito.dtoResult;
+        const ticketIndex = this.listadoTickets.findIndex(e => e.ticketId === exito.dtoResult.ticketId);
+        this.listadoTickets[ticketIndex] = exito.dtoResult;
 
         Swal.fire({
           icon: 'success',
           title: 'Cerrar Caso',
-          text: `${ exito.message}`,
+          text: `${exito.message}`,
           heightAuto: false
         }).then((result) => {
           if (result.isConfirmed) {
@@ -347,18 +349,18 @@ export class TicketsPage implements OnInit {
       activo: true
     };
 
-    this.helperService.showLoading('Interviniendo...','bubbles');
+    this.helperService.showLoading('Interviniendo...', 'bubbles');
     this.ticketService.intervenir(elNuevoStatusTicket).subscribe((exito) => {
 
       if (exito.result === 'OK') {
         // actualizar estatatus en el listado
-        const ordenIndex = this.listadoTickets.findIndex(e => e.ticketId === exito.dtoResult.ticketId);
-        this.listadoTickets[ordenIndex] = exito.dtoResult;
+        const ticketIndex = this.listadoTickets.findIndex(e => e.ticketId === exito.dtoResult.ticketId);
+        this.listadoTickets[ticketIndex] = exito.dtoResult;
 
         Swal.fire({
           icon: 'success',
           title: 'Intervenir Caso',
-          text: `${ exito.message}`,
+          text: `${exito.message}`,
           heightAuto: false
         }).then((result) => {
           if (result.isConfirmed) {
@@ -402,18 +404,18 @@ export class TicketsPage implements OnInit {
       activo: true
     };
 
-    this.helperService.showLoading('Atendiendo...','bubbles');
+    this.helperService.showLoading('Atendiendo...', 'bubbles');
     this.ticketService.intervenir(elNuevoStatusTicket).subscribe((exito) => {
 
       if (exito.result === 'OK') {
         // actualizar estatatus en el listado
-        const ordenIndex = this.listadoTickets.findIndex(e => e.ticketId === exito.dtoResult.ticketId);
-        this.listadoTickets[ordenIndex] = exito.dtoResult;
+        const ticketIndex = this.listadoTickets.findIndex(e => e.ticketId === exito.dtoResult.ticketId);
+        this.listadoTickets[ticketIndex] = exito.dtoResult;
 
         Swal.fire({
           icon: 'success',
           title: 'Atender Caso',
-          text: `${ exito.message}`,
+          text: `${exito.message}`,
           heightAuto: false
         }).then((result) => {
           if (result.isConfirmed) {
@@ -461,13 +463,13 @@ export class TicketsPage implements OnInit {
 
       if (exito.result === 'OK') {
         // actualizar estatatus en el listado
-        const ordenIndex = this.listadoTickets.findIndex(e => e.ticketId === exito.dtoResult.ticketId);
-        this.listadoTickets[ordenIndex] = exito.dtoResult;
+        const ticketIndex = this.listadoTickets.findIndex(e => e.ticketId === exito.dtoResult.ticketId);
+        this.listadoTickets[ticketIndex] = exito.dtoResult;
 
         Swal.fire({
           icon: 'success',
           title: 'Reabrir Caso',
-          text: `${ exito.message}`,
+          text: `${exito.message}`,
           heightAuto: false
         }).then((result) => {
           if (result.isConfirmed) {
@@ -504,15 +506,13 @@ export class TicketsPage implements OnInit {
 
   getTicketsFiltro(cadenaId: string, filtros: string, numberPage: number, pageSize: number) {
 
-    this.helperService.showLoading('Espere un momento, estamos cargando las tickets','bubbles');
+    this.helperService.showLoading('Espere un momento, estamos cargando las tickets', 'bubbles');
     this.cargando = true;
     this.ticketService.obtenerTicketsFiltro(cadenaId, filtros, numberPage, pageSize)
       .subscribe((exito: TicketsApiResponse) => {
         this.cargando = false;
 
         if (exito.result === 'OK') {
-
-          console.log('Tickets Filtro', exito.dtoResult);
 
           this.listadoTickets = exito.dtoResult;
           this.paginaActual = exito.paginaActual;
@@ -590,6 +590,12 @@ export class TicketsPage implements OnInit {
     this.ejecutarFiltros(environment.tamPagina, 1);
   }
 
+  onChangeTienda(tiendaId: string) {
+    this.laTiendaSeleccionadaId = tiendaId;
+    // ejecutar filtros
+    //this.ejecutarFiltros(environment.tamPagina, 1);
+  }
+
   ejecutarFiltros(tamPagina: number, paginaActual: number) {
     this.losFiltrosOk = '';
     this.filtrosFinales = [];
@@ -646,4 +652,37 @@ export class TicketsPage implements OnInit {
     this.modalCtrl.dismiss({});
   }
 
+  obtenerTiendas() {
+    this.tiendaService.obtenerTiendasUsuario().subscribe((exito: TiendasApiResponse) => {
+      if (exito.result === 'OK') {
+        this.lasTiendasUser = exito.dtoResult;
+        const todasTiendas: TiendaResponse = {
+          tiendaId: '',
+          nombre: 'Todas las tiendas',
+          nombreCorto: 'Todos',
+          iconName: 'search-outline',
+          identificadorExterno: '',
+          coordenadas: '',
+          apertura: '',
+          cierre: '',
+          utm: '',
+          diasOperacion: '',
+          email: '',
+          cadena: [],
+          fechaAlta: undefined,
+          fechaModificacion: undefined,
+          activo: false
+        };
+        this.lasTiendasUser.unshift(todasTiendas);
+
+        console.log(this.lasTiendasUser.length);
+
+        if(this.lasTiendasUser.length === 2){
+          this.laTiendaSeleccionadaId =  this.lasTiendasUser[1].tiendaId;
+        }
+      }
+    }, (err) => {
+      console.log('error al obtener tiendas', err);
+    });
+  }
 }

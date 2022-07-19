@@ -21,48 +21,67 @@
           </ion-col>
           <ion-col size="9">
             <ion-searchbar searchIcon="search" showcancelbutton="OK" class="forminput ion-margin"
-              placeholder="Buscar por nombre"
-              (ionChange)="onSearchChange($event)" [debounce]="250" showCancelButton="OK"></ion-searchbar>
+              placeholder="Buscar por nombre" (ionChange)="onSearchChange($event)" [debounce]="250"
+              showCancelButton="OK"></ion-searchbar>
+          </ion-col>
+          <ion-col size="1">
+           <ion-button (click)="CreaUsuario()" expand="block" fill="clear" shape="round">
+            <ion-icon slot="icon-only" name="add"> </ion-icon> Nuevo
+           </ion-button>
           </ion-col>
         </ion-item>
       </ion-col>
     </ion-row>
-   
+
   </ion-grid>
 
 
-  <ion-grid >
+  <ion-grid   class="ion-align-items-center ion-text-center" >
 
-      <ion-row class="header">
-        <ion-col >Email</ion-col>
-        <ion-col >Nombre</ion-col>
-        <ion-col >Intentos</ion-col>
-        <ion-col >Bloqueado</ion-col>
-        <ion-col >Rol</ion-col>
-        <ion-col >Activo</ion-col>
-        <ion-col ></ion-col>
-      </ion-row>
-        <ion-row *ngFor="let usuario of Usuarios">
-          <ion-col>{{usuario.email}}</ion-col>
-          <ion-col>{{usuario.nombre}}</ion-col>
-          <ion-col>{{usuario.intentos}}</ion-col>
-          <ion-col> 
-            {{usuario.bloqueado}}  
-            <a href="#"> 
-              <ion-icon onclick="Bloquear(usuario.usuarioId)" [color]="danger" name="ellipse"></ion-icon>
-            </a>
-         
-          
-          </ion-col>
-          <ion-col>{{usuario.rol?.nombre}}</ion-col>
-          <ion-col>{{usuario.activo}}
-            
-              <ion-icon onclick="Activar(usuario.usuarioId)" [color]="danger" name="ellipse"></ion-icon>
-          
+    <ion-row class="header">
+      <ion-col size="2">Email</ion-col>
+      <ion-col size="2">Nombre</ion-col>
+      <ion-col size="2">Intentos</ion-col>
+      <ion-col size="1">Bloqueado</ion-col>
+      <ion-col size="2">Rol</ion-col>
+      <ion-col size="1">Activo</ion-col>
+      <ion-col size="1"></ion-col>
+    </ion-row>
+    <ion-row *ngFor="let usuario of Usuarios">
+      <ion-col size="2">
+          <label title="{{usuario.email}}">  {{ (usuario.email.length>25)? (usuario.email | slice:0:25)+'..':(usuario.email) }}  </label> 
+      </ion-col>
 
-          </ion-col>
-          <ion-col></ion-col>
-          </ion-row>
+      <ion-col  size="2">
+        {{usuario.nombre}}
+      </ion-col>
+
+      <ion-col  size="2">
+        {{usuario.intentos}}
+      </ion-col>
+
+      <ion-col size="1">
+        
+        <ion-icon  size="large" (click)="Bloquear(usuario)" [class]="usuario.bloqueado?'activo':'inactivo'" name="ellipse"></ion-icon>
+     
+      </ion-col >
+
+      <ion-col size="2">
+        {{usuario.rol?.nombre}}
+      </ion-col>
+
+      <ion-col  size="1">
+
+        <ion-icon   size="large" (click)="Activar(usuario)" [class]="usuario.activo?'activo':'inactivo'" name="ellipse">
+        </ion-icon>
+      </ion-col>
+      <ion-col size="1">
+  <ion-button color="light" (click)="mostrarMenu($event, usuario)">
+                <ion-icon  size="large" color="secondary" slot="icon-only" name="create-outline"></ion-icon>
+            </ion-button>
+
+      </ion-col>
+    </ion-row>
   </ion-grid>
   <ion-grid>
 
