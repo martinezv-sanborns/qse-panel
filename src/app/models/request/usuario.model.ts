@@ -1,3 +1,4 @@
+import { EntidadCatalogoRequest } from "./entidad-catalogo.model";
 
 
 
@@ -34,3 +35,15 @@ export class NuevaPassWordUser{
     usuarioId: string;
     esActivo: boolean;
   }
+
+
+
+
+export interface UsuarioRequest extends EntidadCatalogoRequest {
+    email: string;
+    nombreUsuario: string;
+    password: string;
+    intentos: number;
+    bloqueado: boolean;
+    rolId: string;
+}
