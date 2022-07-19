@@ -197,9 +197,9 @@ export class TicketsPage implements OnInit {
     );
     await modalShowTicket.present();
 
-    // TODO: se tiene que propagar el cambio del estatus en el listado cuando se cierre la modal
     const { data } = await modalShowTicket.onWillDismiss();
-
+    const indexTicket = this.listadoTickets.findIndex(t=> t.ticketId === data.ticketModificado.ticketId);
+    this.listadoTickets[indexTicket] = data.ticketModificado;
   }
 
   async intervenirModal(ticketSelected: TicketResponse) {
@@ -299,8 +299,8 @@ export class TicketsPage implements OnInit {
 
       if (exito.result === 'OK') {
         // actualizar estatatus en el listado
-        const ordenIndex = this.listadoTickets.findIndex(e => e.ticketId === exito.dtoResult.ticketId);
-        this.listadoTickets[ordenIndex] = exito.dtoResult;
+        const ticketIndex = this.listadoTickets.findIndex(e => e.ticketId === exito.dtoResult.ticketId);
+        this.listadoTickets[ticketIndex] = exito.dtoResult;
 
         Swal.fire({
           icon: 'success',
@@ -352,8 +352,8 @@ export class TicketsPage implements OnInit {
 
       if (exito.result === 'OK') {
         // actualizar estatatus en el listado
-        const ordenIndex = this.listadoTickets.findIndex(e => e.ticketId === exito.dtoResult.ticketId);
-        this.listadoTickets[ordenIndex] = exito.dtoResult;
+        const ticketIndex = this.listadoTickets.findIndex(e => e.ticketId === exito.dtoResult.ticketId);
+        this.listadoTickets[ticketIndex] = exito.dtoResult;
 
         Swal.fire({
           icon: 'success',
@@ -407,8 +407,8 @@ export class TicketsPage implements OnInit {
 
       if (exito.result === 'OK') {
         // actualizar estatatus en el listado
-        const ordenIndex = this.listadoTickets.findIndex(e => e.ticketId === exito.dtoResult.ticketId);
-        this.listadoTickets[ordenIndex] = exito.dtoResult;
+        const ticketIndex = this.listadoTickets.findIndex(e => e.ticketId === exito.dtoResult.ticketId);
+        this.listadoTickets[ticketIndex] = exito.dtoResult;
 
         Swal.fire({
           icon: 'success',
@@ -461,8 +461,8 @@ export class TicketsPage implements OnInit {
 
       if (exito.result === 'OK') {
         // actualizar estatatus en el listado
-        const ordenIndex = this.listadoTickets.findIndex(e => e.ticketId === exito.dtoResult.ticketId);
-        this.listadoTickets[ordenIndex] = exito.dtoResult;
+        const ticketIndex = this.listadoTickets.findIndex(e => e.ticketId === exito.dtoResult.ticketId);
+        this.listadoTickets[ticketIndex] = exito.dtoResult;
 
         Swal.fire({
           icon: 'success',

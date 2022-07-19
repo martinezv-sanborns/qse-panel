@@ -18,6 +18,7 @@ import { NoHayResultadosComponent } from './no-hay-resultados/no-hay-resultados.
 import { EstatusColorComponent } from './estatus-color/estatus-color.component';
 import { PipesModule } from 'src/app/pipes/pipes.module';
 import { TopTenListadoComponent } from './top-ten-listado/top-ten-listado.component';
+import { MenuUsuarioComponent } from './menu-usuario/menu-usuario.component';
 
 
 
@@ -31,7 +32,8 @@ import { TopTenListadoComponent } from './top-ten-listado/top-ten-listado.compon
     TopTenComponent,
     NoHayResultadosComponent,
     EstatusColorComponent,
-    TopTenListadoComponent
+    TopTenListadoComponent,
+    MenuUsuarioComponent
   ],
   imports: [
     IonicModule,
@@ -51,7 +53,8 @@ import { TopTenListadoComponent } from './top-ten-listado/top-ten-listado.compon
     TopTenComponent,
     NoHayResultadosComponent,
     EstatusColorComponent,
-    TopTenListadoComponent
+    TopTenListadoComponent,
+    MenuUsuarioComponent
   ],
   providers:[DatePipe]
 })

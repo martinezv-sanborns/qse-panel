@@ -14,8 +14,6 @@ export class SeguimientoTicketComponent implements OnInit {
 
   ngOnInit() {
     this.losTicketLogs = this.losTicketLogs.sort((a,b) => (a.fechaAlta > b.fechaAlta) ? 1 : -1);
-    this.losTicketLogs = this.losTicketLogs.filter((item) => item.estatus.nombre !== 'Iniciado');
-    console.log('Esto es el seguimiento:', this.losTicketLogs);
   }
 
 }
