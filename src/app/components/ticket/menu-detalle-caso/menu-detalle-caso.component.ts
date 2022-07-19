@@ -59,11 +59,11 @@ export class MenuDetalleCasoComponent implements OnInit {
       });
     }
 
-    this.itemsMenu.push({
+/*     this.itemsMenu.push({
       id: 'close-menu',
       valor: 'Cerrar menú',
       icono: 'exit-outline'
-    });
+    }); */
   }
 
   opcionSeleccionada(valor: ItemMenu) {
