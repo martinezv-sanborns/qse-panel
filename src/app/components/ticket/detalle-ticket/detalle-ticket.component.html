@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Detalle del Ticket {{ elTicket.folio }}</ion-title>
+    <ion-title>Detalle del caso {{ elTicket.folio }}</ion-title>
     <ion-buttons slot="end" *ngIf="isModal">
       <ion-button (click)="cerrarModal()">
         <ion-icon color="danger" class="icon-close" slot="icon-only" name="close-circle-outline"></ion-icon>
@@ -26,7 +26,7 @@
         </ion-col>
         <ion-col size="4">{{ elTicket.nombre }}</ion-col>
         <ion-col size="3">
-          <ion-label><b>Contactar por:</b></ion-label>
+          <ion-label><strong>Contactar por:</strong></ion-label>
         </ion-col>
         <ion-col size="4">{{ elTicket.medioContacto.nombre }}</ion-col>
 
@@ -45,7 +45,7 @@
         <ion-col size="1">
           <ion-icon size="small" name="storefront-outline"></ion-icon>
         </ion-col>
-        <ion-col size="4">{{ elTicket.tienda.nombre }}</ion-col>
+        <ion-col size="4">{{ elTicket.tienda.nombre }} | {{ elTicket.tienda.identificadorExterno }}</ion-col>
         <ion-col size="3">
           <ion-label><strong>Último estatus:</strong></ion-label>
         </ion-col>
@@ -75,7 +75,7 @@
           </ion-toolbar>
           <ion-card *ngIf="tabActivo === 'relato'">
             <ion-item class="ion-text-center">
-              <ion-text class="ion-padding"><strong>{{ elTicket.nombre }}:</strong> {{elTicket.comentarios}}</ion-text>
+              <ion-text class="ion-padding"><i><strong>{{ elTicket.nombre }}:</strong> {{elTicket.comentarios}}</i></ion-text>
             </ion-item>
           </ion-card>
           <ion-card *ngIf="tabActivo === 'seguimiento'">
