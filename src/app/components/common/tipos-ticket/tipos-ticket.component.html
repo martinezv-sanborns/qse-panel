@@ -1,4 +1,5 @@
 <span [title]="item.tipo.nombre" class="title-icon" *ngFor="let item of ticketTipos">
-   <ion-icon [color]="item.tipo.tipoId=== 1 ? 'danger': ( item.tipo.tipoId === 2 ? 'warning': 'success')" [title]="item.tipo.nombre" size="small" [name]="item.tipo.iconName"></ion-icon>
+   <ion-icon *ngIf="!ishighlight" [color]="item.tipo.tipoId=== 1 ? 'danger': ( item.tipo.tipoId === 2 ? 'warning': 'success')" [title]="item.tipo.nombre" size="small" [name]="item.tipo.iconName"></ion-icon>
+   <ion-icon *ngIf="ishighlight" color="light" [title]="item.tipo.nombre" size="small" [name]="item.tipo.iconName"></ion-icon>
 </span>
 
