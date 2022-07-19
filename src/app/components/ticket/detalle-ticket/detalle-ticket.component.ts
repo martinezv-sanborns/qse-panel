@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, PopoverController } from '@ionic/angular';
 import Swal from 'sweetalert2';
 
 // globals
@@ -15,6 +15,7 @@ import { HelperService } from '../../../services/helper.service';
 // models
 import { TicketApiResponse, TicketLogResponse, TicketResponse } from 'src/app/models/response/ticket.model';
 import { TicketStatusRequest } from 'src/app/models/request/ticket.model';
+import { MenuDetalleCasoComponent } from '../menu-detalle-caso/menu-detalle-caso.component';
 
 
 
@@ -27,6 +28,7 @@ export class DetalleTicketComponent implements OnInit, OnChanges {
 
   @Input() elTicket: TicketResponse;
   @Input() elRolUsuario: string;
+  @Input() isModal: boolean;
 
   tabActivo = 'relato';
   losticketLogs: TicketLogResponse[] = [];
@@ -36,7 +38,8 @@ export class DetalleTicketComponent implements OnInit, OnChanges {
 
   constructor(private modalCrtl: ModalController,
     private ticketService: TicketService,
-    private helperService: HelperService) {
+    private helperService: HelperService,
+    private popVerCtrl: PopoverController) {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -61,6 +64,40 @@ export class DetalleTicketComponent implements OnInit, OnChanges {
   segmentChange(event: any) {
     this.tabActivo = event.detail.value;
     console.log('Que tab es:', this.tabActivo);
+  }
+
+  async mostrarDetalleMenu(evento){
+    const popover = await this.popVerCtrl.create({
+      component: MenuDetalleCasoComponent,
+      componentProps: {
+        elEstatus: this.elTicket.estatus,
+        elRolUsuario: this.elRolUsuario
+      },
+      event: evento,
+      cssClass: 'my-custom-class',
+      mode: 'ios',
+      backdropDismiss: true,
+      translucent: true
+    });
+    await popover.present();
+
+    const { data } = await popover.onDidDismiss();
+
+    if (data !== undefined) {
+      switch (data) {
+        case 'intervenir-ticket':
+          this.intervenirCasoModal(this.elTicket);
+          break;
+        case 'reabrir-ticket':
+          this.reabrirCasoModal(this.elTicket);
+          break;
+        case 'cerrar-caso':
+          this.cerrarCasoModal(this.elTicket);
+          break;
+        default:
+          break;
+      }
+    }
   }
 
   async reabrirCasoModal(ticketSelected: TicketResponse) {

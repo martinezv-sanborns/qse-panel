@@ -1,43 +1,36 @@
 import { Component, Input, OnInit } from '@angular/core';
+
+// controllers
 import { PopoverController } from '@ionic/angular';
+
+// models
 import { ItemMenu } from 'src/app/models/item-menu.model';
 import { EstatusResponse } from 'src/app/models/response/estatus.model';
+
+// globals
 import { environment } from 'src/environments/environment';
 
-
 @Component({
-  selector: 'app-menu-ticket',
-  templateUrl: './menu-ticket.component.html',
-  styleUrls: ['./menu-ticket.component.scss'],
+  selector: 'app-menu-detalle-caso',
+  templateUrl: './menu-detalle-caso.component.html',
+  styleUrls: ['./menu-detalle-caso.component.scss'],
 })
-export class MenuTicketComponent implements OnInit {
+export class MenuDetalleCasoComponent implements OnInit {
 
   @Input() elEstatus: EstatusResponse;
   @Input() elRolUsuario: string;
 
   itemsMenu: ItemMenu[] = [
-    {
-      id: 'detalle-ticket',
-      valor: 'Detalle del Caso',
-      icono: 'eye-outline'
-    },
-
   ];
 
   constructor(private popCtrl: PopoverController) { }
 
   ngOnInit() {
 
-    if (this.elEstatus.estatusId.toUpperCase() === environment.estatusIniciado
-      || this.elEstatus.estatusId.toUpperCase() === environment.estatusReabierto) {
-      this.itemsMenu.push({
-        id: 'atender-ticket',
-        valor: 'Atender',
-        icono: 'hand-right-outline'
-      });
-    }
+    console.log(this.elEstatus);
 
-    if (this.elEstatus.estatusId.toUpperCase() === environment.estatusAtendido) {
+    if (this.elEstatus.estatusId.toUpperCase() === environment.estatusAtendido
+    || this.elEstatus.estatusId.toUpperCase() === environment.estatusIniciado) {
 
       this.itemsMenu.push({
         id: 'intervenir-ticket',
@@ -66,11 +59,11 @@ export class MenuTicketComponent implements OnInit {
       });
     }
 
-    this.itemsMenu.push({
+/*     this.itemsMenu.push({
       id: 'close-menu',
       valor: 'Cerrar menú',
       icono: 'exit-outline'
-    });
+    }); */
   }
 
   opcionSeleccionada(valor: ItemMenu) {
@@ -78,6 +71,4 @@ export class MenuTicketComponent implements OnInit {
       valor.id
     );
   }
-
-
 }

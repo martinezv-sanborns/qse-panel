@@ -26,8 +26,10 @@ export class TicketService {
   }
 
   obtenerTicketsFiltro(cadenaid: string, filtro: string, numberpage: number, pagesize: number) {
+    const query =`/api/ticket/listado/cadena/filtros/async/${filtro}/${cadenaid}/${numberpage}/${pagesize}`;
+    //console.log('Obteniendo TOP TEN',  query);
     return this.generalService
-      .getQuery(`/api/ticket/listado/cadena/filtros/async/${filtro}/${cadenaid}/${numberpage}/${pagesize}`)
+      .getQuery(query)
       .pipe(
         map(
           (laRespuesta: TicketsApiResponse) => laRespuesta)

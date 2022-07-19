@@ -170,7 +170,7 @@ export class LoginPage implements OnInit {
   
                 this.canalService.onChangeadena();
   
-                this.elrouter.navigate(['/principal']);
+                this.elrouter.navigate(['/home']);
               } else {
                 const alertMsj = await this.alertCtrl.create({
                   cssClass: 'alertDanger',

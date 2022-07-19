@@ -11,6 +11,7 @@ import { TicketTipoResponse } from 'src/app/models/response/ticket.model';
 export class TiposTicketComponent implements OnInit {
 
   @Input() ticketTipos: TicketTipoResponse[];
+  @Input() ishighlight: boolean;
 
   constructor() { }
 

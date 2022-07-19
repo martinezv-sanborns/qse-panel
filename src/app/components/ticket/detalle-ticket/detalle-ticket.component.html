@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Detalle del Ticket {{ elTicket.folio }}</ion-title>
-    <ion-buttons slot="end">
+    <ion-title>Detalle del caso {{ elTicket.folio }}</ion-title>
+    <ion-buttons slot="end" *ngIf="isModal">
       <ion-button (click)="cerrarModal()">
         <ion-icon color="danger" class="icon-close" slot="icon-only" name="close-circle-outline"></ion-icon>
       </ion-button>
@@ -10,59 +10,56 @@
 </ion-header>
 <ion-content>
   <ion-card>
-
     <ion-grid>
       <ion-row>
-        <ion-col size="2">
-          <ion-label><b>Tipo:</b></ion-label>
+        <ion-col>
+          <ion-label><ion-icon color="danger" slot="start" name="calendar-outline"></ion-icon> {{elTicket.fechaAlta | date }}</ion-label>
         </ion-col>
-        <ion-col size="10">
-          <app-tipos-ticket [ticketTipos]="elTicket.ticketTipos"></app-tipos-ticket>
+        <ion-col class="ion-no-padding" *ngIf="!isModal">
+          <ion-buttons class="ion-float-right">
+            <ion-button color="danger" slot="end" (click)="mostrarDetalleMenu($event)">
+              <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+            </ion-button>
+          </ion-buttons>
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col size="1">
-          <ion-icon size="small" name="person-circle-outline"></ion-icon>
+        <ion-col size="6"> <ion-icon color="danger" size="small" name="person-circle-outline"></ion-icon>&nbsp;{{ elTicket.nombre }}</ion-col>
+        <ion-col size="6">
+          <ion-label><strong>Contactar por:&nbsp;</strong>{{ elTicket.medioContacto.nombre }}</ion-label>
         </ion-col>
-        <ion-col size="4">{{ elTicket.nombre }}</ion-col>
-        <ion-col size="3">
-          <ion-label><b>Contactar por:</b></ion-label>
-        </ion-col>
-        <ion-col size="4">{{ elTicket.medioContacto.nombre }}</ion-col>
-
       </ion-row>
       <ion-row>
-        <ion-col size="1">
-          <ion-icon size="small" name="mail-outline"></ion-icon>
+        <ion-col size="6"> <ion-icon color="danger" size="small" name="mail-outline"></ion-icon>&nbsp;{{ elTicket.email }}</ion-col>
+        <ion-col size="6">
+          <ion-icon color="danger" size="small" name="call-outline"></ion-icon>&nbsp;{{ elTicket.telefono }}
         </ion-col>
-        <ion-col size="6">{{ elTicket.email }}</ion-col>
-        <ion-col size="1">
-          <ion-icon size="small" name="call-outline"></ion-icon>
-        </ion-col>
-        <ion-col size="4">{{ elTicket.telefono }}</ion-col>
       </ion-row>
       <ion-row>
-        <ion-col size="1">
-          <ion-icon size="small" name="storefront-outline"></ion-icon>
+        <ion-col size="6">
+          <ion-icon color="danger" size="small" name="storefront-outline"></ion-icon>
+          &nbsp;{{ elTicket.tienda.nombre }} | {{ elTicket.tienda.identificadorExterno }}
         </ion-col>
-        <ion-col size="4">{{ elTicket.tienda.nombre }}</ion-col>
-        <ion-col size="3">
-          <ion-label><strong>Último estatus:</strong></ion-label>
-        </ion-col>
-        <ion-col size="4">
+        <ion-col size="6">
+          <ion-label>
+            <strong>Último estatus:</strong>
+          </ion-label>
           <app-estatus-color [status]="elTicket.estatus.nombre "></app-estatus-color>
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col size="1">
-          <ion-icon size="small" name="ticket-outline"></ion-icon>
+        <ion-col size="6">
+          <ion-icon color="danger" size="small" name="ticket-outline"></ion-icon>&nbsp;{{ elTicket.numero }}
         </ion-col>
-        <ion-col size="11">{{ elTicket.numero }}</ion-col>
+        <ion-col size="6">
+          <strong>Tipo: </strong>
+          <app-tipos-ticket [ticketTipos]="elTicket.ticketTipos"></app-tipos-ticket>
+        </ion-col>
       </ion-row>
       <ion-row>
         <ion-col size="12">
           <ion-toolbar>
-            <ion-segment scrollable mode="md" (ionChange)="segmentChange($event)" value="{{ tabActivo }}">
+            <ion-segment color="danger" scrollable mode="md" (ionChange)="segmentChange($event)" value="{{ tabActivo }}">
               <ion-segment-button value="relato">
                 <ion-icon size="large" name="chatbubble-ellipses-outline"></ion-icon>
                 <ion-label>Relato del Cliente</ion-label>
@@ -75,7 +72,8 @@
           </ion-toolbar>
           <ion-card *ngIf="tabActivo === 'relato'">
             <ion-item class="ion-text-center">
-              <ion-text class="ion-padding"><strong>{{ elTicket.nombre }}:</strong> {{elTicket.comentarios}}</ion-text>
+              <ion-text class="ion-padding"><i><strong>{{ elTicket.nombre }}:</strong> {{elTicket.comentarios}}</i>
+              </ion-text>
             </ion-item>
           </ion-card>
           <ion-card *ngIf="tabActivo === 'seguimiento'">
@@ -86,7 +84,7 @@
     </ion-grid>
   </ion-card>
 </ion-content>
-<ion-footer>
+<ion-footer *ngIf="isModal">
   <ion-row>
     <ion-col *ngIf="elTicket.estatus.nombreCorto !== 'CERRCOR' && elTicket.estatus.nombreCorto !== 'CERRTDA'">
       <ion-button *ngIf="tabActivo === 'seguimiento'" color="success" (click)="intervenirCasoModal(elTicket)"
@@ -96,13 +94,15 @@
       </ion-button>
     </ion-col>
     <ion-col *ngIf="onTienePermisoCerrado(elTicket) || onTienePermisoReabrir(elTicket)">
-      <ion-button *ngIf="tabActivo === 'seguimiento' && permisoCerrado && (elTicket.estatus.nombreCorto !== 'CERRCOR' && elTicket.estatus.nombreCorto !== 'CERRTDA')" color="primary" (click)="cerrarCasoModal(elTicket)"
-        shape="round" expand="full">
+      <ion-button
+        *ngIf="tabActivo === 'seguimiento' && permisoCerrado && (elTicket.estatus.nombreCorto !== 'CERRCOR' && elTicket.estatus.nombreCorto !== 'CERRTDA')"
+        color="primary" (click)="cerrarCasoModal(elTicket)" shape="round" expand="full">
         <ion-icon slot="start" name="close-outline"></ion-icon>
         Cerrar Caso
       </ion-button>
-      <ion-button *ngIf="tabActivo === 'seguimiento' && permisoAbierto && (elTicket.estatus.nombreCorto === 'CERRCOR' || elTicket.estatus.nombreCorto === 'CERRTDA')"  color="primary" (click)="reabrirCasoModal(elTicket)"
-        shape="round" expand="full">
+      <ion-button
+        *ngIf="tabActivo === 'seguimiento' && permisoAbierto && (elTicket.estatus.nombreCorto === 'CERRCOR' || elTicket.estatus.nombreCorto === 'CERRTDA')"
+        color="primary" (click)="reabrirCasoModal(elTicket)" shape="round" expand="full">
         <ion-icon slot="start" name="folder-open-outline"></ion-icon>
         Reabrir Caso
       </ion-button>
