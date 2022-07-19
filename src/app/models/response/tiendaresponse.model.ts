@@ -5,7 +5,7 @@ import { EstatusResponse } from './estatus.model';
 
 export class TiendaResponse extends EntidadCatalogoResponse {
     tiendaId: string;
-    identificarExterno: string;
+    identificadorExterno: string;
     coordenadas: string;
     apertura: string;
     cierre: string;
@@ -17,7 +17,7 @@ export class TiendaResponse extends EntidadCatalogoResponse {
 }
 export interface TiendaBaseResponse {
     tiendaId: string;
-    identificarExterno: string;
+    identificadorExterno: string;
     coordenadas: string;
     apertura: string;
     cierre: string;

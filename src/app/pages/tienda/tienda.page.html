@@ -17,11 +17,20 @@
           <ion-col size="2">
             <ion-label><b>Tiendas</b></ion-label>
           </ion-col>
-          <ion-col size="9">
-            <!-- <ion-searchbar searchIcon="search" showcancelbutton="OK" class="forminput ion-margin"
+          <ion-col size="8">
+            <ion-searchbar searchIcon="search" showcancelbutton="OK" class="forminput ion-margin"
               placeholder="Buscar por nombre o numero de tienda"
-              (ionChange)="onSearchChange($event)" [debounce]="250" showCancelButton="OK"></ion-searchbar> -->
+              (ionChange)="onSearchChange($event)" [debounce]="250" showCancelButton="OK"></ion-searchbar>
           </ion-col>
+          <ion-col size="2">
+            <ion-row>
+                <ion-col>
+                    <ion-button id="trigger-button" (click)="crearTienda()">
+                        <ion-icon size="default" name="add-circle-outline"></ion-icon>Nuevo
+                    </ion-button>
+                </ion-col>
+            </ion-row>
+        </ion-col>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -41,10 +50,10 @@
             </ion-row>
             <ion-row *ngFor="let tienda of listadoTiendas" class="border-grid-row">
               <ion-col size="2">
-                <!-- {{ tienda.identificarExterno}} -->
+                {{ tienda.identificadorExterno }}
               </ion-col>
               <ion-col size="2">
-                <!-- {{ tienda.nombre}} -->
+                {{ tienda.nombre | lowercase}}
               </ion-col>
               <ion-col size="2">
                 <!-- {{ tienda.apertura }} -->
@@ -53,16 +62,16 @@
                 <!-- {{ tienda.cierre }} -->
               </ion-col>
               <ion-col size="1">
-                <!-- {{ tienda.activo }} -->
+                {{ tienda.activo }}
               </ion-col>
               <ion-col size="1">
                 <!-- {{ tienda.diasOperacion }} -->
               </ion-col>
               <ion-col size="1">
                 <ion-buttons>
-                  <!-- <ion-button slot="end" (click)="mostrarMenu($event, tienda)">
+                  <ion-button slot="end" (click)="mostrarMenu($event, tienda)">
                     <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
-                  </ion-button> -->
+                  </ion-button>
                 </ion-buttons>
               </ion-col>
             </ion-row>
@@ -74,7 +83,7 @@
 
   </ion-grid>
 
-  <!-- <ion-grid class="ion-text-center" *ngIf="listadoTiendas.length > 0">
+  <ion-grid class="ion-text-center" *ngIf="listadoTiendas.length > 0">
     <ion-row>
       <ion-col class="2">
         <ion-chip (click)="cambiarPagina(paginaActual - 1)" color="danger" class="cursor"
@@ -96,7 +105,7 @@
         </ion-chip>
       </ion-col>
     </ion-row>
-  </ion-grid> -->
+  </ion-grid>
 
   <ion-grid>
     <ion-row class="ion-text-center" *ngIf="!cargando && listadoTiendas.length === 0">

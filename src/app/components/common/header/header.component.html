@@ -34,6 +34,11 @@
                 <ion-icon name="person-circle-outline" slot="start"></ion-icon>
                 Usuarios
             </ion-button>
+            <ion-button fill="clear" color="dark" routerLink="/tienda" routerDirection="root"
+            routerLinkActive="active-item" [routerLinkActiveOptions]="{exact: true}">
+            <ion-icon name="storefront-outline" slot="start"></ion-icon>
+            Tiendas
+        </ion-button>
         </ion-col>
         <ion-col size="4" class="ion-text-right">
             <ion-chip color="primary" *ngIf="entradaCadenaName">

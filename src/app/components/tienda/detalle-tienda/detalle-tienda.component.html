@@ -1,0 +1,85 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Detalle de la Tienda {{ laTienda.nombre }} | {{laTienda.identificadorExterno}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrarModal()">
+        <ion-icon color="danger" class="icon-close" slot="icon-only" name="close-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-card>
+
+    <ion-grid>
+      <ion-row>
+        <ion-col size="2">
+          <ion-icon size="small" name="storefront-outline"></ion-icon>
+        </ion-col>
+        <ion-col size="4">
+          <ion-col size="4">{{ laTienda.nombre }}</ion-col>
+        </ion-col>
+        <ion-col size="2">
+          <ion-icon size="small" name="settings-outline"></ion-icon>
+        </ion-col>
+        <ion-col size="4">
+          <ion-col size="4">{{ laTienda.identificadorExterno }}</ion-col>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="2">
+          <ion-icon size="small" name="mail-outline"></ion-icon>
+        </ion-col>
+        <ion-col size="10" *ngIf="laTienda.email != ''">{{ laTienda.email }}</ion-col>
+        <ion-col size="10" *ngIf="laTienda.email === ''">No existe datos</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="2">
+          <ion-icon size="small" name="location-outline"></ion-icon>
+        </ion-col>
+        <ion-col size="10" *ngIf="laTienda.coordenadas != ''">{{ laTienda.coordenadas }}</ion-col>
+        <ion-col size="10" *ngIf="laTienda.coordenadas === ''">No existe datos</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="2">
+          <ion-icon size="small" name="time-outline"></ion-icon>
+        </ion-col>
+        <ion-col size="10">
+          <ion-chip outline="true" color="secondary">
+            <ion-label color="secondary">  {{ laTienda.apertura }} a {{ laTienda.cierre }}</ion-label>
+          </ion-chip>
+         </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="2">
+          <ion-icon size="small" name="calendar-outline"> </ion-icon>
+        </ion-col>
+        <ion-col size="10">Lunes a Domingo</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="2">
+          <ion-icon size="small" name="earth-outline"> </ion-icon>
+        </ion-col>
+        <ion-col size="10">{{ laTienda.utm }}</ion-col>
+      </ion-row>
+      <!-- <ion-row>
+        <ion-col size="2">
+          <ion-icon size="small" name="link-outline"> </ion-icon>
+        </ion-col>
+        <ion-col size="10">{{ laTienda }}</ion-col>
+      </ion-row> -->
+    </ion-grid>
+  </ion-card>
+</ion-content>
+<ion-footer>
+  <ion-row>
+
+    <ion-col>
+      <ion-button color="primary" (click)="cerrarModal()"
+        shape="round" expand="full">
+        Cerrar
+      </ion-button>
+    </ion-col>
+  </ion-row>
+
+</ion-footer>
