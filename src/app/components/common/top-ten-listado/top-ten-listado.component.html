@@ -1,5 +1,5 @@
-<ion-list >
-  <ion-item *ngFor="let elticket of this.entradaListadoTickets">
+<ion-list>
+  <ion-item *ngFor="let elticket of this.entradaListadoTickets" [class.highlight]="this.ticketSeleccionadoId===elticket.ticketId"  (click)="ticketSelectedChanged(elticket)">
     <ion-grid >
       <ion-row>
         <ion-col ><ion-label class="TextoItemComentarios">{{elticket.comentarios | slice: 0:30}}...</ion-label></ion-col>
@@ -11,7 +11,7 @@
           <ion-badge *ngFor="let tipo of elticket.ticketTipos" color="primary" mode="ios">{{tipo.tipo.nombreCorto}}</ion-badge>
         </ion-col>
         <ion-col class="ion-text-right">
-            <ion-icon  name="eye-outline" (click)="ticketSelectedChanged(elticket)"></ion-icon>
+            <ion-icon  name="eye-outline" class="cursor" ></ion-icon>
         </ion-col>
       </ion-row>                    
     </ion-grid>

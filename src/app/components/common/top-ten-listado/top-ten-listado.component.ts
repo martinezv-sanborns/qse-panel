@@ -10,15 +10,32 @@ import { TicketResponse } from 'src/app/models/response/ticket.model';
 export class TopTenListadoComponent implements OnInit, OnChanges {
   @Input() entradaListadoTickets: TicketResponse[]=[];
   @Output() salidaTicketSeleccionado: EventEmitter< TicketResponse>= new EventEmitter<TicketResponse>();
-  constructor() { }
-  ngOnChanges(changes: SimpleChanges): void {
-    
+  ticketSeleccionadoId:string='';
+
+  constructor() { 
+    if (this.entradaListadoTickets.length>0){
+      this.ticketSeleccionadoId=this.entradaListadoTickets[0].ticketId;
+      this.salidaTicketSeleccionado.emit(this.entradaListadoTickets[0]);
+    }
   }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.entradaListadoTickets.length>0){
+      this.ticketSeleccionadoId=this.entradaListadoTickets[0].ticketId;
+      this.salidaTicketSeleccionado.emit(this.entradaListadoTickets[0]);
+    }
+  }
+
   ticketSelectedChanged(elTicket:TicketResponse)
   {
+    this.ticketSeleccionadoId=elTicket.ticketId;
     this.salidaTicketSeleccionado.emit(elTicket);
-
   }
-  ngOnInit() {}
+  ngOnInit() {
+    if (this.entradaListadoTickets.length>0){
+      this.ticketSeleccionadoId=this.entradaListadoTickets[0].ticketId;
+      this.salidaTicketSeleccionado.emit(this.entradaListadoTickets[0]);
+    }
+  }
 
 }
