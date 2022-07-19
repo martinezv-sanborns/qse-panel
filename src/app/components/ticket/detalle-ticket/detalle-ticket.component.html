@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Detalle del Ticket {{ elTicket.folio }}</ion-title>
-    <ion-buttons slot="end">
+    <ion-buttons slot="end" *ngIf="isModal">
       <ion-button (click)="cerrarModal()">
         <ion-icon color="danger" class="icon-close" slot="icon-only" name="close-circle-outline"></ion-icon>
       </ion-button>
