@@ -38,4 +38,15 @@ export class TiendaService {
         (laRespuesta: TiendasApiResponse) => laRespuesta)
     );
   }
+
+
+
+  cambiarActivo(laTienda: TiendaActivaRequest) {
+    return this.generalService
+      .Post(`/api/tienda/estatus/async`, laTienda)
+      .pipe(
+        map(
+          (laRespuesta: TiendaApiResponse) => laRespuesta)
+      );
+  }
 }
