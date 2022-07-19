@@ -19,6 +19,7 @@ import { EstatusColorComponent } from './estatus-color/estatus-color.component';
 import { PipesModule } from 'src/app/pipes/pipes.module';
 import { TopTenListadoComponent } from './top-ten-listado/top-ten-listado.component';
 import { MenuUsuarioComponent } from './menu-usuario/menu-usuario.component';
+import { TiposTicketComponent } from './tipos-ticket/tipos-ticket.component';
 
 
 
@@ -33,7 +34,8 @@ import { MenuUsuarioComponent } from './menu-usuario/menu-usuario.component';
     NoHayResultadosComponent,
     EstatusColorComponent,
     TopTenListadoComponent,
-    MenuUsuarioComponent
+    MenuUsuarioComponent,
+    TiposTicketComponent
   ],
   imports: [
     IonicModule,
@@ -42,7 +44,6 @@ import { MenuUsuarioComponent } from './menu-usuario/menu-usuario.component';
     FormsModule,
     ReactiveFormsModule,
     PipesModule
-    
   ],
   exports:[
     HeaderComponent,
@@ -54,7 +55,8 @@ import { MenuUsuarioComponent } from './menu-usuario/menu-usuario.component';
     NoHayResultadosComponent,
     EstatusColorComponent,
     TopTenListadoComponent,
-    MenuUsuarioComponent
+    MenuUsuarioComponent,
+    TiposTicketComponent
   ],
   providers:[DatePipe]
 })

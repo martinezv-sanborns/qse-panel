@@ -10,7 +10,6 @@ import { MenuTicketComponent } from './menu-ticket/menu-ticket.component';
 import { DetalleTicketComponent } from './detalle-ticket/detalle-ticket.component';
 import { SeguimientoTicketComponent } from './seguimiento-ticket/seguimiento-ticket.component';
 import { EstatusMotivoTicketComponent } from './estatus-motivo-ticket/estatus-motivo-ticket.component';
-import { TiposTicketComponent } from './tipos-ticket/tipos-ticket.component';
 import { MenuDetalleCasoComponent } from './menu-detalle-caso/menu-detalle-caso.component';
 
 
@@ -20,7 +19,6 @@ import { MenuDetalleCasoComponent } from './menu-detalle-caso/menu-detalle-caso.
     DetalleTicketComponent,
     SeguimientoTicketComponent,
     EstatusMotivoTicketComponent,
-    TiposTicketComponent,
     MenuDetalleCasoComponent
   ],
   imports: [
@@ -35,7 +33,6 @@ import { MenuDetalleCasoComponent } from './menu-detalle-caso/menu-detalle-caso.
     DetalleTicketComponent,
     SeguimientoTicketComponent,
     EstatusMotivoTicketComponent,
-    TiposTicketComponent,
     MenuDetalleCasoComponent
   ]
 })
