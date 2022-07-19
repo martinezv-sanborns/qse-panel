@@ -33,7 +33,7 @@ export class MenuTicketComponent implements OnInit {
       this.itemsMenu.push({
         id: 'atender-ticket',
         valor: 'Atender',
-        icono: 'time-outline'
+        icono: 'hand-right-outline'
       });
     }
 

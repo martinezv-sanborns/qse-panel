@@ -84,9 +84,6 @@ export class TicketsPage implements OnInit {
         this.totalPaginasArray = new Array((exito.totalPaginas > 10 ? 10 : exito.totalPaginas));
         this.totalRegistros = exito.totalRegistros;
         this.noPaginas = exito.totalPaginas;
-
-        console.log('el listado de tickets', this.listadoTickets);
-
       }
       this.cargando = false;
     }, (errr) => {
@@ -101,8 +98,6 @@ export class TicketsPage implements OnInit {
   }
 
   async mostrarMenu(evento, ticketSelected: TicketResponse) {
-
-    console.log('ticket seleccionado', ticketSelected);
 
     const popover = await this.popVerCtrl.create({
       component: MenuTicketComponent,
@@ -512,8 +507,6 @@ export class TicketsPage implements OnInit {
         this.cargando = false;
 
         if (exito.result === 'OK') {
-
-          console.log('Tickets Filtro', exito.dtoResult);
 
           this.listadoTickets = exito.dtoResult;
           this.paginaActual = exito.paginaActual;
