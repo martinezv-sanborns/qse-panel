@@ -20,6 +20,8 @@ import { PipesModule } from 'src/app/pipes/pipes.module';
 import { TopTenListadoComponent } from './top-ten-listado/top-ten-listado.component';
 import { MenuUsuarioComponent } from './menu-usuario/menu-usuario.component';
 import { TiposTicketComponent } from './tipos-ticket/tipos-ticket.component';
+import Swiper from 'swiper';
+import { SwiperModule } from 'swiper/angular';
 
 
 
@@ -43,7 +45,7 @@ import { TiposTicketComponent } from './tipos-ticket/tipos-ticket.component';
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    PipesModule
+    PipesModule,SwiperModule 
   ],
   exports:[
     HeaderComponent,

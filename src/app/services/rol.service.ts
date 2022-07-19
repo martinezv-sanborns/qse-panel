@@ -12,7 +12,7 @@ export class RolService {
 
   obtenerRoles() {
     return this.generalService
-      .getQuery(`/api/rol/list/async`)
+      .getQuery(`/api/rol/listado/async`)
       .pipe(
         map(
           (laRespuesta: RolesApiResponse) => laRespuesta)

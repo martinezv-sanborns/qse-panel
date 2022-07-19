@@ -1,0 +1,75 @@
+.swiper {
+    width: 100%;
+    height: 100%;
+}
+
+.cardSize {
+    width: 120px;
+    height: 100px;
+}
+
+.p-5 {
+    padding: 5px;
+}
+
+.title-rol {
+    font-size: 16px;
+}
+
+.swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+    /* Center slide text vertically */
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+}
+
+.swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.size-carrucel-title {
+    font-size: 12px;
+    font-weight: bold;
+    color: gray;
+}
+
+.size-title-section-carrucel {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+ion-card .cardX:hover {
+    background-color: #2dd36f;
+    color: #f4f5f8 !important;
+    ion-card-title {
+        color: #f4f5f8;
+    }
+    ion-card-subtitle {
+        color: #f4f5f8;
+    }
+}
+
+
+/* Extra small devices (phones, 600px and down) */
+
+@media only screen and (max-width: 600px) {
+    .cardSize {
+        width: 60px;
+        height: 50px;
+    }
+}
