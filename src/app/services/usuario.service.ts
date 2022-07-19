@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
-import { NuevaPassWordUser, OlvidePasswordRequest, UsuarioLinkRequest, UsuarioLockRequest } from '../models/request/usuario.model';
+import { NuevaPassWordUser, OlvidePasswordRequest, UsuarioLinkRequest, UsuarioLockRequest, UsuarioRequest } from '../models/request/usuario.model';
 import { UsuarioApiResponse, UsuarioLinkApiResponse, UsuariosApiResponse } from '../models/response/usuario.model';
 import { GeneralService } from './general.service';
 
@@ -34,6 +34,9 @@ export class UsuarioService {
 
   
   desbloquear(elUsuario: UsuarioLockRequest) {
+
+    console.log("el usuario lock",elUsuario)
+
     return this.generalService
       .Post(`/api/usuario/lock/async`, elUsuario)
       .pipe(
@@ -82,21 +85,46 @@ export class UsuarioService {
   }
 
 
+  Activar(usuarioId : string ) {
+    return this.generalService
+    .Put(`/api/usuario/activar/${usuarioId}`,'')
+      .pipe(
+        map(
+          (laRespuesta: UsuariosApiResponse) => laRespuesta)
+      );
+  }
+
+
+  Desactivar(usuarioId : string ) {
+    return this.generalService
+    .Put(`/api/usuario/desactivar/${usuarioId}`,'')
+      .pipe(
+        map(
+          (laRespuesta: UsuariosApiResponse) => laRespuesta)
+      );
+  }
+
+
+  registrar(usuario:UsuarioRequest){
+    return this.generalService.Post(`/api/usuario/async`,usuario).pipe(
+      map(
+        (laRespuesta:UsuarioApiResponse)=>laRespuesta)
+        );
+  }
+
   
 
 
 
 
   ResetIntentos( usuarioId: string ) {
-    console.log("entre")
-
     return this.generalService
     .Put(`/api/usuario/resetearIntentos/${usuarioId}`,'')
       .pipe(
         map(
           (laRespuesta: UsuariosApiResponse) => laRespuesta)
       );
-      
+
   }
 
 

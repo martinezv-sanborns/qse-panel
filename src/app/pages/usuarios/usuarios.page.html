@@ -24,6 +24,11 @@
               placeholder="Buscar por nombre" (ionChange)="onSearchChange($event)" [debounce]="250"
               showCancelButton="OK"></ion-searchbar>
           </ion-col>
+          <ion-col size="1">
+           <ion-button (click)="CreaUsuario()" expand="block" fill="clear" shape="round">
+            <ion-icon slot="icon-only" name="add"> </ion-icon> Nuevo
+           </ion-button>
+          </ion-col>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -56,8 +61,9 @@
       </ion-col>
 
       <ion-col size="1">
-        <ion-icon (click)="Bloquear(usuario.usuarioId)" [class]="usuario.bloqueado?'activo':'inactivo'" name="ellipse">
-        </ion-icon>
+        
+        <ion-icon  size="large" (click)="Bloquear(usuario)" [class]="usuario.bloqueado?'activo':'inactivo'" name="ellipse"></ion-icon>
+     
       </ion-col >
 
       <ion-col size="2">
@@ -66,12 +72,12 @@
 
       <ion-col  size="1">
 
-        <ion-icon (click)="Activar(usuario.usuarioId)" [class]="usuario.activo?'activo':'inactivo'" name="ellipse">
+        <ion-icon   size="large" (click)="Activar(usuario)" [class]="usuario.activo?'activo':'inactivo'" name="ellipse">
         </ion-icon>
       </ion-col>
       <ion-col size="1">
   <ion-button color="light" (click)="mostrarMenu($event, usuario)">
-                <ion-icon color="secondary" slot="icon-only" name="create-outline"></ion-icon>
+                <ion-icon  size="large" color="secondary" slot="icon-only" name="create-outline"></ion-icon>
             </ion-button>
 
       </ion-col>
