@@ -9,8 +9,8 @@
         <ion-col >
           <ion-label class="TextoItemTimeAgo">{{elticket.fechaAlta|timeAgo}}</ion-label>
           
-          <ion-badge *ngFor="let tipo of elticket.ticketTipos" color="primary" mode="ios">{{tipo.tipo.nombreCorto}}</ion-badge>
-          
+          <!-- <ion-badge *ngFor="let tipo of elticket.ticketTipos" color="primary" mode="ios">{{tipo.tipo.nombreCorto}}</ion-badge> -->
+          <app-tipos-ticket  [ticketTipos]="elticket.ticketTipos" [isHighlight]="this.ticketSeleccionadoId===elticket.ticketId"  ></app-tipos-ticket>
 
         </ion-col>
         <ion-col class="ion-text-right">
