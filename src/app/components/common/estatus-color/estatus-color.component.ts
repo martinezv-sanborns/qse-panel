@@ -11,7 +11,7 @@ export class EstatusColorComponent implements OnInit {
   colorSeleccionado: string;
 
   colorsStatus = [{
-    color: 'tertiary',
+    color: 'primary',
     status: 'Iniciado'
   },
   {
@@ -19,7 +19,7 @@ export class EstatusColorComponent implements OnInit {
     status: 'Atendiendo'
   },
   {
-    color: 'primary',
+    color: 'warning',
     status: 'Reabierto'
   },
   {

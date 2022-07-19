@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import Swal from 'sweetalert2';
 
@@ -23,7 +23,7 @@ import { TicketStatusRequest } from 'src/app/models/request/ticket.model';
   templateUrl: './detalle-ticket.component.html',
   styleUrls: ['./detalle-ticket.component.scss'],
 })
-export class DetalleTicketComponent implements OnInit {
+export class DetalleTicketComponent implements OnInit, OnChanges {
 
   @Input() elTicket: TicketResponse;
   @Input() elRolUsuario: string;
@@ -31,24 +31,30 @@ export class DetalleTicketComponent implements OnInit {
   tabActivo = 'relato';
   losticketLogs: TicketLogResponse[] = [];
   descripcion: string;
-  sizeBotonIn: number;
   permisoCerrado: boolean;
   permisoAbierto: boolean;
 
   constructor(private modalCrtl: ModalController,
     private ticketService: TicketService,
-    private helperService: HelperService) { }
+    private helperService: HelperService) {
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.initTickets();
+    this.permisoCerrado = false;
+    this.permisoAbierto = false;
+  }
 
   ngOnInit() {
-    this.losticketLogs = this.elTicket.ticketLogs.filter(t => t.estatus.estatusId !== environment.estatusIniciado);
-    this.sizeBotonIn = 6;
+    this.initTickets();
     this.permisoCerrado = false;
     this.permisoAbierto = false;
   }
 
   cerrarModal() {
     this.modalCrtl.dismiss({
-      close: true
+      close: true,
+      ticketModificado: this.elTicket
     });
   }
 
@@ -136,11 +142,12 @@ export class DetalleTicketComponent implements OnInit {
       if (exito.result === 'OK') {
         // actualizar ticket
         this.elTicket = exito.dtoResult;
+        this.initTickets();
 
         Swal.fire({
           icon: 'success',
           title: 'Cerrar Caso',
-          text: `${ exito.message }`,
+          text: `${exito.message}`,
           heightAuto: false
         }).then((result) => {
           if (result.isConfirmed) {
@@ -188,10 +195,12 @@ export class DetalleTicketComponent implements OnInit {
 
       if (exito.result === 'OK') {
         this.elTicket = exito.dtoResult;
+        this.initTickets();
+
         Swal.fire({
           icon: 'success',
           title: 'Intervenir Caso',
-          text: `${ exito.message}`,
+          text: `${exito.message}`,
           heightAuto: false
         }).then((result) => {
           if (result.isConfirmed) {
@@ -239,11 +248,14 @@ export class DetalleTicketComponent implements OnInit {
     this.ticketService.reabrir(elNuevoStatusTicket).subscribe((exito: TicketApiResponse) => {
 
       if (exito.result === 'OK') {
+
         this.elTicket = exito.dtoResult;
+        this.initTickets();
+
         Swal.fire({
           icon: 'success',
           title: 'Reabrir Caso',
-          text: `${ exito.message}`,
+          text: `${exito.message}`,
           heightAuto: false
         }).then((result) => {
           if (result.isConfirmed) {
@@ -286,9 +298,7 @@ export class DetalleTicketComponent implements OnInit {
     if (resultado) {
       this.permisoAbierto = true;
     }
-    else {
-      this.sizeBotonIn = 12;
-    }
+
     return resultado;
   }
 
@@ -300,9 +310,12 @@ export class DetalleTicketComponent implements OnInit {
 
     if (resultado) {
       this.permisoCerrado = true;
-    } else {
-      this.sizeBotonIn = 12;
     }
+
     return resultado;
+  }
+
+  initTickets() {
+    this.losticketLogs = this.elTicket.ticketLogs.sort((a,b) => (a.fechaAlta > b.fechaAlta) ? 1 : -1);
   }
 }
