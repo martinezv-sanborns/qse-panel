@@ -27,6 +27,7 @@ export class DetalleTicketComponent implements OnInit, OnChanges {
 
   @Input() elTicket: TicketResponse;
   @Input() elRolUsuario: string;
+  @Input() isModal: boolean;
 
   tabActivo = 'relato';
   losticketLogs: TicketLogResponse[] = [];

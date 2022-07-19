@@ -190,7 +190,8 @@ export class TicketsPage implements OnInit {
         component: DetalleTicketComponent,
         componentProps: {
           elTicket: ticketSelected,
-          elRolUsuario: this.elRolUser
+          elRolUsuario: this.elRolUser,
+          isModal: true
         },
         backdropDismiss: false
       }
