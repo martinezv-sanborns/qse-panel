@@ -42,8 +42,7 @@ import { MenuUsuarioComponent } from './menu-usuario/menu-usuario.component';
     FormsModule,
     ReactiveFormsModule,
     PipesModule
-    
-  ],
+    ],
   exports:[
     HeaderComponent,
     OlvidePasswordComponent,
