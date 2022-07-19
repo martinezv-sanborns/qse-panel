@@ -26,7 +26,17 @@
       </ion-col>
     </ion-row>
     <ion-row class="ion-justify-content-center ion-align-items-center round fondo-white">
-      <ion-col size-md="3" size-sm="12">
+      <ion-col size-md="2" size-sm="12">
+        <ion-item>
+          <ion-label><strong>Tiendas</strong></ion-label>
+          <ion-select placeholder="Seleccione tienda" interface="popover"
+            (ionChange)="onChangeTienda(tiendaTicket.value)" #tiendaTicket [(ngModel)]="laTiendaSeleccionadaId">
+            <ion-select-option [value]="tienda.tiendaId" *ngFor="let tienda of lasTiendasUser">{{ tienda.nombre }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+      <ion-col size-md="2" size-sm="12">
         <ion-item>
           <ion-label><b>Estatus</b></ion-label>
           <ion-select placeholder="Seleccione estatus" interface="popover"
@@ -36,7 +46,7 @@
           </ion-select>
         </ion-item>
       </ion-col>
-      <ion-col size-md="3" size-sm="12">
+      <ion-col size-md="2" size-sm="12">
         <ion-item>
           <ion-label> <b>Tipo</b></ion-label>
           <ion-select placeholder="Seleccione tipo" interface="popover" (ionChange)="onChangeTipo(tipoTicket.value)" #tipoTicket>

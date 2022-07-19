@@ -28,4 +28,13 @@ export class TiendaService {
           (laRespuesta: TiendasApiResponse) => laRespuesta)
       );
   }
+
+  obtenerTiendasUsuario(){
+    return this.generalService
+    .getQuery(`/api/Tienda/usuario/listado/async`)
+    .pipe(
+      map(
+        (laRespuesta: TiendasApiResponse) => laRespuesta)
+    );
+  }
 }
