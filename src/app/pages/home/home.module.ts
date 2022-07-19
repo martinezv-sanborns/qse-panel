@@ -8,6 +8,7 @@ import { HomePageRoutingModule } from './home-routing.module';
 
 import { HomePage } from './home.page';
 import { ComunesModule } from 'src/app/components/common/comunes.module';
+import { TicketModule } from 'src/app/components/ticket/ticket.module';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { ComunesModule } from 'src/app/components/common/comunes.module';
     FormsModule,
     IonicModule,
     HomePageRoutingModule,
-    ComunesModule
+    ComunesModule,
+    TicketModule
   ],
   declarations: [HomePage]
 })

@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { TicketApiResponse, TicketResponse, TicketsApiResponse } from 'src/app/models/response/ticket.model';
 import { GeneralService } from 'src/app/services/general.service';
 import { TicketService } from 'src/app/services/ticket.service';
@@ -11,6 +11,7 @@ import { environment } from 'src/environments/environment';
 })
 export class TopTenComponent implements OnInit, OnChanges {
   @Input() entradaCadenaId : string;
+  @Output() salidaTicketSeleccionado:  EventEmitter< TicketResponse> = new EventEmitter<TicketResponse>();
   listadoTicketsNuevos: TicketResponse[]=[];
   listadoTicketsResueltos: TicketResponse[]=[];
   listadoTicketsAtendiendo: TicketResponse[]=[];
@@ -22,15 +23,13 @@ export class TopTenComponent implements OnInit, OnChanges {
 
 
   constructor( private ticketsApi:TicketService, generalApi: GeneralService  ) { 
-    console.log("SELECTED", this.selectedOption);
-    this.selectedOption = environment.estatusIniciado;
+        this.selectedOption = environment.estatusIniciado;
   }
   
   ngOnChanges(changes: SimpleChanges): void { 
     this.estatusInicial = environment.estatusIniciado;
     this.estatusResuelto = environment.estatusCerradoTienda;
     this.estatusAtendiendo = environment.estatusAtendido;
-    //console.log("LA CADENA TOPTEN changes", this.entradaCadenaId);
     this.ObtenerListados();
    }
   ngOnInit() {
@@ -42,7 +41,6 @@ export class TopTenComponent implements OnInit, OnChanges {
   }
 
   segmentChanged(event){
-    //console.log("segment changed", event.detail.value);
     this.selectedOption = event.detail.value;
   }
 
@@ -55,7 +53,10 @@ export class TopTenComponent implements OnInit, OnChanges {
       (exito:TicketsApiResponse)=>{
           if(exito.result==="OK"){
               this.listadoTicketsNuevos = exito.dtoResult;
-              console.log("Resultados API NUEVOS", this.listadoTicketsNuevos );
+              if (this.listadoTicketsNuevos.length>0)
+              {
+                this.salidaTicketSeleccionado.emit(this.listadoTicketsNuevos[0]);
+              }
               this.obteniendoDatos=false;
           }
       },
@@ -66,7 +67,7 @@ export class TopTenComponent implements OnInit, OnChanges {
       (exito:TicketsApiResponse)=>{
           if(exito.result==="OK"){
               this.listadoTicketsResueltos = exito.dtoResult;
-              console.log("Resultados API CERRADOS", this.listadoTicketsResueltos );
+              
               this.obteniendoDatos=false;
           }
       },
@@ -77,7 +78,7 @@ export class TopTenComponent implements OnInit, OnChanges {
       (exito:TicketsApiResponse)=>{
           if(exito.result==="OK"){
               this.listadoTicketsAtendiendo = exito.dtoResult;
-              console.log("Resultados API ATENDIENDO", this.listadoTicketsAtendiendo );
+              
               this.obteniendoDatos=false;
           }
       },
