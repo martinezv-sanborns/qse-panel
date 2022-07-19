@@ -16,6 +16,7 @@ import { MenuPerfilComponent } from './menu-perfil/menu-perfil.component';
 import { TopTenComponent } from './top-ten/top-ten.component';
 import { NoHayResultadosComponent } from './no-hay-resultados/no-hay-resultados.component';
 import { EstatusColorComponent } from './estatus-color/estatus-color.component';
+import { MenuUsuarioComponent } from './menu-usuario/menu-usuario.component';
 
 
 
@@ -28,7 +29,8 @@ import { EstatusColorComponent } from './estatus-color/estatus-color.component';
     MenuPerfilComponent,
     TopTenComponent,
     NoHayResultadosComponent,
-    EstatusColorComponent
+    EstatusColorComponent,
+    MenuUsuarioComponent
   ],
   imports: [
     IonicModule,
@@ -45,7 +47,8 @@ import { EstatusColorComponent } from './estatus-color/estatus-color.component';
     MenuPerfilComponent,
     TopTenComponent,
     NoHayResultadosComponent,
-    EstatusColorComponent
+    EstatusColorComponent,
+    MenuUsuarioComponent
   ],
   providers:[DatePipe]
 })

@@ -82,7 +82,22 @@ export class UsuarioService {
   }
 
 
+  
 
+
+
+
+  ResetIntentos( usuarioId: string ) {
+    console.log("entre")
+
+    return this.generalService
+    .Put(`/api/usuario/resetearIntentos/${usuarioId}`,'')
+      .pipe(
+        map(
+          (laRespuesta: UsuariosApiResponse) => laRespuesta)
+      );
+      
+  }
 
 
 
