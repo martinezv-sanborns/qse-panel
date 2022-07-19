@@ -1,3 +1,25 @@
-<p>
-  top-ten works!
-</p>
+<ion-card>
+  <ion-card-title class="ion-text-center">Los casos mas recientes</ion-card-title>
+  <ion-card-content>
+    <ion-segment [value]="this.selectedOption" (ionChange)="segmentChanged($event)">
+      <ion-segment-button [value]="this.estatusInicial" >
+        <ion-icon size="small"  name="add"></ion-icon>
+        <ion-label class="TituloSegment">Nuevos</ion-label>
+      </ion-segment-button>
+      <ion-segment-button [value]="this.estatusResuelto">
+        <ion-icon  size="small" name="checkmark-outline"></ion-icon>
+        <ion-label class="TituloSegment">Resueltos</ion-label>    
+      </ion-segment-button>
+      <ion-segment-button [value]="this.estatusAtendiendo">
+        <ion-icon  size="small" name="hand-left"></ion-icon>
+        <ion-label class="TituloSegment">Atendiendo</ion-label>
+      </ion-segment-button>  
+    </ion-segment>    
+    <!--  -->
+    <app-top-ten-listado *ngIf="this.selectedOption===this.estatusInicial" [entradaListadoTickets]="this.listadoTicketsNuevos"></app-top-ten-listado>
+    <app-top-ten-listado *ngIf="this.selectedOption===this.estatusResuelto" [entradaListadoTickets]="this.listadoTicketsResueltos"></app-top-ten-listado>
+    <app-top-ten-listado *ngIf="this.selectedOption===this.estatusAtendiendo" [entradaListadoTickets]="this.listadoTicketsAtendiendo"></app-top-ten-listado>
+
+  </ion-card-content>
+</ion-card>
+
