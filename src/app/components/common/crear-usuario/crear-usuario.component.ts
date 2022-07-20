@@ -35,8 +35,8 @@ export class CrearUsuarioComponent implements OnInit {
   ngOnInit() {
 
     this.config = {
-      slidesPerView: 4,
-      spaceBetween: 10,
+      slidesPerView: 3,
+      spaceBetween: 1,
       loop: true,
       navigation: true,
       loopFillGroupWithBlank: true,
@@ -221,10 +221,14 @@ export class CrearUsuarioComponent implements OnInit {
 
 
   getRoles() {
+    console.log("entre a get roles")
     this.rolService.obtenerRoles().subscribe((exito: RolesApiResponse) => {
 
       if (exito.result === 'OK') {
+        this.listRoles=null;
+       
         this.listRoles = exito.dtoResult;
+        console.log(this.listRoles);
       }
 
     }, (error) => {

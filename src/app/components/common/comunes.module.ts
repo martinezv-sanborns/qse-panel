@@ -22,6 +22,7 @@ import { MenuUsuarioComponent } from './menu-usuario/menu-usuario.component';
 import { TiposTicketComponent } from './tipos-ticket/tipos-ticket.component';
 import Swiper from 'swiper';
 import { SwiperModule } from 'swiper/angular';
+import { CrearUsuarioComponent } from './crear-usuario/crear-usuario.component';
 
 
 
@@ -37,7 +38,8 @@ import { SwiperModule } from 'swiper/angular';
     EstatusColorComponent,
     TopTenListadoComponent,
     MenuUsuarioComponent,
-    TiposTicketComponent
+    TiposTicketComponent,
+    CrearUsuarioComponent
   ],
   imports: [
     IonicModule,
@@ -45,7 +47,8 @@ import { SwiperModule } from 'swiper/angular';
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    PipesModule,SwiperModule 
+    PipesModule,
+    SwiperModule 
   ],
   exports:[
     HeaderComponent,
@@ -58,7 +61,8 @@ import { SwiperModule } from 'swiper/angular';
     EstatusColorComponent,
     TopTenListadoComponent,
     MenuUsuarioComponent,
-    TiposTicketComponent
+    TiposTicketComponent,
+    CrearUsuarioComponent
   ],
   providers:[DatePipe]
 })
