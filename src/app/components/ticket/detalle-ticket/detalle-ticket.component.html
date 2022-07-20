@@ -86,7 +86,7 @@
 </ion-content>
 <ion-footer *ngIf="isModal">
   <ion-row>
-    <ion-col *ngIf="elTicket.estatus.nombreCorto !== 'CERRCOR' && elTicket.estatus.nombreCorto !== 'CERRTDA'">
+    <ion-col *ngIf="elTicket.estatus.nombreCorto !== 'CERRCOR' && elTicket.estatus.nombreCorto !== 'CERRTDA' && elTicket.estatus.nombreCorto !== 'CERRDIS'">
       <ion-button *ngIf="tabActivo === 'seguimiento'" color="success" (click)="intervenirCasoModal(elTicket)"
         shape="round" expand="full">
         <ion-icon slot="start" name="hand-right-outline"></ion-icon>
@@ -95,17 +95,17 @@
     </ion-col>
     <ion-col *ngIf="onTienePermisoCerrado(elTicket) || onTienePermisoReabrir(elTicket)">
       <ion-button
-        *ngIf="tabActivo === 'seguimiento' && permisoCerrado && (elTicket.estatus.nombreCorto !== 'CERRCOR' && elTicket.estatus.nombreCorto !== 'CERRTDA')"
+        *ngIf="tabActivo === 'seguimiento' && permisoCerrado && (elTicket.estatus.nombreCorto !== 'CERRCOR' && elTicket.estatus.nombreCorto !== 'CERRTDA' && elTicket.estatus.nombreCorto !== 'CERRDIS')"
         color="primary" (click)="cerrarCasoModal(elTicket)" shape="round" expand="full">
         <ion-icon slot="start" name="close-outline"></ion-icon>
         Cerrar Caso
       </ion-button>
-      <ion-button
+      <!-- <ion-button
         *ngIf="tabActivo === 'seguimiento' && permisoAbierto && (elTicket.estatus.nombreCorto === 'CERRCOR' || elTicket.estatus.nombreCorto === 'CERRTDA')"
         color="primary" (click)="reabrirCasoModal(elTicket)" shape="round" expand="full">
         <ion-icon slot="start" name="folder-open-outline"></ion-icon>
         Reabrir Caso
-      </ion-button>
+      </ion-button> -->
     </ion-col>
   </ion-row>
 

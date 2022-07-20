@@ -16,7 +16,8 @@ export const environment = {
   recaptcha:'6Ld3k5ogAAAAAMWEpHVpjWX_RaHliBXb2_0PuNFm',
   admin : 'ADMIN',
   corp: 'CORP',
-  tda: 'TDA'
+  tda: 'TDA',
+  dis: 'DIST'
 };
 
 /*
