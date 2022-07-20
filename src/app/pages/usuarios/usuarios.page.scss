@@ -12,3 +12,8 @@ ion-grid{
 
     background:white
 }
+
+
+.swiper-button-next, .swiper-button-prev,.swiper-button-next:after, .swiper-button-prev:after{
+    display: none!important;
+}

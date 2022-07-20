@@ -9,6 +9,7 @@ import { RolService } from 'src/app/services/rol.service';
 import { SpinnerService } from 'src/app/services/spinner.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import SwiperCore, { Pagination, Navigation, SwiperOptions } from 'swiper';
+import { SwiperComponent } from "swiper/angular";
 
 @Component({
   selector: 'app-crear-usuario',
@@ -16,6 +17,9 @@ import SwiperCore, { Pagination, Navigation, SwiperOptions } from 'swiper';
   styleUrls: ['./crear-usuario.component.scss'],
 })
 export class CrearUsuarioComponent implements OnInit {
+
+
+  
 
   usuarioForm: FormGroup;
   esActivo: boolean;
@@ -34,14 +38,19 @@ export class CrearUsuarioComponent implements OnInit {
 
   ngOnInit() {
 
+
     this.config = {
-      slidesPerView: 3,
-      spaceBetween: 1,
+      slidesPerView: 3.5,
+      spaceBetween:0,
       loop: true,
-      navigation: true,
-      loopFillGroupWithBlank: true,
+      navigation: true,  
+      history:{
+        key:'slide'
+      },
       scrollbar: { draggable: true }
     };
+  
+    
 
     this.esActivo = false;
     this.getRoles();
@@ -50,6 +59,20 @@ export class CrearUsuarioComponent implements OnInit {
 
   }
 
+
+  get nickNameNoValidoNoValido() {
+    return this.usuarioForm.get('nickName').invalid && this.usuarioForm.get('nickName').touched;
+  }
+
+  get emailNoValido() {
+    return this.usuarioForm.get('email').invalid && this.usuarioForm.get('email').touched;
+  }
+
+
+  get nombreNoValido() {
+    return this.usuarioForm.get('nombre').invalid && this.usuarioForm.get('nombre').touched;
+  }
+  
   
   async registrarUsuario() {
     if (this.usuarioForm.invalid) {

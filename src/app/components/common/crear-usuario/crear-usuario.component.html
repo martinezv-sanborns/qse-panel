@@ -18,7 +18,11 @@
                           <ion-icon name="person-outline" slot="start"></ion-icon>
                           <ion-label position="floating" class="ion-text-bold">Nombre</ion-label>
                           <ion-input formControlName="nombre" type="text"></ion-input>
+
+                          <ion-text *ngIf="nombreNoValido" color="danger">Ingrese el nombre correctamente </ion-text>
                       </ion-item>
+
+                    
                   </ion-col>
               </ion-row>
               <ion-row>
@@ -27,6 +31,8 @@
                           <ion-icon name="key-outline" slot="start"></ion-icon>
                           <ion-label position="floating" class="ion-text-bold">NickName</ion-label>
                           <ion-input formControlName="nickName" type="text"></ion-input>
+
+                          <ion-text *ngIf="nickNameNoValido" color="danger">Ingrese el nickName correctamente </ion-text>
                       </ion-item>
                   </ion-col>
               </ion-row>
@@ -36,6 +42,8 @@
                           <ion-icon name="mail-open-outline" slot="start"></ion-icon>
                           <ion-label position="floating" class="ion-text-bold">Correo Electrónico</ion-label>
                           <ion-input formControlName="email" type="text"></ion-input>
+
+                          <ion-text *ngIf="emailNoValido" color="danger">Ingrese el correo electrónico correctamente </ion-text>
                       </ion-item>
                   </ion-col>
               </ion-row>
@@ -49,13 +57,13 @@
                       <ion-card class="ion-text-center p-5">
                           <ion-label class="title-rol" class="ion-text-bold">Seleccione un Rol</ion-label>
                       </ion-card>
-                      <swiper [config]="config" class="swiper">
+                      <swiper   [config]="config" class="swiper">
                           <ng-template swiperSlide *ngFor="let rol of listRoles">
                               <ion-card class="cardSize cardX ion-text-center cursor" [title]="rol.nombre" [ngClass]="rol.isSelected === true ? 'seleccionado': 'noSeleccionado'" (click)="onRolSelected(rol)">
-                                  <ion-card-header>
+                                  <ion-card-content>
                                       <ion-icon size="large" [name]="rol.iconName"></ion-icon>
                                       <ion-card-title class="size-carrucel-title"> {{ rol.nombre }} </ion-card-title>
-                                  </ion-card-header>
+                                  </ion-card-content>
                               </ion-card>
                           </ng-template>
                       </swiper>
@@ -67,7 +75,7 @@
           <ion-grid fixed>
               <ion-row class="ion-text-center">
                   <ion-col size="6">
-                      <ion-button shape="round" color="primary" type="submit" expand="block">
+                      <ion-button shape="round" color="primary" type="submit" expand="block" [disabled]="usuarioForm.invalid">
                           Guardar
                       </ion-button>
                   </ion-col>
