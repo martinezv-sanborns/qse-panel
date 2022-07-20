@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 import { ItemMenu } from 'src/app/models/item-menu.model';
+import { UsuarioResponse } from '../../../models/response/usuario.model';
 
 @Component({
   selector: 'app-menu-usuario',
@@ -10,32 +11,44 @@ import { ItemMenu } from 'src/app/models/item-menu.model';
 export class MenuUsuarioComponent implements OnInit {
 
 
-  itemsMenuUsuario: ItemMenu[] = [
-    {
-      id: 'activar',
-      valor: 'Activar / Desactivar',
-      icono: 'log-out-outline'
-    },
-    {
-      id: 'reset-intentos',
-      valor: 'Resetear intentos',
-      icono: 'alert-outline'
-    },
-    {
-      id: 'change-password',
-      valor: 'Cambiar contraseña',
-      icono: 'key-outline'
-    },
-    {
-      id: 'delete-user',
-      valor: 'Eliminar Usuario',
-      icono: 'trash-outline'
-    }
-  ];
+  @Input() usuario: UsuarioResponse;
+
+  itemsMenuUsuario: ItemMenu[];
 
   constructor(private popCtrl: PopoverController) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+
+    this.itemsMenuUsuario = [
+      {
+        id: 'activar',
+      valor: this.usuario?.activo ?'Desactivar' : 'Activar',
+        icono: 'log-out-outline'
+      },
+      {
+        id: 'bloquear',
+        valor: this.usuario?.bloqueado? 'Desbloquear ':' Bloquear',
+        icono: 'close-circle-outline'
+      },
+      {
+        id: 'delete-user',
+        valor: 'Eliminar Usuario',
+        icono: 'trash-outline'
+      },
+     
+      {
+        id: 'change-password',
+        valor: 'Cambiar contraseña',
+        icono: 'key-outline'
+      },
+      {
+        id: 'delete-user',
+        valor: 'Eliminar Usuario',
+        icono: 'trash-outline'
+      }
+    ];
+
+  }
 
 
 

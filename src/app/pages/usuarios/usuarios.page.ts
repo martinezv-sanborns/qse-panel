@@ -186,7 +186,7 @@ export class UsuariosPage implements OnInit {
 
   }
 
-  CambiarPassword(usuario: string) {
+  CambiarPassword(usuario: UsuarioResponse) {
 
   }
 
@@ -194,6 +194,7 @@ export class UsuariosPage implements OnInit {
     const popover = await this.popVerCtrl.create({
       component: MenuUsuarioComponent,
       componentProps: {
+        usuario: usuario
       },
       cssClass: 'my-custom-class',
       event: evento,
@@ -218,7 +219,7 @@ export class UsuariosPage implements OnInit {
 
           break;
         case 'change-password':
-          this.CambiarPassword('');
+          this.CambiarPassword(usuario);
           break;
         case 'delete-user':
           this.Delete('');
