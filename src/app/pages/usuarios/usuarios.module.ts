@@ -7,13 +7,17 @@ import { IonicModule } from '@ionic/angular';
 import { UsuariosPageRoutingModule } from './usuarios-routing.module';
 
 import { UsuariosPage } from './usuarios.page';
+import { SwiperModule } from 'swiper/angular';
+import { ComunesModule } from '../../components/common/comunes.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    UsuariosPageRoutingModule
+    UsuariosPageRoutingModule,
+    ComunesModule
+    
   ],
   declarations: [UsuariosPage]
 })

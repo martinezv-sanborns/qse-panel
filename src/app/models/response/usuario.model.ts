@@ -1,5 +1,6 @@
 import {  EntidadCatalogoResponse } from './entidadmestra.model';
 import { ApiResponse } from './apiresponse.model';
+import { RolResponse } from './Rol.model';
 
 export class UsuarioResponse extends EntidadCatalogoResponse{
   usuarioId: string;
@@ -10,9 +11,6 @@ export class UsuarioResponse extends EntidadCatalogoResponse{
   rol: RolResponse;
 }
 
-export class RolResponse extends EntidadCatalogoResponse{
-    rolId:string;
-}
 
 
 export class UsuariosApiResponse extends ApiResponse {

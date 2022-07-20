@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { UsuarioService } from '../../services/usuario.service';
 import { UsuarioResponse } from '../../models/response/usuario.model';
 import { MenuUsuarioComponent } from '../../components/common/menu-usuario/menu-usuario.component';
-import { PopoverController } from '@ionic/angular';
+import { PopoverController, ModalController } from '@ionic/angular';
 import Swal from 'sweetalert2';
 import { UsuarioLockRequest } from 'src/app/models/request/usuario.model';
+import { CrearUsuarioComponent } from '../../components/common/crear-usuario/crear-usuario.component';
 
 @Component({
   selector: 'app-usuarios',
@@ -18,7 +19,8 @@ export class UsuariosPage implements OnInit {
   cargando: false;
 
   constructor(private usuarioService: UsuarioService,
-    private popVerCtrl: PopoverController,) {
+              private popVerCtrl: PopoverController,
+              private mdlCtrl: ModalController) {
 
 
   }
@@ -26,11 +28,7 @@ export class UsuariosPage implements OnInit {
   ngOnInit() {
 
     this.usuarioService.ObtenerListado(1, 10000).subscribe(exito => {
-
-
       this.Usuarios = exito.dtoResult;
-
-      console.log(exito);
     });
 
   }
@@ -229,6 +227,23 @@ export class UsuariosPage implements OnInit {
           break;
       }
     }
+
+  }
+
+
+
+  async CreaUsuario (){
+
+    const modal = await this.mdlCtrl.create(
+            {
+              component:CrearUsuarioComponent,
+              cssClass: 'my-custom-class',
+              mode: 'ios',
+              backdropDismiss: true,
+            
+            });
+
+            modal.present();
 
   }
 
