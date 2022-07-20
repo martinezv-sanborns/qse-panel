@@ -27,8 +27,6 @@ export class MenuDetalleCasoComponent implements OnInit {
 
   ngOnInit() {
 
-    console.log(this.elEstatus);
-
     if (this.elEstatus.estatusId.toUpperCase() === environment.estatusAtendido
     || this.elEstatus.estatusId.toUpperCase() === environment.estatusIniciado) {
 
@@ -41,7 +39,7 @@ export class MenuDetalleCasoComponent implements OnInit {
 
     if (this.elEstatus.estatusId.toUpperCase() === environment.estatusAtendido &&
       (this.elRolUsuario.toUpperCase() === environment.admin || this.elRolUsuario.toUpperCase() === environment.corp
-        || this.elRolUsuario.toUpperCase() === environment.tda)) {
+        || this.elRolUsuario.toUpperCase() === environment.tda || this.elRolUsuario.toUpperCase() === environment.dis)) {
       this.itemsMenu.push({
         id: 'cerrar-caso',
         valor: 'Cerrar caso',
@@ -49,15 +47,15 @@ export class MenuDetalleCasoComponent implements OnInit {
       });
     }
 
-    if ((this.elEstatus.estatusId.toUpperCase() === environment.estatusCerradoTienda
-      || this.elEstatus.estatusId.toUpperCase() === environment.estatusCerradoCorpo) &&
-      (this.elRolUsuario.toUpperCase() === environment.corp || this.elRolUsuario.toUpperCase() === environment.admin)) {
-      this.itemsMenu.push({
-        id: 'reabrir-ticket',
-        valor: 'Reabrir',
-        icono: 'folder-open-outline'
-      });
-    }
+    // if ((this.elEstatus.estatusId.toUpperCase() === environment.estatusCerradoTienda
+    //   || this.elEstatus.estatusId.toUpperCase() === environment.estatusCerradoCorpo) &&
+    //   (this.elRolUsuario.toUpperCase() === environment.corp || this.elRolUsuario.toUpperCase() === environment.admin)) {
+    //   this.itemsMenu.push({
+    //     id: 'reabrir-ticket',
+    //     valor: 'Reabrir',
+    //     icono: 'folder-open-outline'
+    //   });
+    // }
 
 /*     this.itemsMenu.push({
       id: 'close-menu',
