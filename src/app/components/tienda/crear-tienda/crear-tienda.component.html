@@ -1,0 +1,144 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-title>Crear Tienda</ion-title>
+      <ion-buttons slot="end">
+          <ion-button (click)="cerrarModal()">
+              <ion-icon color="danger" class="icon-close" slot="icon-only" name="close-circle-outline"></ion-icon>
+          </ion-button>
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <form [formGroup]="tiendaForm" (ngSubmit)="crearTienda()">
+      <ion-card>
+          <ion-grid fixed>
+              <ion-row>
+                  <ion-col size="12">
+                      <ion-item>
+                          <ion-icon name="storefront-outline" slot="start"></ion-icon>
+                          <ion-label position="floating" class="ion-text">Nombre</ion-label>
+                          <ion-input formControlName="nombre" type="text"></ion-input>
+                      </ion-item>
+                  </ion-col>
+              </ion-row>
+              <ion-row>
+                  <ion-col size="6">
+                      <ion-item>
+                          <ion-icon name="key-outline" slot="start"></ion-icon>
+                          <ion-label position="floating" class="ion-text">Identificador</ion-label>
+                          <ion-input formControlName="identificador" type="text"></ion-input>
+                      </ion-item>
+                  </ion-col>
+                  <ion-col size="6">
+                    <ion-item>
+                        <ion-icon name="wallet-outline" slot="start"></ion-icon>
+                        <ion-label position="floating" class="ion-text">Nombre Corte</ion-label>
+                        <ion-input formControlName="nombrecorte" type="text"></ion-input>
+                    </ion-item>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                  <ion-col size="12">
+                      <ion-item>
+                          <ion-icon name="mail-open-outline" slot="start"></ion-icon>
+                          <ion-label position="floating" class="ion-text">Correo Electrónico</ion-label>
+                          <ion-input formControlName="email" type="text"></ion-input>
+                      </ion-item>
+                  </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="12">
+                    <ion-item>
+                        <ion-icon name="location-outline" slot="start"></ion-icon>
+                        <ion-label position="floating" class="ion-text">Coordenadas</ion-label>
+                        <ion-input formControlName="coordenadas" type="text"></ion-input>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+              <ion-row>
+                  <ion-col size="6">
+                    <ion-item button="true" id="open-modal">
+                    <ion-icon name="time-outline" slot="start"></ion-icon>
+                    <ion-label position="floating" class="ion-text">Apertura</ion-label>
+                    <ion-input formControlName="apertura" type="text" [value]="hourLanding"></ion-input> 
+                    <ion-modal trigger="open-modal" id="modal-bottom">
+                      <ng-template>
+                          <ion-content>
+                              <ion-datetime  class="ion-text-center"  #popoverDatetime presentation="time" (ionChange)="hourLanding = formatDate(popoverDatetime.value)">
+                              </ion-datetime>
+                          </ion-content>
+                      </ng-template>
+                  </ion-modal>         
+                  </ion-item>
+                  </ion-col>
+                  
+                  <ion-col size="6">
+                    <ion-item>
+                    <ion-icon name="time-outline" slot="start"></ion-icon>
+                    <ion-label position="floating" class="ion-text">Cierre</ion-label>
+                    <ion-input formControlName="cierre" type="text"></ion-input>         
+                  </ion-item> </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="12">
+                  <ion-item>
+                  <ion-icon name="earth-outline" slot="start"></ion-icon>
+                  <ion-label position="floating"> Zona:
+                  </ion-label>
+                  <ion-select formControlName="zona" interface="popover">
+                      <!-- <ion-select-option *ngFor="let navegacion of this.LasNavegaciones" [value]="navegacion.navegacionId">
+                          {{navegacion.nombre}}</ion-select-option> -->
+                  </ion-select>  
+                </ion-item>      
+                </ion-col>
+            </ion-row>
+              <ion-row>
+                  <ion-col size="12">
+                    <ion-item>
+                    <ion-icon name="calendar-outline" slot="start"></ion-icon> 
+                    <ion-label> Días de operación:</ion-label>
+                    </ion-item>
+                  </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="12">
+                <ion-item>
+                  <!-- <ion-list>
+                    <ion-item>
+                      <ion-label><strong>Seleccionar Todo</strong></ion-label>
+                      <ion-checkbox slot="start" 
+                        (click)="checkMaster($event)"></ion-checkbox>
+                    </ion-item>
+                  </ion-list> -->
+                  
+                    <ion-item *ngFor="let dia of this.listaDiasSemana">
+                      <ion-list lines="full">
+                      <ion-label>{{dia.shortName}}</ion-label>
+                       <!-- <ion-checkbox slot="end" formControlName="diaid"></ion-checkbox>  -->
+                       <ion-checkbox color="secondary" value="dia.id" (click)="onChange(dia)" name="dia.id"></ion-checkbox>
+                      </ion-list>
+                      </ion-item>
+                 
+                </ion-item>
+                </ion-col>
+            </ion-row>
+          </ion-grid>
+      </ion-card>
+      <ion-footer>
+          <ion-grid fixed>
+              <ion-row class="ion-text-center">
+                  <ion-col size="6">
+                      <ion-button shape="round" color="primary" type="submit" expand="block">
+                          Guardar
+                      </ion-button>
+                  </ion-col>
+                  <ion-col size="6">
+                      <ion-button shape="round" color="medium" type="button" expand="block" (click)="cerrarModal()">
+                          Cancelar
+                      </ion-button>
+                  </ion-col>
+              </ion-row>
+          </ion-grid>
+      </ion-footer>
+  </form>
+</ion-content>

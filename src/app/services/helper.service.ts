@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { SpinnerTypes, LoadingController } from '@ionic/angular';
 import { map } from 'rxjs/operators';
+import { DiaSemana } from '../models/helper.model';
 import { LinkAPIResponse } from '../models/response/link.response.model';
 import { GeneralService } from './general.service';
 
@@ -58,5 +59,50 @@ export class HelperService {
        await this.loadingCTRL.dismiss();
      }
    }
+
+   public arrayDiasSemana: DiaSemana[] = [
+    {
+      id: 1,
+      name: 'Sunday',
+      subName: 'Domingo',
+      shortName: 'Do.'
+    },
+    {
+      id: 2,
+      name: 'Monday',
+      subName: 'Lunes',
+      shortName: 'Lu.'
+    },
+    {
+      id: 3,
+      name: 'Tuesday',
+      subName: 'Martes',
+      shortName: 'Ma.'
+    },
+    {
+      id: 4,
+      name: 'Wednesday',
+      subName: 'Miércoles',
+      shortName: 'Mi.'
+    },
+    {
+      id: 5,
+      name: 'Thursday',
+      subName: 'Jueves',
+      shortName: 'Ju.'
+    },
+    {
+      id: 6,
+      name: 'Friday',
+      subName: 'Viernes',
+      shortName: 'Vi.'
+    },
+    {
+      id: 7,
+      name: 'Saturday',
+      subName: 'Sábado',
+      shortName: 'Sá.'
+    }
+  ];
 
 }

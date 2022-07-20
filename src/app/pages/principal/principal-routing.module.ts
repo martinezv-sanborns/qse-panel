@@ -26,6 +26,11 @@ const routes: Routes = [
         // canActivate: [IsAuthGuard],
         loadChildren: () => import('../tickets/tickets.module').then(m => m.TicketsPageModule)
       },
+      {
+        path: 'tienda',
+        // canActivate: [IsAuthGuard],
+        loadChildren: () => import('../tienda/tienda.module').then(m => m.TiendaPageModule)
+      },
     ]
   }
 ];

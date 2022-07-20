@@ -70,15 +70,15 @@
               </ion-segment-button>
             </ion-segment>
           </ion-toolbar>
-          <ion-card *ngIf="tabActivo === 'relato'">
+          <div *ngIf="tabActivo === 'relato'">
             <ion-item class="ion-text-center">
               <ion-text class="ion-padding"><i><strong>{{ elTicket.nombre }}:</strong> {{elTicket.comentarios}}</i>
               </ion-text>
             </ion-item>
-          </ion-card>
-          <ion-card *ngIf="tabActivo === 'seguimiento'">
+          </div>
+          <div *ngIf="tabActivo === 'seguimiento'">
             <app-seguimiento-ticket [losTicketLogs]="losticketLogs"></app-seguimiento-ticket>
-          </ion-card>
+          </div>
         </ion-col>
       </ion-row>
     </ion-grid>
