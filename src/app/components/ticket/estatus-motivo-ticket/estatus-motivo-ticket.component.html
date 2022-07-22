@@ -14,7 +14,7 @@
           <ion-grid>
             <ion-row>
               <ion-col size="12">
-                <ion-icon size="large" name="help-circle-outline"></ion-icon>
+                <ion-icon color="danger" size="large" name="help-circle-outline"></ion-icon>
                 <ion-label position="floating">{{ titleMessage}}</ion-label>
               </ion-col>
             </ion-row>
@@ -22,9 +22,17 @@
                   <ion-col size="12">
                       <ion-item>
                           <ion-label position="floating">{{ txtMessage }}</ion-label>
-                          <ion-textarea autoGrow="true" rows="5"  formControlName="motivo" type="text"></ion-textarea>
+                          <ion-textarea autoGrow="true" rows="5" formControlName="motivo" type="text"></ion-textarea>
                       </ion-item>
                   </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="12" class="ion-text-center ion-justify-content-center ion-align-self-center">
+                  <ion-item>
+                    <ion-checkbox color="danger" mode="ios" formControlName="ckCerrarCaso"></ion-checkbox>
+                    <ion-label>Quiero cerrar el caso</ion-label>
+                  </ion-item>
+                </ion-col>
               </ion-row>
           </ion-grid>
       </ion-card>

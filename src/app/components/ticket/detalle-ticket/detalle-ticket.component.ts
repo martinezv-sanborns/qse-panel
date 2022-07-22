@@ -138,7 +138,7 @@ export class DetalleTicketComponent implements OnInit, OnChanges {
     const { data } = await modalShow.onWillDismiss();
 
     if (data.motivoSend) {
-      this.onIntervenirCaso(ticketSelected, data.motivo);
+      this.onIntervenirCaso(ticketSelected, data.motivo, data.esCerrarCaso);
     }
   }
 
@@ -160,17 +160,18 @@ export class DetalleTicketComponent implements OnInit, OnChanges {
     const { data } = await modalShow.onWillDismiss();
 
     if (data.motivoSend) {
-      this.onCerrarCaso(ticketSelected, data.motivo);
+      this.onCerrarCaso(ticketSelected, data.motivo, data.esCerrarCaso);
     }
   }
 
-  async onCerrarCaso(ticketSelected: TicketResponse, elMotivo: string) {
+  async onCerrarCaso(ticketSelected: TicketResponse, elMotivo: string, cerrarCaso: boolean) {
 
     const elNuevoStatusTicket: TicketStatusRequest = {
       ticketId: ticketSelected.ticketId,
       estatusId: environment.guidEmpty,
       observaciones: elMotivo,
-      activo: true
+      activo: true,
+      esCerrarCaso: cerrarCaso
     };
 
     this.helperService.showLoading('Cerrando caso...', 'bubbles');
@@ -218,13 +219,14 @@ export class DetalleTicketComponent implements OnInit, OnChanges {
     });
   }
 
-  async onIntervenirCaso(ticketSelected: TicketResponse, elMotivo: string) {
+  async onIntervenirCaso(ticketSelected: TicketResponse, elMotivo: string, cerrarCaso: boolean) {
 
     const elNuevoStatusTicket: TicketStatusRequest = {
       ticketId: ticketSelected.ticketId,
       estatusId: environment.estatusAtendido,
       observaciones: elMotivo,
-      activo: true
+      activo: true,
+      esCerrarCaso: cerrarCaso
     };
 
     this.helperService.showLoading('Interviniendo...', 'bubbles');

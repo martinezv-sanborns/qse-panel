@@ -221,7 +221,7 @@ export class TicketsPage implements OnInit {
     const { data } = await modalShow.onWillDismiss();
 
     if (data.motivoSend) {
-      this.onIntervenirCaso(ticketSelected, data.motivo);
+      this.onIntervenirCaso(ticketSelected, data.motivo, data.esCerrarCaso);
     }
   }
 
@@ -242,7 +242,7 @@ export class TicketsPage implements OnInit {
     const { data } = await modalShow.onWillDismiss();
 
     if (data.motivoSend) {
-      this.onCerrarCaso(ticketSelected, data.motivo);
+      this.onCerrarCaso(ticketSelected, data.motivo, data.esCerrarCaso);
     }
   }
 
@@ -288,12 +288,13 @@ export class TicketsPage implements OnInit {
     }
   }
 
-  async onCerrarCaso(ticketSelected: TicketResponse, elMotivo: string) {
+  async onCerrarCaso(ticketSelected: TicketResponse, elMotivo: string, cerrarCaso: boolean) {
     const elNuevoStatusTicket: TicketStatusRequest = {
       ticketId: ticketSelected.ticketId,
       estatusId: environment.estatusAtendido,
       observaciones: elMotivo,
-      activo: true
+      activo: true,
+      esCerrarCaso: cerrarCaso
     };
 
     this.helperService.showLoading('Cerrando caso...', 'bubbles');
@@ -340,13 +341,14 @@ export class TicketsPage implements OnInit {
     });
   }
 
-  async onIntervenirCaso(ticketSelected: TicketResponse, elMotivo: string) {
+  async onIntervenirCaso(ticketSelected: TicketResponse, elMotivo: string, cerrarCaso: boolean) {
 
     const elNuevoStatusTicket: TicketStatusRequest = {
       ticketId: ticketSelected.ticketId,
       estatusId: environment.estatusAtendido,
       observaciones: elMotivo,
-      activo: true
+      activo: true,
+      esCerrarCaso: cerrarCaso
     };
 
     this.helperService.showLoading('Interviniendo...', 'bubbles');
@@ -593,12 +595,16 @@ export class TicketsPage implements OnInit {
   onChangeTienda(tiendaId: string) {
     this.laTiendaSeleccionadaId = tiendaId;
     // ejecutar filtros
-    //this.ejecutarFiltros(environment.tamPagina, 1);
+    this.ejecutarFiltros(environment.tamPagina, 1);
   }
 
   ejecutarFiltros(tamPagina: number, paginaActual: number) {
     this.losFiltrosOk = '';
     this.filtrosFinales = [];
+
+    if(this.laTiendaSeleccionadaId.trim().length>0){
+
+    }
 
     if (this.elEstatusIdSeleccionado.trim().length > 0) {
       this.filtrosFinales.push(`'estatus':'${this.elEstatusIdSeleccionado}'`);

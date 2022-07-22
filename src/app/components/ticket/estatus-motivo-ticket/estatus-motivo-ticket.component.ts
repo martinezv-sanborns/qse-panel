@@ -64,13 +64,15 @@ export class EstatusMotivoTicketComponent implements OnInit {
       this.modalCtrl.dismiss({
         close: false,
         motivoSend: true,
-        motivo: this.estatusForm.value.motivo
+        motivo: this.estatusForm.value.motivo,
+        esCerrarCaso: this.estatusForm.value.ckCerrarCaso
       });
     }
 
     cargarFormulario() {
       this.estatusForm = this.fb.group({
         motivo: ['', Validators.required],
+        ckCerrarCaso: [false]
       });
     }
 
