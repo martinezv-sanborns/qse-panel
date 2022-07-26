@@ -64,8 +64,8 @@ export class EstatusMotivoTicketComponent implements OnInit {
       if(validateMotivo.trim() === ''){
         Swal.fire({
           icon: 'warning',
-          title: 'Motivo',
-          text: `Por favor escriba un motivo`,
+          title: this.titleErr,
+          text: `Por favor escriba algo sobre el caso`,
           iconColor: '#eb445a',
           confirmButtonColor: '#eb445a',
           heightAuto: false
