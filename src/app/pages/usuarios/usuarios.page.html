@@ -1,4 +1,4 @@
-<ion-breadcrumbs color="primary">
+<!--ion-breadcrumbs color="primary">
   <ion-breadcrumb href="/home">
     <ion-icon slot="start" name="home"></ion-icon>
     Inicio
@@ -7,7 +7,7 @@
     <ion-icon slot="start" name="person-outline"></ion-icon>
     Usuarios
   </ion-breadcrumb>
-</ion-breadcrumbs>
+</ion-breadcrumbs-->
 
 <ion-content>
 
@@ -37,17 +37,17 @@
 
   <ion-grid   class="ion-align-items-center ion-text-center ion-align-self-center ion-margin blanco" >
 
-    <ion-row class="ion-margin header round" >
-      <ion-col size="2">Email</ion-col>
+    <ion-row class="header round" >
+      <ion-col size="3">Email</ion-col>
       <ion-col size="2">Nombre</ion-col>
       <ion-col size="2">Intentos</ion-col>
       <ion-col size="1">Bloqueado</ion-col>
       <ion-col size="2">Rol</ion-col>
       <ion-col size="1">Activo</ion-col>
-      <ion-col size="1"></ion-col>
+      <ion-col size="1">Menú</ion-col>
     </ion-row>
     <ion-row class="row"  *ngFor="let usuario of Usuarios">
-      <ion-col size="2">
+      <ion-col size="3">
           <label title="{{usuario.email}}">  {{ (usuario.email.length>25)? (usuario.email | slice:0:25)+'..':(usuario.email) }}  </label> 
       </ion-col>
 
@@ -61,12 +61,18 @@
 
       <ion-col size="1">
         
+
+        
         <ion-icon  size="large" (click)="Bloquear(usuario)" [class]="usuario.bloqueado?'activo':'inactivo'" name="ellipse"></ion-icon>
      
       </ion-col >
 
-      <ion-col size="2">
-        {{usuario.rol?.nombre}}
+      <ion-col size="2" (click)="mostrarMenu($event, usuario)">
+       
+        <ion-icon name="{{usuario.rol?.iconName}}"  >
+          
+        </ion-icon>
+               {{usuario.rol?.nombre}}
       </ion-col>
 
       <ion-col  size="1">
@@ -76,7 +82,7 @@
       </ion-col>
       <ion-col size="1">
   <ion-button  color="ligth" shape="round" (click)="mostrarMenu($event, usuario)">
-                <ion-icon  size="large" class="button"  slot="icon-only" name="create-outline"></ion-icon>
+                <ion-icon class="button"  slot="icon-only" name="ellipsis-vertical"></ion-icon>
             </ion-button>
 
       </ion-col>
