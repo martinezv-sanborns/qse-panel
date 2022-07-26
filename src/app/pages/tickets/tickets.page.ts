@@ -80,10 +80,13 @@ export class TicketsPage implements OnInit {
 
 
   getTickets() {
+    console.log('gettickets');
     this.listadoTickets = [];
     this.cargando = true;
+    this.helperService.showLoading('Espere un momento, estamos cargando los casos', 'bubbles');
     this.ticketService.obtenerTicketsListado(this.lacadenaSelectedId, 1, environment.tamPagina).subscribe((exito: TicketsApiResponse) => {
-
+      this.helperService.hideLoading();
+      console.log('close loading');
       if (exito.result === 'OK') {
         this.listadoTickets = exito.dtoResult;
         this.paginaActual = exito.paginaActual;
@@ -92,9 +95,11 @@ export class TicketsPage implements OnInit {
         this.noPaginas = exito.totalPaginas;
       }
       this.cargando = false;
+
     }, (errr) => {
       this.cargando = false;
       console.log(errr);
+      this.helperService.hideLoading();
     });
   }
 
@@ -507,12 +512,13 @@ export class TicketsPage implements OnInit {
   }
 
   getTicketsFiltro(cadenaId: string, filtros: string, numberPage: number, pageSize: number) {
-
-    this.helperService.showLoading('Espere un momento, estamos cargando las tickets', 'bubbles');
+    this.listadoTickets = [];
+    this.helperService.showLoading('Espere un momento, estamos cargando los casos', 'bubbles');
     this.cargando = true;
     this.ticketService.obtenerTicketsFiltro(cadenaId, filtros, numberPage, pageSize)
       .subscribe((exito: TicketsApiResponse) => {
         this.cargando = false;
+        this.helperService.hideLoading();
 
         if (exito.result === 'OK') {
 
@@ -522,8 +528,6 @@ export class TicketsPage implements OnInit {
           this.totalRegistros = exito.totalRegistros;
           this.noPaginas = exito.totalPaginas;
         }
-
-        this.helperService.hideLoading();
       },
         (err) => {
           this.helperService.hideLoading();

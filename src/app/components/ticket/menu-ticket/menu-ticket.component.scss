@@ -1,3 +1,19 @@
 .font-menu {
     font-size: 11px;
 }
+
+ion-icon {
+  color: #ec1b22;
+}
+
+ion-item:hover {
+  --background: #ec1b22;
+  color: white;
+
+  ion-label{
+    color: white;
+  }
+  ion-icon {
+    color: white;
+  }
+}

@@ -20,7 +20,7 @@
 }
 
 .active-item {
-  border-bottom: 2px solid var(--ion-color-primary);
+  border-bottom: 2px solid #ec1b22;
 }
 
 .dropdown {
@@ -35,3 +35,8 @@
       --ion-item-color: var(--ion-color-primary);
   }
 }
+
+ion-icon {
+  color: #ec1b22;
+}
+
