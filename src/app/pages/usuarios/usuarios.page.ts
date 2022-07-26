@@ -18,6 +18,9 @@ export class UsuariosPage implements OnInit {
 
   cargando: false;
 
+  numberPage=1;
+  pageSize=10;
+
   constructor(private usuarioService: UsuarioService,
               private popVerCtrl: PopoverController,
               private mdlCtrl: ModalController) {
@@ -27,7 +30,7 @@ export class UsuariosPage implements OnInit {
 
   ngOnInit() {
 
-    this.usuarioService.ObtenerListado(1, 10000).subscribe(exito => {
+    this.usuarioService.ObtenerListado(this.numberPage, this.pageSize).subscribe(exito => {
       this.Usuarios = exito.dtoResult;
     });
 
@@ -179,7 +182,42 @@ export class UsuariosPage implements OnInit {
       heightAuto: false
     }).then((result) => {
       if (result.isConfirmed) {
-        // algo
+        
+        this.usuarioService.eliminar(usuario).subscribe(exito=>{
+
+          console.log("usuario id", usuario);
+          
+          console.log("result", exito);
+
+          let usuarioEliminado= exito.dtoResult;
+         
+         
+          
+          if(exito.result="OK"){
+
+            Swal.fire({
+              icon: 'success',
+              title: 'Eliminado ',
+              text: `Usuario eliminado!`,
+              showCancelButton: false,
+              heightAuto: false,
+              timer: 3000
+            });
+
+
+
+            let idx=  this.Usuarios.findIndex(x=>x.usuarioId==usuarioEliminado.usuarioId);
+
+            if(idx!=-1){
+
+              this.Usuarios.splice(idx);
+
+            }
+          }
+
+
+
+        });
       }
     });
 
@@ -222,7 +260,7 @@ export class UsuariosPage implements OnInit {
           this.CambiarPassword(usuario);
           break;
         case 'delete-user':
-          this.Delete('');
+          this.Delete(usuario.usuarioId);
           break;
         default:
           break;
@@ -246,7 +284,51 @@ export class UsuariosPage implements OnInit {
 
             modal.present();
 
+
+            const { data } = await modal.onDidDismiss();
+
+          
+            if(data!=undefined){
+              console.log("el data", data.nuevo)
+              if(data.registrado)
+              this.Usuarios.push(data.nuevo);
+            }
+
   }
+
+
+  async buscar(){
+
+
+
+    this.usuarioService.ObtenerListado(1, 10000).subscribe(exito => {
+      this.Usuarios = exito.dtoResult;
+    });
+
+  }
+
+
+  onSearchChange(event){
+ 
+
+    let criteria =event.detail.value;
+
+    this.usuarioService.ObtenerListadoFiltrado(criteria,this.numberPage,this.pageSize).subscribe(exito=>{
+
+      if(exito.result=="OK"){
+        this.Usuarios =[];
+        this.Usuarios = exito.dtoResult;
+      }
+
+    }
+    )
+
+
+  }
+
+
+
+
 
 
 

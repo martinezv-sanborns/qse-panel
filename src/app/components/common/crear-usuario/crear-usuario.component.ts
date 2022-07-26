@@ -10,6 +10,7 @@ import { SpinnerService } from 'src/app/services/spinner.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import SwiperCore, { Pagination, Navigation, SwiperOptions } from 'swiper';
 import { SwiperComponent } from "swiper/angular";
+import { UsuarioResponse } from '../../../models/response/usuario.model';
 
 @Component({
   selector: 'app-crear-usuario',
@@ -27,6 +28,7 @@ export class CrearUsuarioComponent implements OnInit {
   rolSeleccionado: RolResponse;
   registrando: boolean;
   config: SwiperOptions = {};
+  usuarioCreado: UsuarioResponse;
 
   constructor(private modalCtrl: ModalController,
     private alertCtrl: AlertController,
@@ -60,7 +62,7 @@ export class CrearUsuarioComponent implements OnInit {
   }
 
 
-  get nickNameNoValidoNoValido() {
+  get nickNameNoValido() {
     return this.usuarioForm.get('nickName').invalid && this.usuarioForm.get('nickName').touched;
   }
 
@@ -169,6 +171,8 @@ export class CrearUsuarioComponent implements OnInit {
               cssClass: 'alertButton',
               id: 'confirm-button',
               handler: () => {
+
+               
               }
             }]
         });
@@ -236,8 +240,8 @@ export class CrearUsuarioComponent implements OnInit {
 
   cargarFormulario() {
     this.usuarioForm = this.fb.group({
-      nombre: ['', Validators.required],
-      nickName: ['', Validators.required, Validators.maxLength(8)],
+      nombre: ['', [Validators.required]],
+      nickName: ['',[ Validators.required, Validators.maxLength(8)]],
       email: ['', [Validators.minLength(5), Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')]]
     });
   }

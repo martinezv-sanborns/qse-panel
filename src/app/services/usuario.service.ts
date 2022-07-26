@@ -48,9 +48,7 @@ export class UsuarioService {
   eliminar(usuarioId: string) {
     return this.generalService
       .Delete(`/api/usuario/${usuarioId}/async`)
-      .pipe(
-        map(
-          (laRespuesta: UsuarioApiResponse) => laRespuesta)
+      .pipe(map((laRespuesta: UsuarioApiResponse) => laRespuesta)
       );
   }
 
@@ -78,6 +76,17 @@ export class UsuarioService {
   ObtenerListado(numberPage : number , pageSize: number ) {
     return this.generalService
     .getQuery(`/api/usuario/listado/async/${numberPage}/${pageSize}`)
+      .pipe(
+        map(
+          (laRespuesta: UsuariosApiResponse) => laRespuesta)
+      );
+  }
+
+
+  
+  ObtenerListadoFiltrado(criteria:string ,numberPage : number , pageSize: number ) {
+    return this.generalService
+    .getQuery(`/api/usuario/listado/async/${criteria}/${numberPage}/${pageSize}`)
       .pipe(
         map(
           (laRespuesta: UsuariosApiResponse) => laRespuesta)
