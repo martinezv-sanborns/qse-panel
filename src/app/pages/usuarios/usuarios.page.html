@@ -20,12 +20,11 @@
             <ion-label><b>Usuarios</b></ion-label>
           </ion-col>
           <ion-col size="9">
-            <ion-searchbar searchIcon="search" showcancelbutton="OK" class="forminput ion-margin"
-              placeholder="Buscar por nombre" (ionChange)="onSearchChange($event)" [debounce]="250"
-              showCancelButton="OK"></ion-searchbar>
+            <ion-searchbar mode="ios" searchIcon="search" class="forminput ion-margin"
+              placeholder="Buscar por nombre" (ionChange)="onSearchChange($event)" [debounce]="250"></ion-searchbar>
           </ion-col>
           <ion-col size="1">
-           <ion-button (click)="CreaUsuario()" expand="block" fill="clear" shape="round">
+           <ion-button color="ligth" (click)="CreaUsuario()" expand="block"  shape="round">
             <ion-icon slot="icon-only" name="add"> </ion-icon> Nuevo
            </ion-button>
           </ion-col>
@@ -36,9 +35,9 @@
   </ion-grid>
 
 
-  <ion-grid   class="ion-align-items-center ion-text-center" >
+  <ion-grid   class="ion-align-items-center ion-text-center ion-align-self-center ion-margin blanco" >
 
-    <ion-row class="header">
+    <ion-row class="ion-margin header round" >
       <ion-col size="2">Email</ion-col>
       <ion-col size="2">Nombre</ion-col>
       <ion-col size="2">Intentos</ion-col>
@@ -47,7 +46,7 @@
       <ion-col size="1">Activo</ion-col>
       <ion-col size="1"></ion-col>
     </ion-row>
-    <ion-row *ngFor="let usuario of Usuarios">
+    <ion-row class="row"  *ngFor="let usuario of Usuarios">
       <ion-col size="2">
           <label title="{{usuario.email}}">  {{ (usuario.email.length>25)? (usuario.email | slice:0:25)+'..':(usuario.email) }}  </label> 
       </ion-col>
@@ -76,16 +75,17 @@
         </ion-icon>
       </ion-col>
       <ion-col size="1">
-  <ion-button color="light" (click)="mostrarMenu($event, usuario)">
-                <ion-icon  size="large" color="secondary" slot="icon-only" name="create-outline"></ion-icon>
+  <ion-button  color="ligth" shape="round" (click)="mostrarMenu($event, usuario)">
+                <ion-icon  size="large" class="button"  slot="icon-only" name="create-outline"></ion-icon>
             </ion-button>
 
       </ion-col>
     </ion-row>
   </ion-grid>
+
   <ion-grid>
 
-    <ion-row class="ion-text-center" *ngIf="!cargando && Usuarios.length === 0">
+    <ion-row class="ion-text-center round" *ngIf="!cargando && Usuarios.length === 0">
       <ion-col size="12" size-xs="12">
         <ion-card>
           <ion-card-content text-center>
