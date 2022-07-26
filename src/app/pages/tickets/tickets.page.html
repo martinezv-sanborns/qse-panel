@@ -1,4 +1,4 @@
-<ion-breadcrumbs color="primary">
+<!-- <ion-breadcrumbs color="primary">
   <ion-breadcrumb href="/home">
     <ion-icon slot="start" name="home"></ion-icon>
     Inicio
@@ -7,7 +7,7 @@
     <ion-icon slot="start" name="megaphone-outline"></ion-icon>
     Casos
   </ion-breadcrumb>
-</ion-breadcrumbs>
+</ion-breadcrumbs> -->
 
 <ion-content>
   <ion-grid>
@@ -18,9 +18,7 @@
             <ion-label><strong>Administrador de Casos</strong></ion-label>
           </ion-col>
           <ion-col size="9">
-            <ion-searchbar searchIcon="search" showcancelbutton="OK" class="forminput ion-margin"
-              placeholder="Buscar por nombre o numero de tienda, o folio del ticket..."
-              (ionChange)="onSearchChange($event)" [debounce]="250" showCancelButton="OK"></ion-searchbar>
+            <ion-searchbar mode="ios" placeholder="Buscar por nombre o numero de tienda, o folio del ticket..." (ionChange)="onSearchChange($event)" [debounce]="500" showCancelButton="focus" cancelButtonText=""></ion-searchbar>
           </ion-col>
         </ion-item>
       </ion-col>
@@ -140,7 +138,7 @@
 
   </ion-grid>
 
-  <ion-grid class="ion-text-center" *ngIf="listadoTickets.length > 0">
+  <ion-grid class="ion-text-center" *ngIf="!cargando && listadoTickets.length > 0">
     <ion-row>
       <ion-col class="2">
         <ion-chip (click)="cambiarPagina(paginaActual - 1)" color="danger" class="cursor"

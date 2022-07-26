@@ -43,11 +43,10 @@
         <ion-col size="4" class="ion-text-right">
             <ion-chip color="primary" *ngIf="entradaCadenaName">
                 <label>{{ entradaCadenaName }} | {{ entradaRolName}}  </label>
-            </ion-chip> 
+            </ion-chip>
             <ion-button (click)="mostrarMenu($event)" fill="clear">
-                <ion-icon color="dark" slot="icon-only" name="menu-outline"></ion-icon>
+                <ion-icon color="danger" slot="icon-only" name="menu-outline"></ion-icon>
             </ion-button>
-            
         </ion-col>
     </ion-row>
 </ion-grid>
