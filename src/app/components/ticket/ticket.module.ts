@@ -11,6 +11,7 @@ import { DetalleTicketComponent } from './detalle-ticket/detalle-ticket.componen
 import { SeguimientoTicketComponent } from './seguimiento-ticket/seguimiento-ticket.component';
 import { EstatusMotivoTicketComponent } from './estatus-motivo-ticket/estatus-motivo-ticket.component';
 import { MenuDetalleCasoComponent } from './menu-detalle-caso/menu-detalle-caso.component';
+import { NumeroTicketTiendaComponent } from './numero-ticket-tienda/numero-ticket-tienda.component';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { MenuDetalleCasoComponent } from './menu-detalle-caso/menu-detalle-caso.
     DetalleTicketComponent,
     SeguimientoTicketComponent,
     EstatusMotivoTicketComponent,
-    MenuDetalleCasoComponent
+    MenuDetalleCasoComponent, 
+    NumeroTicketTiendaComponent
   ],
   imports: [
     CommonModule,
@@ -33,7 +35,8 @@ import { MenuDetalleCasoComponent } from './menu-detalle-caso/menu-detalle-caso.
     DetalleTicketComponent,
     SeguimientoTicketComponent,
     EstatusMotivoTicketComponent,
-    MenuDetalleCasoComponent
+    MenuDetalleCasoComponent,
+    NumeroTicketTiendaComponent
   ]
 })
 export class TicketModule { }

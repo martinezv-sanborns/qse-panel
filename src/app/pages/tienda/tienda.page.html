@@ -43,7 +43,9 @@
               <ion-col size="2">Número</ion-col>
               <ion-col size="2">Tienda</ion-col>
               <ion-col size="2">Distrital</ion-col>
-              <ion-col size="3">Tickets</ion-col>
+              <ion-col size="3" class="ion-text-center">Tickets <br>
+                <ion-icon color="dark" size="large" name="add-outline"></ion-icon><ion-icon color="dark" size="large" name="flag-outline"></ion-icon><ion-icon color="dark" size="large" name="hourglass-outline"></ion-icon>
+              </ion-col>
               <ion-col size="1">Estatus</ion-col>
               <ion-col size="1"></ion-col>
               <ion-col size="1"></ion-col>
@@ -58,11 +60,14 @@
               <ion-col size="2">
                 <!-- {{ tienda.apertura }} -->
               </ion-col>
-              <ion-col size="3" class="ion-hide-sm-down">
-                <!-- {{ tienda.cierre }} -->
+              <ion-col size="3" class="ion-text-center">
+                <app-numero-ticket-tienda *ngIf="tienda.tiendaId != undefined" [laTienda]="tienda.tiendaId"></app-numero-ticket-tienda>
               </ion-col>
               <ion-col size="1">
-                {{ tienda.activo }}
+
+        <ion-icon *ngIf="tienda.activo === false" color="danger" title="Activo" size="small" name="cloud-offline-outline"></ion-icon>
+        <ion-icon *ngIf="tienda.activo === true" color="primary" title="Desactivo" size="small" name="cloudy-outline"></ion-icon>
+       
               </ion-col>
               <ion-col size="1">
                 <!-- {{ tienda.diasOperacion }} -->

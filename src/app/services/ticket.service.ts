@@ -7,6 +7,7 @@ import { GeneralService } from './general.service';
 // models
 import { TicketApiResponse, TicketsApiResponse} from '../models/response/ticket.model';
 import { TicketStatusRequest } from '../models/request/ticket.model';
+import { NumerosTicketsResponseApiResponse } from '../models/helper.model';
 
 
 @Injectable({
@@ -63,4 +64,24 @@ export class TicketService {
     );
   }
 
+  obtenerTicketsTiendaEstatus(cadenaid: string, tiendaid: string, estatusid: string, numberpage: number, pagesize: number) {
+    const query =`/api/ticket/listado/tienda/async/${cadenaid}/${tiendaid}/${estatusid}/${numberpage}/${pagesize}`;
+    return this.generalService
+      .getQuery(query)
+      .pipe(
+        map(
+          (laRespuesta: TicketsApiResponse) => laRespuesta)
+      );
+  }
+
+
+  obtenerTicketsNumero(cadenaid: string, tiendaid: string, numberpage: number, pagesize: number) {
+    const query =`/api/ticket/listado/tienda/numerotickets/async/${cadenaid}/${tiendaid}/${numberpage}/${pagesize}`;
+    return this.generalService
+      .getQuery(query)
+      .pipe(
+        map(
+          (laRespuesta: NumerosTicketsResponseApiResponse) => laRespuesta)
+      );
+  }
 }

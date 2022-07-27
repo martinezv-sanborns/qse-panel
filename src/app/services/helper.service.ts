@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { SpinnerTypes, LoadingController } from '@ionic/angular';
 import { map } from 'rxjs/operators';
-import { DiaSemana } from '../models/helper.model';
+import { DiaSemana} from '../models/helper.model';
 import { LinkAPIResponse } from '../models/response/link.response.model';
 import { GeneralService } from './general.service';
 

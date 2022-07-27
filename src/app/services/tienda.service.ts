@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
-import { TiendaActivaRequest } from '../models/request/tienda.model';
+import { TiendaActivaRequest, TiendaRequest } from '../models/request/tienda.model';
 import { TiendaApiResponse, TiendasApiResponse } from '../models/response/tiendaresponse.model';
 import { GeneralService } from './general.service';
 
@@ -39,8 +39,6 @@ export class TiendaService {
     );
   }
 
-
-
   cambiarActivo(laTienda: TiendaActivaRequest) {
     return this.generalService
       .Post(`/api/tienda/estatus/async`, laTienda)
@@ -48,5 +46,13 @@ export class TiendaService {
         map(
           (laRespuesta: TiendaApiResponse) => laRespuesta)
       );
+  }
+  
+  crearTienda(tienda:TiendaRequest){
+    console.log('Objeto para crear la tienda', tienda);
+    return this.generalService.Post(`/api/tienda/async`, tienda).pipe(
+      map(
+        (laRespuesta:TiendaApiResponse)=>laRespuesta)
+        );
   }
 }

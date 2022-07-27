@@ -4,8 +4,10 @@ import { CrearTiendaComponent } from 'src/app/components/tienda/crear-tienda/cre
 import { DetalleTiendaComponent } from 'src/app/components/tienda/detalle-tienda/detalle-tienda.component';
 import { MenuTiendaComponent } from 'src/app/components/tienda/menu-tienda/menu-tienda.component';
 import { TiendaActivaRequest } from 'src/app/models/request/tienda.model';
+import { TicketsApiResponse } from 'src/app/models/response/ticket.model';
 import { TiendaApiResponse, TiendaResponse, TiendasApiResponse } from 'src/app/models/response/tiendaresponse.model';
 import { HelperService } from 'src/app/services/helper.service';
+import { TicketService } from 'src/app/services/ticket.service';
 import { TiendaService } from 'src/app/services/tienda.service';
 import { environment } from 'src/environments/environment';
 
@@ -27,7 +29,7 @@ export class TiendaPage implements OnInit {
   totalPaginasArray: number[] = [];
   lacadenaSelectedId: string;
   totalRegistros: number;
-
+  
   constructor(private tiendaService: TiendaService,  private popVerCtrl: PopoverController, private alertCtrl: AlertController,
     private helperService: HelperService, private modalCtrl: ModalController) { }
 
@@ -36,8 +38,6 @@ export class TiendaPage implements OnInit {
 
     this.getTiendas();
   }
-
-
 
   getTiendas() {
     this.listadoTiendas = [];
@@ -52,7 +52,6 @@ export class TiendaPage implements OnInit {
         this.noPaginas = exito.totalPaginas;
 
         console.log('el listado de tiendas', this.listadoTiendas);
-
       }
       this.cargando = false;
     }, (errr) => {
@@ -150,9 +149,7 @@ export class TiendaPage implements OnInit {
                 });
 
                 await alertSuccess.present();
-
                 const { data } = await alertSuccess.onDidDismiss();
-
               }
             },
               (error) => {
@@ -282,4 +279,6 @@ export class TiendaPage implements OnInit {
     const { data } = await modalShowTienda.onWillDismiss();
 
   }
+
+
 }

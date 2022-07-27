@@ -9,6 +9,7 @@ import { TiendaPageRoutingModule } from './tienda-routing.module';
 import { TiendaPage } from './tienda.page';
 import { TiendaModule } from 'src/app/components/tienda/tienda.module';
 import { ComunesModule } from 'src/app/components/common/comunes.module';
+import { TicketModule } from '../../components/ticket/ticket.module';
 
 @NgModule({
   imports: [
@@ -17,7 +18,8 @@ import { ComunesModule } from 'src/app/components/common/comunes.module';
     IonicModule,
     TiendaPageRoutingModule,
     TiendaModule,
-    ComunesModule
+    ComunesModule,
+    TicketModule
   ],
   declarations: [TiendaPage]
 })
