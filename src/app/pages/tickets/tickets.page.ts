@@ -607,7 +607,7 @@ export class TicketsPage implements OnInit {
     this.filtrosFinales = [];
 
     if(this.laTiendaSeleccionadaId.trim().length>0){
-
+      this.filtrosFinales.push(`'tiendaId':'${this.laTiendaSeleccionadaId}'`);
     }
 
     if (this.elEstatusIdSeleccionado.trim().length > 0) {

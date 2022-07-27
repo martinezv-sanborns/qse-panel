@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { EstatusApiResponse } from '../models/response/estatus.model';
 import { TipoApiResponse } from '../models/response/tipo.model';
+import { ZonaHorariaApiResponse } from '../models/response/zonahoraria.model';
 
 // services
 
@@ -33,6 +34,16 @@ export class CatalogoService {
       .pipe(
         map(
           (laRespuesta: TipoApiResponse) => laRespuesta)
+          
+      );
+  }
+
+  obtenerZonaHoraria(numberpage: number, pagesize: number) {
+    return this.generalService
+      .getQuery(`/api/ZonasHorarias/listado/async/${numberpage}/${pagesize}`)
+      .pipe(
+        map(
+          (laRespuesta: ZonaHorariaApiResponse) => laRespuesta)
           
       );
   }
