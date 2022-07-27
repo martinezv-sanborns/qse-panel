@@ -2,12 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertController, ModalController } from '@ionic/angular';
 import { UsuarioRequest } from 'src/app/models/request/usuario.model';
-import { RolesApiResponse } from 'src/app/models/response/Rol.model';
-import { RolResponse, UsuarioApiResponse } from 'src/app/models/response/usuario.model';
+import { RolesApiResponse, RolResponse } from 'src/app/models/response/Rol.model';
+import {  UsuarioApiResponse } from 'src/app/models/response/usuario.model';
 import { HelperService } from 'src/app/services/helper.service';
 import { RolService } from 'src/app/services/rol.service';
 import { SpinnerService } from 'src/app/services/spinner.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import SwiperCore, { Pagination, Navigation, SwiperOptions } from 'swiper';
+import { SwiperComponent } from "swiper/angular";
+import { UsuarioResponse } from '../../../models/response/usuario.model';
 
 @Component({
   selector: 'app-crear-usuario',
@@ -16,11 +19,16 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 })
 export class CrearUsuarioComponent implements OnInit {
 
+
+  
+
   usuarioForm: FormGroup;
   esActivo: boolean;
   listRoles: RolResponse[] = [];
   rolSeleccionado: RolResponse;
   registrando: boolean;
+  config: SwiperOptions = {};
+  usuarioCreado: UsuarioResponse;
 
   constructor(private modalCtrl: ModalController,
     private alertCtrl: AlertController,
@@ -30,8 +38,43 @@ export class CrearUsuarioComponent implements OnInit {
     private usuarioService: UsuarioService,
     private spinnerService: SpinnerService) { }
 
-  ngOnInit() {}
+  ngOnInit() {
 
+
+    this.config = {
+      slidesPerView: 3.5,
+      spaceBetween:0,
+      loop: true,
+      navigation: true,  
+      history:{
+        key:'slide'
+      },
+      scrollbar: { draggable: true }
+    };
+  
+    
+
+    this.esActivo = false;
+    this.getRoles();
+    this.cargarFormulario();
+
+
+  }
+
+
+  get nickNameNoValido() {
+    return this.usuarioForm.get('nickName').invalid && this.usuarioForm.get('nickName').touched;
+  }
+
+  get emailNoValido() {
+    return this.usuarioForm.get('email').invalid && this.usuarioForm.get('email').touched;
+  }
+
+
+  get nombreNoValido() {
+    return this.usuarioForm.get('nombre').invalid && this.usuarioForm.get('nombre').touched;
+  }
+  
   
   async registrarUsuario() {
     if (this.usuarioForm.invalid) {
@@ -128,6 +171,8 @@ export class CrearUsuarioComponent implements OnInit {
               cssClass: 'alertButton',
               id: 'confirm-button',
               handler: () => {
+
+               
               }
             }]
         });
@@ -195,23 +240,53 @@ export class CrearUsuarioComponent implements OnInit {
 
   cargarFormulario() {
     this.usuarioForm = this.fb.group({
-      nombre: ['', Validators.required],
-      nickName: ['', Validators.required],
+      nombre: ['', [Validators.required]],
+      nickName: ['',[ Validators.required, Validators.maxLength(8)]],
       email: ['', [Validators.minLength(5), Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')]]
     });
   }
 
 
   getRoles() {
+    console.log("entre a get roles")
     this.rolService.obtenerRoles().subscribe((exito: RolesApiResponse) => {
 
       if (exito.result === 'OK') {
+        this.listRoles=null;
+       
         this.listRoles = exito.dtoResult;
+        console.log(this.listRoles);
       }
 
     }, (error) => {
       console.log(error);
     });
+  }
+
+  cerrarModal() {
+    this.modalCtrl.dismiss({
+      close: true,
+      registrado: false
+    });
+  }
+
+    onChangeStatus() {
+    this.esActivo = !this.esActivo;
+  }
+
+  onRolSelected(elRol: RolResponse) {
+    // update rol selected
+    this.rolSeleccionado = elRol;
+
+    // clean seleccionado
+    const rolIndexSelected = this.listRoles.findIndex(r => r.isSelected === true);
+    if (rolIndexSelected > -1) {
+      this.listRoles[rolIndexSelected].isSelected = false;
+    }
+
+    // marcar el nuevo
+    const rolIndex = this.listRoles.findIndex(r => r.rolId === elRol.rolId);
+    this.listRoles[rolIndex].isSelected = true;
   }
 
 

@@ -2,13 +2,46 @@
 
    // background-color: green;
     color: green;
+    opacity: 1;
+   
 }
 
 .inactivo{
     color:red;
+    opacity: 1;
+
 }
 
-ion-grid{
 
-    background:white
+.swiper-button-next, .swiper-button-prev,.swiper-button-next:after, .swiper-button-prev:after{
+    display: none!important;
+}
+
+
+.round {
+    border-radius: 30px !important;
+    margin-bottom: 10px;
+    border: 1px solid #ffffff;
+    border-bottom: 0px !important;
+    box-shadow: none !important;
+}
+.row {
+    border-radius: 5px !important;
+    margin-bottom: 10px;
+    border: 5px solid #e6b6b8;
+   
+    background-color:  #ffffff;;
+   // border-bottom: 10px !important;
+    box-shadow: none !important;
+}
+
+
+
+.button{
+
+    color: #ec1b22;
+}
+
+.blanco{
+    background-color: #ffffff;
 }

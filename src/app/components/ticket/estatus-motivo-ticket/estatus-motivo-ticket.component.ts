@@ -60,17 +60,32 @@ export class EstatusMotivoTicketComponent implements OnInit {
         });
       }
 
+      const validateMotivo: string = this.estatusForm.value.motivo;
+      if(validateMotivo.trim() === ''){
+        Swal.fire({
+          icon: 'warning',
+          title: this.titleErr,
+          text: `Por favor escriba algo sobre el caso`,
+          iconColor: '#eb445a',
+          confirmButtonColor: '#eb445a',
+          heightAuto: false
+        });
+        return;
+      }
+
       // Send Motivo
       this.modalCtrl.dismiss({
         close: false,
         motivoSend: true,
-        motivo: this.estatusForm.value.motivo
+        motivo: this.estatusForm.value.motivo,
+        esCerrarCaso: this.estatusForm.value.ckCerrarCaso
       });
     }
 
     cargarFormulario() {
       this.estatusForm = this.fb.group({
         motivo: ['', Validators.required],
+        ckCerrarCaso: [false]
       });
     }
 

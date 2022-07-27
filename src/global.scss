@@ -24,6 +24,11 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+@import 'swiper/css';
+@import 'swiper/css/navigation';
+@import 'swiper/css/pagination';
+
+
 /* Estilos propios */
 
 .cursor {
@@ -43,7 +48,7 @@
 }
 
 .color-border-danger {
-    border: 1px #eb445a solid;
+    border: 1px #ec1b22 solid;
 }
 
 .color-border-warning {
@@ -70,7 +75,7 @@
 }
 
 .no-disponible {
-    background-color: #eb445a;
+    background-color: #ec1b22;
     color: #f4f5f8;
 }
 
@@ -94,7 +99,7 @@
 }
 
 .alertDanger {
-    --background: #eb445a;
+    --background: #ec1b22;
     button.alertButton {
         color: #f4f5f8;
     }
@@ -119,7 +124,7 @@
         color: #2dd36f;
     }
     button.cancelButton {
-        color: #eb445a;
+        color: #ec1b22;
     }
     .messaje-err {
         color: #000;

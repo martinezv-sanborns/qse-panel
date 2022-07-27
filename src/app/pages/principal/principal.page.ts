@@ -7,9 +7,9 @@ import { MenuController, Platform } from '@ionic/angular';
   styleUrls: ['./principal.page.scss'],
 })
 export class PrincipalPage implements OnInit {
-  cadenaSelectedId: string='';
-  cadenaSelectedName : string ='';
-  rolName:string='';
+  cadenaSelectedId='';
+  cadenaSelectedName  ='';
+  rolName='';
 
   menuItems = [
     {
@@ -37,7 +37,7 @@ export class PrincipalPage implements OnInit {
 
     this.cadenaSelectedName = localStorage.getItem('cadenaName');
     this.cadenaSelectedId = localStorage.getItem('cadenaSelectedId');
-    this.rolName = localStorage.getItem('rol');
+    this.rolName = localStorage.getItem('rolName');
     const width = this.plt.width();
     this.toggleMenu(width);
   }
@@ -48,7 +48,7 @@ export class PrincipalPage implements OnInit {
    const newWidth = event.target.innerWidth;
    this.toggleMenu(newWidth);
  }
- 
+
   toggleMenu(width) {
     if (width > 768) {
       this.menuCtrl.enable(false, 'myMenu');
@@ -56,7 +56,7 @@ export class PrincipalPage implements OnInit {
       this.menuCtrl.enable(true, 'myMenu');
     }
   }
- 
+
   setTitle(title) {
     this.title = title;
   }

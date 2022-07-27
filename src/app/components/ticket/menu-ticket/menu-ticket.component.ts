@@ -1,7 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
+
+// models
 import { ItemMenu } from 'src/app/models/item-menu.model';
 import { EstatusResponse } from 'src/app/models/response/estatus.model';
+
+// globals
 import { environment } from 'src/environments/environment';
 
 
@@ -38,7 +42,6 @@ export class MenuTicketComponent implements OnInit {
     }
 
     if (this.elEstatus.estatusId.toUpperCase() === environment.estatusAtendido) {
-
       this.itemsMenu.push({
         id: 'intervenir-ticket',
         valor: 'Intervenir',
@@ -48,7 +51,7 @@ export class MenuTicketComponent implements OnInit {
 
     if (this.elEstatus.estatusId.toUpperCase() === environment.estatusAtendido &&
       (this.elRolUsuario.toUpperCase() === environment.admin || this.elRolUsuario.toUpperCase() === environment.corp
-        || this.elRolUsuario.toUpperCase() === environment.tda)) {
+        || this.elRolUsuario.toUpperCase() === environment.tda || this.elRolUsuario.toUpperCase() === environment.dis)) {
       this.itemsMenu.push({
         id: 'cerrar-caso',
         valor: 'Cerrar caso',
@@ -56,15 +59,15 @@ export class MenuTicketComponent implements OnInit {
       });
     }
 
-    if ((this.elEstatus.estatusId.toUpperCase() === environment.estatusCerradoTienda
-      || this.elEstatus.estatusId.toUpperCase() === environment.estatusCerradoCorpo) &&
-      (this.elRolUsuario.toUpperCase() === environment.corp || this.elRolUsuario.toUpperCase() === environment.admin)) {
-      this.itemsMenu.push({
-        id: 'reabrir-ticket',
-        valor: 'Reabrir',
-        icono: 'folder-open-outline'
-      });
-    }
+    // if ((this.elEstatus.estatusId.toUpperCase() === environment.estatusCerradoTienda
+    //   || this.elEstatus.estatusId.toUpperCase() === environment.estatusCerradoCorpo) &&
+    //   (this.elRolUsuario.toUpperCase() === environment.corp || this.elRolUsuario.toUpperCase() === environment.admin)) {
+    //   this.itemsMenu.push({
+    //     id: 'reabrir-ticket',
+    //     valor: 'Reabrir',
+    //     icono: 'folder-open-outline'
+    //   });
+    // }
 
     this.itemsMenu.push({
       id: 'close-menu',

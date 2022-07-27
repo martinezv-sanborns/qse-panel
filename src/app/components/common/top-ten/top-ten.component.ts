@@ -22,11 +22,11 @@ export class TopTenComponent implements OnInit, OnChanges {
   selectedOption = environment.estatusIniciado;
 
 
-  constructor( private ticketsApi:TicketService, generalApi: GeneralService  ) { 
+  constructor( private ticketsApi:TicketService, generalApi: GeneralService  ) {
         this.selectedOption = environment.estatusIniciado;
   }
-  
-  ngOnChanges(changes: SimpleChanges): void { 
+
+  ngOnChanges(changes: SimpleChanges): void {
     this.estatusInicial = environment.estatusIniciado;
     this.estatusResuelto = environment.estatusCerradoTienda;
     this.estatusAtendiendo = environment.estatusAtendido;
@@ -36,7 +36,7 @@ export class TopTenComponent implements OnInit, OnChanges {
     this.estatusInicial = environment.estatusIniciado;
     this.estatusResuelto = environment.estatusCerradoTienda;
     this.estatusAtendiendo = environment.estatusAtendido;
-    
+
     this.ObtenerListados();
   }
 
@@ -67,11 +67,11 @@ export class TopTenComponent implements OnInit, OnChanges {
       (error)=>{}
     );
     this.obteniendoDatos=true;
-    this.ticketsApi.obtenerTicketsFiltro(this.entradaCadenaId, `{"estatus":"${environment.estatusCerradoCorpo}"}`,1,10).subscribe(
+    this.ticketsApi.obtenerTicketsFiltro(this.entradaCadenaId, `{"estatus":"cerrados"}`,1,10).subscribe(
       (exito:TicketsApiResponse)=>{
           if(exito.result==="OK"){
               this.listadoTicketsResueltos = exito.dtoResult;
-              
+
               this.obteniendoDatos=false;
           }
       },
@@ -82,13 +82,13 @@ export class TopTenComponent implements OnInit, OnChanges {
       (exito:TicketsApiResponse)=>{
           if(exito.result==="OK"){
               this.listadoTicketsAtendiendo = exito.dtoResult;
-              
+
               this.obteniendoDatos=false;
           }
       },
       (error)=>{}
     );
-  
+
   }
 
 

@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { UsuarioService } from '../../services/usuario.service';
 import { UsuarioResponse } from '../../models/response/usuario.model';
 import { MenuUsuarioComponent } from '../../components/common/menu-usuario/menu-usuario.component';
-import { PopoverController } from '@ionic/angular';
+import { PopoverController, ModalController } from '@ionic/angular';
 import Swal from 'sweetalert2';
 import { UsuarioLockRequest } from 'src/app/models/request/usuario.model';
+import { CrearUsuarioComponent } from '../../components/common/crear-usuario/crear-usuario.component';
 
 @Component({
   selector: 'app-usuarios',
@@ -17,20 +18,20 @@ export class UsuariosPage implements OnInit {
 
   cargando: false;
 
+  numberPage=1;
+  pageSize=10;
+
   constructor(private usuarioService: UsuarioService,
-    private popVerCtrl: PopoverController,) {
+              private popVerCtrl: PopoverController,
+              private mdlCtrl: ModalController) {
 
 
   }
 
   ngOnInit() {
 
-    this.usuarioService.ObtenerListado(1, 10000).subscribe(exito => {
-
-
+    this.usuarioService.ObtenerListado(this.numberPage, this.pageSize).subscribe(exito => {
       this.Usuarios = exito.dtoResult;
-
-      console.log(exito);
     });
 
   }
@@ -181,14 +182,49 @@ export class UsuariosPage implements OnInit {
       heightAuto: false
     }).then((result) => {
       if (result.isConfirmed) {
-        // algo
+        
+        this.usuarioService.eliminar(usuario).subscribe(exito=>{
+
+          console.log("usuario id", usuario);
+          
+          console.log("result", exito);
+
+          let usuarioEliminado= exito.dtoResult;
+         
+         
+          
+          if(exito.result="OK"){
+
+            Swal.fire({
+              icon: 'success',
+              title: 'Eliminado ',
+              text: `Usuario eliminado!`,
+              showCancelButton: false,
+              heightAuto: false,
+              timer: 3000
+            });
+
+
+
+            let idx=  this.Usuarios.findIndex(x=>x.usuarioId==usuarioEliminado.usuarioId);
+
+            if(idx!=-1){
+
+              this.Usuarios.splice(idx);
+
+            }
+          }
+
+
+
+        });
       }
     });
 
 
   }
 
-  CambiarPassword(usuario: string) {
+  CambiarPassword(usuario: UsuarioResponse) {
 
   }
 
@@ -196,6 +232,7 @@ export class UsuariosPage implements OnInit {
     const popover = await this.popVerCtrl.create({
       component: MenuUsuarioComponent,
       componentProps: {
+        usuario: usuario
       },
       cssClass: 'my-custom-class',
       event: evento,
@@ -220,10 +257,10 @@ export class UsuariosPage implements OnInit {
 
           break;
         case 'change-password':
-          this.CambiarPassword('');
+          this.CambiarPassword(usuario);
           break;
         case 'delete-user':
-          this.Delete('');
+          this.Delete(usuario.usuarioId);
           break;
         default:
           break;
@@ -231,6 +268,67 @@ export class UsuariosPage implements OnInit {
     }
 
   }
+
+
+
+  async CreaUsuario (){
+
+    const modal = await this.mdlCtrl.create(
+            {
+              component:CrearUsuarioComponent,
+              cssClass: 'my-custom-class',
+              mode: 'ios',
+              backdropDismiss: true,
+            
+            });
+
+            modal.present();
+
+
+            const { data } = await modal.onDidDismiss();
+
+          
+            if(data!=undefined){
+              console.log("el data", data.nuevo)
+              if(data.registrado)
+              this.Usuarios.push(data.nuevo);
+            }
+
+  }
+
+
+  async buscar(){
+
+
+
+    this.usuarioService.ObtenerListado(1, 10000).subscribe(exito => {
+      this.Usuarios = exito.dtoResult;
+    });
+
+  }
+
+
+  onSearchChange(event){
+ 
+
+    let criteria =event.detail.value;
+
+    this.usuarioService.ObtenerListadoFiltrado(criteria,this.numberPage,this.pageSize).subscribe(exito=>{
+
+      if(exito.result=="OK"){
+        this.Usuarios =[];
+        this.Usuarios = exito.dtoResult;
+      }
+
+    }
+    )
+
+
+  }
+
+
+
+
 
 
 

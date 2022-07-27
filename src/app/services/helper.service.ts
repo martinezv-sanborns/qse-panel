@@ -55,9 +55,12 @@ export class HelperService {
   async checkAndCloseLoader() {
 
     const loader = await this.loadingCTRL.getTop();
+    console.log('loader', loader);
      if(loader !== undefined) {
+      console.log('loader != undefined');
        await this.loadingCTRL.dismiss();
      }
+     await this.loadingCTRL.dismiss();
    }
 
    public arrayDiasSemana: DiaSemana[] = [
