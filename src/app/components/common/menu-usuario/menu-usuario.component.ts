@@ -35,10 +35,19 @@ export class MenuUsuarioComponent implements OnInit {
         valor: 'Eliminar Usuario',
         icono: 'trash-outline'
       },
-     
       {
         id: 'change-password',
         valor: 'Cambiar contraseña',
+        icono: 'key-outline'
+      },
+      {
+        id: 'add-canal',
+        valor: 'Asginar Cadena',
+        icono: 'key-outline'
+      },
+      {
+        id: 'add-tienda',
+        valor: 'Asginar Tiendas',
         icono: 'key-outline'
       },
       {

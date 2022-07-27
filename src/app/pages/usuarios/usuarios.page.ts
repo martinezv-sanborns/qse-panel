@@ -18,12 +18,12 @@ export class UsuariosPage implements OnInit {
 
   cargando: false;
 
-  numberPage=1;
-  pageSize=10;
+  numberPage = 1;
+  pageSize = 10;
 
   constructor(private usuarioService: UsuarioService,
-              private popVerCtrl: PopoverController,
-              private mdlCtrl: ModalController) {
+    private popVerCtrl: PopoverController,
+    private mdlCtrl: ModalController) {
 
 
   }
@@ -102,10 +102,10 @@ export class UsuariosPage implements OnInit {
           user.usuarioId = usuario.usuarioId;
           user.esBloqueado = !usuario.bloqueado;
 
-          this.usuarioService.desbloquear(user).subscribe(exito => {          
-            if (exito.result == "OK"){
+          this.usuarioService.desbloquear(user).subscribe(exito => {
+            if (exito.result == "OK") {
               usuario.bloqueado = usuario.bloqueado;
-            
+
             }
           });
         }
@@ -127,8 +127,7 @@ export class UsuariosPage implements OnInit {
           user.esBloqueado = !usuario.bloqueado;
 
           this.usuarioService.desbloquear(user).subscribe(exito => {
-            if (exito.result == "OK") 
-            {
+            if (exito.result == "OK") {
               usuario.bloqueado = !usuario.bloqueado;
             }
 
@@ -182,18 +181,18 @@ export class UsuariosPage implements OnInit {
       heightAuto: false
     }).then((result) => {
       if (result.isConfirmed) {
-        
-        this.usuarioService.eliminar(usuario).subscribe(exito=>{
+
+        this.usuarioService.eliminar(usuario).subscribe(exito => {
 
           console.log("usuario id", usuario);
-          
+
           console.log("result", exito);
 
-          let usuarioEliminado= exito.dtoResult;
-         
-         
-          
-          if(exito.result="OK"){
+          let usuarioEliminado = exito.dtoResult;
+
+
+
+          if (exito.result = "OK") {
 
             Swal.fire({
               icon: 'success',
@@ -206,9 +205,9 @@ export class UsuariosPage implements OnInit {
 
 
 
-            let idx=  this.Usuarios.findIndex(x=>x.usuarioId==usuarioEliminado.usuarioId);
+            let idx = this.Usuarios.findIndex(x => x.usuarioId == usuarioEliminado.usuarioId);
 
-            if(idx!=-1){
+            if (idx != -1) {
 
               this.Usuarios.splice(idx);
 
@@ -251,11 +250,17 @@ export class UsuariosPage implements OnInit {
           this.Activar(usuario);
           break;
         case 'reset-intentos':
-
           this.ResetIntentos(usuario.usuarioId);
           usuario.intentos = 0;
-
           break;
+        case 'add-canal':
+          this.ResetIntentos(usuario.usuarioId);
+        
+          break;
+          case 'add-tiendas':
+            this.ResetIntentos(usuario.usuarioId);
+            
+            break;
         case 'change-password':
           this.CambiarPassword(usuario);
           break;
@@ -270,34 +275,39 @@ export class UsuariosPage implements OnInit {
   }
 
 
+async AsignarCanal(usuarioId: string){
 
-  async CreaUsuario (){
+}
+
+async AsignarTiendas(usuarioId: string){}
+
+  async CreaUsuario() {
 
     const modal = await this.mdlCtrl.create(
-            {
-              component:CrearUsuarioComponent,
-              cssClass: 'my-custom-class',
-              mode: 'ios',
-              backdropDismiss: true,
-            
-            });
+      {
+        component: CrearUsuarioComponent,
+        cssClass: 'my-custom-class',
+        mode: 'ios',
+        backdropDismiss: true,
 
-            modal.present();
+      });
+
+    modal.present();
 
 
-            const { data } = await modal.onDidDismiss();
+    const { data } = await modal.onDidDismiss();
 
-          
-            if(data!=undefined){
-              console.log("el data", data.nuevo)
-              if(data.registrado)
-              this.Usuarios.push(data.nuevo);
-            }
+
+    if (data != undefined) {
+      console.log("el data", data.nuevo)
+      if (data.registrado)
+        this.Usuarios.push(data.nuevo);
+    }
 
   }
 
 
-  async buscar(){
+  async buscar() {
 
 
 
@@ -308,15 +318,15 @@ export class UsuariosPage implements OnInit {
   }
 
 
-  onSearchChange(event){
- 
+  onSearchChange(event) {
 
-    let criteria =event.detail.value;
 
-    this.usuarioService.ObtenerListadoFiltrado(criteria,this.numberPage,this.pageSize).subscribe(exito=>{
+    let criteria = event.detail.value;
 
-      if(exito.result=="OK"){
-        this.Usuarios =[];
+    this.usuarioService.ObtenerListadoFiltrado(criteria, this.numberPage, this.pageSize).subscribe(exito => {
+
+      if (exito.result == "OK") {
+        this.Usuarios = [];
         this.Usuarios = exito.dtoResult;
       }
 

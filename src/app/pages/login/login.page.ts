@@ -160,11 +160,15 @@ export class LoginPage implements OnInit {
               }
             );
             await modalShowPortal.present();
+
             const { data } = await modalShowPortal.onWillDismiss();
   
+            console.log("el data",data);
+            
             if (data !== undefined) {
   
               if (data.portalSelected) {
+                console.log("entre a obtener datos de cadena",data)
                 localStorage.setItem('cadenaSelectedId', data.portalId);
                 localStorage.setItem('cadenaName', data.name);
   
