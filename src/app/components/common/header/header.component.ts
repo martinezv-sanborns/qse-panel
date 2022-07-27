@@ -16,6 +16,7 @@ import { HelperService } from '../../../services/helper.service';
 export class HeaderComponent implements OnInit {
   @Input() entradaCadenaName: string;
   @Input() entradaRolName: string;
+  @Input() entradaTiendaName: string;
 
   @ViewChild('productbtn', { read: ElementRef }) productbtn: ElementRef;
   dropdown = false;

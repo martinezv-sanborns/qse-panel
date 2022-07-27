@@ -42,7 +42,8 @@
         </ion-col>
         <ion-col size="4" class="ion-text-right">
             <ion-chip color="primary" *ngIf="entradaCadenaName">
-                <label>{{ entradaCadenaName }} | {{ entradaRolName}}  </label>
+                <label *ngIf="entradaRolName=='TDA'">{{ entradaCadenaName }} | {{ entradaRolName}}  </label>
+                <label *ngIf="entradaRolName!='TDA'">{{ entradaCadenaName }} | {{ entradaRolName}}   </label>
             </ion-chip>
             <ion-button (click)="mostrarMenu($event)" fill="clear">
                 <ion-icon color="danger" slot="icon-only" name="menu-outline"></ion-icon>
