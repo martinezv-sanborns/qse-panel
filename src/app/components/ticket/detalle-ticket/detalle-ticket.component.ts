@@ -150,7 +150,7 @@ export class DetalleTicketComponent implements OnInit, OnChanges {
         componentProps: {
           icon: 'chatbox-outline',
           titleWindow: 'Cerrar Caso',
-          titleMessage: '¿Está seguro que desea Cerrar el Q&SE?',
+          titleMessage: '¿Está seguro que desea Cerrar el Caso?',
           txtMessage: 'Escriba aquí el motivo',
           titleErr: '¿Motivo?',
           messageErr: 'Por favor escriba el motivo'
