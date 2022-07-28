@@ -1,5 +1,7 @@
 <ion-card>
   <ion-card-title class="ion-text-center">Los casos mas recientes</ion-card-title>
+
+
   <ion-card-content>
     <ion-segment [value]="this.selectedOption" (ionChange)="segmentChanged($event)">
       <ion-segment-button [value]="this.estatusInicial" >
@@ -21,5 +23,8 @@
     <app-top-ten-listado (salidaActualizame)="ObtenerListados()" (salidaTicketSeleccionado)="selectedTicketChanged($event)" *ngIf="this.selectedOption===this.estatusAtendiendo" [entradaListadoTickets]="this.listadoTicketsAtendiendo"></app-top-ten-listado>
 
   </ion-card-content>
+  <ion-card-subtitle class="ion-text-center">
+    <ion-button (click)="ObtenerListados()" fill="clear"><ion-icon  size="small" name="refresh"  > </ion-icon></ion-button>
+   </ion-card-subtitle>
 </ion-card>
 
