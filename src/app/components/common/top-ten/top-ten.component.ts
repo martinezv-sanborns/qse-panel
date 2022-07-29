@@ -11,6 +11,8 @@ import { environment } from 'src/environments/environment';
 })
 export class TopTenComponent implements OnInit, OnChanges {
   @Input() entradaCadenaId : string;
+  @Input() actualizarListados : Boolean;
+
   @Output() salidaTicketSeleccionado:  EventEmitter< TicketResponse> = new EventEmitter<TicketResponse>();
   listadoTicketsNuevos: TicketResponse[]=[];
   listadoTicketsResueltos: TicketResponse[]=[];
@@ -27,6 +29,9 @@ export class TopTenComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+
+    console.log("ngOnChanges componente TOPTEN");
+
     this.estatusInicial = environment.estatusIniciado;
     this.estatusResuelto = environment.estatusCerradoTienda;
     this.estatusAtendiendo = environment.estatusAtendido;
