@@ -11,18 +11,19 @@
     <ion-grid >
       <ion-row>
         <ion-col ><ion-label class="TextoItemComentarios">{{elticket.comentarios | slice: 0:30}}...</ion-label></ion-col>
-        <ion-col ><ion-label class="TextoItem ion-text-right">TDA: {{elticket.tienda.identificadorExterno | slice: 0:5}}  </ion-label></ion-col>
+        <ion-col ><ion-label class="TextoItemMediano ion-text-right">
+          <ion-icon  name="storefront-outline" class="cursor" ></ion-icon>
+          {{elticket.tienda.identificadorExterno | slice: 0:5}}  
+        </ion-label></ion-col>
       </ion-row>
       <ion-row>
         <ion-col >
           <ion-label class="TextoItemTimeAgo">{{elticket.fechaAlta|timeAgo}}</ion-label>
-          
           <!-- <ion-badge *ngFor="let tipo of elticket.ticketTipos" color="primary" mode="ios">{{tipo.tipo.nombreCorto}}</ion-badge> -->
-          <app-tipos-ticket  [ticketTipos]="elticket.ticketTipos" [ishighlight]="this.ticketSeleccionadoId===elticket.ticketId"  ></app-tipos-ticket>
-
         </ion-col>
         <ion-col class="ion-text-right">
-            <ion-icon  name="eye-outline" class="cursor" ></ion-icon>
+            <!-- <ion-icon  name="eye-outline" class="cursor" ></ion-icon> -->
+            <app-tipos-ticket  [ticketTipos]="elticket.ticketTipos" [ishighlight]="this.ticketSeleccionadoId===elticket.ticketId"  ></app-tipos-ticket>
         </ion-col>
       </ion-row>                    
     </ion-grid>

@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ModalController, PopoverController } from '@ionic/angular';
 import Swal from 'sweetalert2';
 
@@ -19,6 +19,7 @@ import { MenuDetalleCasoComponent } from '../menu-detalle-caso/menu-detalle-caso
 
 
 
+
 @Component({
   selector: 'app-detalle-ticket',
   templateUrl: './detalle-ticket.component.html',
@@ -29,6 +30,7 @@ export class DetalleTicketComponent implements OnInit, OnChanges {
   @Input() elTicket: TicketResponse;
   @Input() elRolUsuario: string;
   @Input() isModal: boolean;
+  @Output() salidaTicketCambiado: EventEmitter<Boolean>= new EventEmitter();
 
   tabActivo = 'relato';
   losticketLogs: TicketLogResponse[] = [];
@@ -150,7 +152,7 @@ export class DetalleTicketComponent implements OnInit, OnChanges {
         componentProps: {
           icon: 'chatbox-outline',
           titleWindow: 'Cerrar Caso',
-          titleMessage: '¿Está seguro que desea Cerrar el Q&SE?',
+          titleMessage: '¿Está seguro que desea Cerrar el Caso?',
           txtMessage: 'Escriba aquí el motivo',
           titleErr: '¿Motivo?',
           messageErr: 'Por favor escriba el motivo'
@@ -229,16 +231,20 @@ export class DetalleTicketComponent implements OnInit, OnChanges {
       esCerrarCaso: cerrarCaso
     };
 
-    this.helperService.showLoading('Interviniendo...', 'bubbles');
+    this.helperService.showLoading('Actualizando el caso...', 'bubbles');
     this.ticketService.intervenir(elNuevoStatusTicket).subscribe((exito: TicketApiResponse) => {
 
       if (exito.result === 'OK') {
+
+        //VMP vamos a notificar el cambio 
+        this.salidaTicketCambiado.emit(true);
+        console.log('SE VA A NOTIFICAR EL CAMBIO')
         this.elTicket = exito.dtoResult;
         this.initTickets();
 
         Swal.fire({
           icon: 'success',
-          title: 'Intervenir Caso',
+          title: 'Atendiendo Caso',
           text: `${exito.message}`,
           heightAuto: false
         }).then((result) => {
@@ -249,7 +255,7 @@ export class DetalleTicketComponent implements OnInit, OnChanges {
       } else {
         Swal.fire({
           icon: 'warning',
-          title: 'Intervenir Caso',
+          title: 'Atendiendo Caso',
           text: exito.error,
           heightAuto: false
         }).then((result) => {

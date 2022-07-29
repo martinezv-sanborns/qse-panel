@@ -10,7 +10,7 @@ export class HomePage implements OnInit, OnChanges {
   cadenaId: string='';
   rolName='';
   ticketSeleccionado : TicketResponse;
-
+  ticketCambiado:Boolean=false;
 
   constructor() {
     //this.cadenaId = localStorage.getItem('cadenaSelectedId');
@@ -30,6 +30,11 @@ export class HomePage implements OnInit, OnChanges {
 
   ticketSeleccionadoChanged(elTicket: TicketResponse){
       this.ticketSeleccionado = elTicket;
+  }
+  HaCambiado(){
+    console.log("HOME PAGE RECIBIO NOTIFICACION");
+    this.ticketCambiado= !this.ticketCambiado;
+
   }
 
 }
