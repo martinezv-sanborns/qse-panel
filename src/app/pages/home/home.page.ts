@@ -1,5 +1,7 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, getPlatform, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Platform } from '@ionic/angular';
 import { TicketResponse } from 'src/app/models/response/ticket.model';
+import { HelperService } from 'src/app/services/helper.service';
 
 @Component({
   selector: 'app-home',
@@ -11,10 +13,15 @@ export class HomePage implements OnInit, OnChanges {
   rolName='';
   ticketSeleccionado : TicketResponse;
   ticketCambiado:Boolean=false;
+  isMobile : boolean=false;
 
-  constructor() {
+  constructor(private helperAPI:HelperService) {
     //this.cadenaId = localStorage.getItem('cadenaSelectedId');
-    //console.log('La cadena en el home constructor', this.cadenaId );
+    this.helperAPI.isMobile().then(
+      (data)=>{
+      this.isMobile = data;
+      }
+    );
    }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -32,7 +39,7 @@ export class HomePage implements OnInit, OnChanges {
       this.ticketSeleccionado = elTicket;
   }
   HaCambiado(){
-    console.log("HOME PAGE RECIBIO NOTIFICACION");
+    //console.log("HOME PAGE RECIBIO NOTIFICACION");
     this.ticketCambiado= !this.ticketCambiado;
 
   }

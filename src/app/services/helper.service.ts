@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { SpinnerTypes, LoadingController } from '@ionic/angular';
+import { SpinnerTypes, LoadingController, Platform } from '@ionic/angular';
 import { map } from 'rxjs/operators';
 import { DiaSemana} from '../models/helper.model';
 import { LinkAPIResponse } from '../models/response/link.response.model';
@@ -11,7 +11,18 @@ import { GeneralService } from './general.service';
 })
 export class HelperService {
 
-  constructor(private generalAPI: GeneralService,  private router: Router, private loadingCTRL: LoadingController) { }
+  constructor(private generalAPI: GeneralService,  private router: Router, private loadingCTRL: LoadingController, private platf: Platform) { }
+
+  async isMobile(){
+    if (this.platf.is("mobile") || this.platf.is("mobileweb" ) || this.platf.is("mobile") || this.platf.is("android") ){
+      return true
+    }
+    else{
+      return false;
+    }
+
+  }
+
 
   getMessageAlert(message: string, type: string): string {
     return `<div class="ion-text-center"><img src="./assets/${type}.png" width="35px" height="35px"><br/>

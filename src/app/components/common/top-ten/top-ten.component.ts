@@ -17,7 +17,7 @@ export class TopTenComponent implements OnInit, OnChanges {
   listadoTicketsNuevos: TicketResponse[]=[];
   listadoTicketsResueltos: TicketResponse[]=[];
   listadoTicketsAtendiendo: TicketResponse[]=[];
-  obteniendoDatos:Boolean=false;
+  obteniendoDatos:boolean=false;
   estatusInicial :string;
   estatusResuelto :string;
   estatusAtendiendo :string;
@@ -30,7 +30,7 @@ export class TopTenComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
 
-    console.log("ngOnChanges componente TOPTEN");
+    //console.log("ngOnChanges componente TOPTEN");
 
     this.estatusInicial = environment.estatusIniciado;
     this.estatusResuelto = environment.estatusCerradoTienda;
