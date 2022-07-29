@@ -8,6 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class EstatusColorComponent implements OnInit {
 
   @Input() status: string;
+  @Input() icon: string;
   colorSeleccionado: string;
 
   colorsStatus = [{

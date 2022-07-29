@@ -1,5 +1,5 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { format, parseISO } from 'date-fns';
 import Swal from 'sweetalert2';
 
@@ -26,6 +26,7 @@ import { TicketApiResponse, TicketResponse, TicketsApiResponse } from 'src/app/m
 import { TicketStatusRequest } from 'src/app/models/request/ticket.model';
 import { TiendaService } from '../../services/tienda.service';
 import { TiendasApiResponse, TiendaResponse } from '../../models/response/tiendaresponse.model';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -33,7 +34,7 @@ import { TiendasApiResponse, TiendaResponse } from '../../models/response/tienda
   templateUrl: './tickets.page.html',
   styleUrls: ['./tickets.page.scss'],
 })
-export class TicketsPage implements OnInit {
+export class TicketsPage implements OnInit, OnDestroy {
 
   listadoTickets: TicketResponse[] = [];
   cargando: boolean;
@@ -57,6 +58,7 @@ export class TicketsPage implements OnInit {
   dateFechaIni = '';
   dateFechaFin = '';
   activePage = 0;
+  subscriptionListadoTickets: Subscription;
 
   constructor(private catalogoService: CatalogoService,
     private ticketService: TicketService,
@@ -66,6 +68,10 @@ export class TicketsPage implements OnInit {
     private modalCtrl: ModalController,
     private modalCrtl: ModalController
   ) { }
+
+  ngOnDestroy(): void {
+   this.subscriptionListadoTickets.unsubscribe();
+  }
 
   ngOnInit() {
 
@@ -80,11 +86,12 @@ export class TicketsPage implements OnInit {
 
 
   getTickets() {
-    console.log('gettickets');
     this.listadoTickets = [];
     this.cargando = true;
     this.helperService.showLoading('Espere un momento, estamos cargando los casos', 'bubbles');
-    this.ticketService.obtenerTicketsListado(this.lacadenaSelectedId, 1, environment.tamPagina).subscribe((exito: TicketsApiResponse) => {
+    this.subscriptionListadoTickets = this.ticketService
+    .obtenerTicketsListado(this.lacadenaSelectedId, 1, environment.tamPagina)
+      .subscribe((exito: TicketsApiResponse) => {
       this.helperService.hideLoading();
       console.log('close loading');
       if (exito.result === 'OK') {
