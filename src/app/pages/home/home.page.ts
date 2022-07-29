@@ -27,9 +27,13 @@ export class HomePage implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     //this.cadenaId = localStorage.getItem('cadenaSelectedId');
     //console.log('La cadena en el home on onchanges', this.cadenaId );
+    console.log('ngOnChanges home');
   }
 
   ngOnInit() {
+
+    console.log('ngOnInit home');
+
       this.cadenaId = localStorage.getItem('cadenaSelectedId');
       this.rolName = localStorage.getItem('rolName');
       //console.log('La cadena en el home ininit', this.cadenaId );

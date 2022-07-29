@@ -82,6 +82,8 @@ export class TicketsPage implements OnInit, OnDestroy {
     this.getTickets();
     this.obtenerEstatus();
     this.obtenerTipo();
+
+    console.log('ngOnInit tickets');
   }
 
 
