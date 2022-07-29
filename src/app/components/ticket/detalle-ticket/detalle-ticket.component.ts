@@ -30,7 +30,7 @@ export class DetalleTicketComponent implements OnInit, OnChanges {
   @Input() elTicket: TicketResponse;
   @Input() elRolUsuario: string;
   @Input() isModal: boolean;
-  @Output() salidaTicketCambiado: EventEmitter<Boolean>= new EventEmitter();
+  @Output() salidaTicketCambiado: EventEmitter<boolean>= new EventEmitter();
 
   tabActivo = 'relato';
   losticketLogs: TicketLogResponse[] = [];
