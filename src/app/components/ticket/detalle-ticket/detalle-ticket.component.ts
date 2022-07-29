@@ -109,10 +109,10 @@ export class DetalleTicketComponent implements OnInit, OnChanges {
         componentProps: {
           icon: 'help-circle-outline',
           titleWindow: 'Reabrir Caso',
-          titleMessage: 'Reabrir caso',
           txtMessage: 'Escriba aquí ¿Por qué reabrió el caso?',
           titleErr: 'Reabrir caso',
-          messageErr: 'Por favor escriba un motivo.'
+          messageErr: 'Por favor escriba un motivo.',
+          accion: 'reabrir'
         }
       });
     await modalShow.present();
@@ -130,10 +130,10 @@ export class DetalleTicketComponent implements OnInit, OnChanges {
         componentProps: {
           icon: 'help-circle-outline',
           titleWindow: 'Intervenir Caso',
-          titleMessage: 'Escriba aqui las acciones que realizó',
           txtMessage: 'Escriba aqui las acciones que realizó',
           titleErr: 'Nueva intervención',
-          messageErr: 'Escriba una intervención'
+          messageErr: 'Escriba una intervención',
+          accion: 'intervenir',
         }
       });
     await modalShow.present();
@@ -152,10 +152,10 @@ export class DetalleTicketComponent implements OnInit, OnChanges {
         componentProps: {
           icon: 'chatbox-outline',
           titleWindow: 'Cerrar Caso',
-          titleMessage: '¿Está seguro que desea Cerrar el Caso?',
           txtMessage: 'Escriba aquí el motivo',
           titleErr: '¿Motivo?',
-          messageErr: 'Por favor escriba el motivo'
+          messageErr: 'Por favor escriba el motivo',
+          accion: 'cerrar',
         }
       });
     await modalShow.present();
@@ -236,7 +236,7 @@ export class DetalleTicketComponent implements OnInit, OnChanges {
 
       if (exito.result === 'OK') {
 
-        //VMP vamos a notificar el cambio 
+        //VMP vamos a notificar el cambio
         this.salidaTicketCambiado.emit(true);
         console.log('SE VA A NOTIFICAR EL CAMBIO')
         this.elTicket = exito.dtoResult;

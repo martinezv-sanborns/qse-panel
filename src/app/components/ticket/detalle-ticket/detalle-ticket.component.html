@@ -15,7 +15,7 @@
         <ion-col>
           <ion-label><ion-icon color="danger" slot="start" name="calendar-outline"></ion-icon> {{elTicket.fechaAlta | date }}</ion-label>
         </ion-col>
-        <ion-col class="ion-no-padding" *ngIf="!isModal">
+        <ion-col class="ion-no-padding" *ngIf="!isModal && (elTicket.estatus.nombreCorto !== 'CERRTDA' && elTicket.estatus.nombreCorto !== 'CERRDIS' && elTicket.estatus.nombreCorto !== 'CERRCOR') ">
           <ion-buttons class="ion-float-right">
             <ion-button color="danger" slot="end" (click)="mostrarDetalleMenu($event)">
               <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
