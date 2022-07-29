@@ -11,11 +11,14 @@ import { GeneralService } from './general.service';
 })
 export class HelperService {
 
-  constructor(private generalAPI: GeneralService,  private router: Router, private loadingCTRL: LoadingController, private platf: Platform) { }
+  constructor(private generalAPI: GeneralService,
+    private router: Router,
+    private loadingCTRL: LoadingController,
+    private platf: Platform) { }
 
   async isMobile(){
     if (this.platf.is("mobile") || this.platf.is("mobileweb" ) || this.platf.is("mobile") || this.platf.is("android") ){
-      return true
+      return true;
     }
     else{
       return false;
