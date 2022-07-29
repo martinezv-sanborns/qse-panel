@@ -217,7 +217,7 @@ export class TicketsPage implements OnInit {
           icon: 'help-circle-outline',
           titleWindow: 'Intervenir Caso',
           titleMessage: 'Nueva intervención sobre el caso:',
-          txtMessage: 'Escriba aquí su intervención:',
+          txtMessage: 'Escriba aqui las acciones que realizó',
           titleErr: 'Nueva intervención',
           messageErr: 'Escriba una intervención'
         }

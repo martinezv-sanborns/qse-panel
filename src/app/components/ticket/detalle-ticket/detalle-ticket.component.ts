@@ -128,7 +128,7 @@ export class DetalleTicketComponent implements OnInit, OnChanges {
         componentProps: {
           icon: 'help-circle-outline',
           titleWindow: 'Intervenir Caso',
-          titleMessage: 'Nueva intervención sobre el caso:',
+          titleMessage: 'Escriba aqui las acciones que realizó',
           txtMessage: 'Escriba aqui las acciones que realizó',
           titleErr: 'Nueva intervención',
           messageErr: 'Escriba una intervención'
