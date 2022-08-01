@@ -12,7 +12,7 @@ export class HomePage implements OnInit, OnChanges {
   cadenaId: string='';
   rolName='';
   ticketSeleccionado : TicketResponse;
-  ticketCambiado:Boolean=false;
+  ticketCambiado:boolean=false;
   isMobile : boolean=false;
 
   constructor(private helperAPI:HelperService) {
