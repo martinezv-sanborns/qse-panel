@@ -18,6 +18,7 @@ export class MenuTicketComponent implements OnInit {
 
   @Input() elEstatus: EstatusResponse;
   @Input() elRolUsuario: string;
+  @Input() fechaAlta: Date;
 
   itemsMenu: ItemMenu[] = [
     {
@@ -31,6 +32,8 @@ export class MenuTicketComponent implements OnInit {
   constructor(private popCtrl: PopoverController) { }
 
   ngOnInit() {
+
+    console.log('fecha de alta', this.fechaAlta);
 
     if (this.elEstatus.estatusId.toUpperCase() === environment.estatusIniciado
       || this.elEstatus.estatusId.toUpperCase() === environment.estatusReabierto) {
@@ -49,25 +52,7 @@ export class MenuTicketComponent implements OnInit {
       });
     }
 
-    if (this.elEstatus.estatusId.toUpperCase() === environment.estatusAtendido &&
-      (this.elRolUsuario.toUpperCase() === environment.admin || this.elRolUsuario.toUpperCase() === environment.corp
-        || this.elRolUsuario.toUpperCase() === environment.tda || this.elRolUsuario.toUpperCase() === environment.dis)) {
-      this.itemsMenu.push({
-        id: 'cerrar-caso',
-        valor: 'Cerrar caso',
-        icono: 'close-outline'
-      });
-    }
-
-    // if ((this.elEstatus.estatusId.toUpperCase() === environment.estatusCerradoTienda
-    //   || this.elEstatus.estatusId.toUpperCase() === environment.estatusCerradoCorpo) &&
-    //   (this.elRolUsuario.toUpperCase() === environment.corp || this.elRolUsuario.toUpperCase() === environment.admin)) {
-    //   this.itemsMenu.push({
-    //     id: 'reabrir-ticket',
-    //     valor: 'Reabrir',
-    //     icono: 'folder-open-outline'
-    //   });
-    // }
+    this.onShowCerrarCaso();
 
     this.itemsMenu.push({
       id: 'close-menu',
@@ -82,5 +67,66 @@ export class MenuTicketComponent implements OnInit {
     );
   }
 
+  onShowCerrarCaso() {
 
+    // hora actual
+    const today = new Date();
+
+    const fechaAlta: Date = new Date(this.fechaAlta);
+    let delta = (today.getTime() - fechaAlta.getTime()) / 1000;
+
+    const days = Math.floor(delta / 86400);
+    delta -= days * 86400;
+    const hours = Math.floor(delta / 3600) % 24;
+    delta -= hours * 3600;
+    const minutes = Math.floor(delta / 60) % 60;
+    delta -= minutes * 60;
+    const seconds = delta % 60;
+
+
+    // tienda hasta 48hrs
+    // distrital de 48hrs un minuto 72hrs
+    // corpo mas de 72hrs
+
+    const totalHours = days * 24;
+
+    console.log('total horas', totalHours);
+
+    // tienda hasta 48hrs
+    if (totalHours <= 48 && this.elRolUsuario.toUpperCase() === environment.tda) {
+      if (this.elEstatus.estatusId.toUpperCase() === environment.estatusAtendido) {
+        this.itemsMenu.push({
+          id: 'cerrar-caso',
+          valor: 'Cerrar caso',
+          icono: 'close-outline'
+        });
+      }
+    }
+    else if (totalHours > 48 && totalHours <= 72 && this.elRolUsuario.toUpperCase() === environment.dis) {
+      if (this.elEstatus.estatusId.toUpperCase() === environment.estatusAtendido) {
+        this.itemsMenu.push({
+          id: 'cerrar-caso',
+          valor: 'Cerrar caso',
+          icono: 'close-outline'
+        });
+      }
+    }
+    else if (totalHours > 72 && this.elRolUsuario.toUpperCase() === environment.corp) {
+      if (this.elEstatus.estatusId.toUpperCase() === environment.estatusAtendido) {
+        this.itemsMenu.push({
+          id: 'cerrar-caso',
+          valor: 'Cerrar caso',
+          icono: 'close-outline'
+        });
+      }
+    } else {
+      if (this.elEstatus.estatusId.toUpperCase() === environment.estatusAtendido && this.elRolUsuario.toUpperCase() === environment.admin) {
+        this.itemsMenu.push({
+          id: 'cerrar-caso',
+          valor: 'Cerrar caso',
+          icono: 'close-outline'
+        });
+      }
+    }
+  }
 }

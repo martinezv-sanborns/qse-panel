@@ -123,7 +123,8 @@ export class TicketsPage implements OnInit, OnDestroy {
       component: MenuTicketComponent,
       componentProps: {
         elEstatus: ticketSelected.estatus,
-        elRolUsuario: this.elRolUser
+        elRolUsuario: this.elRolUser,
+        fechaAlta: ticketSelected.fechaAlta
       },
       event: evento,
       cssClass: 'my-custom-class',
