@@ -14,11 +14,12 @@
     <ion-row class="ion-justify-content-center">
       <ion-col size="12">
         <ion-item class="round">
-          <ion-col size="2">
-            <ion-label><strong>Administrador de Casos</strong></ion-label>
+          <ion-col size="2" *ngIf="!esMobile">
+            <ion-label [ngClass]="esMobile ? 'styleMobile':''"><strong>Administrador de Casos</strong></ion-label>
           </ion-col>
-          <ion-col size="9">
-            <ion-searchbar mode="ios" placeholder="Buscar por nombre o numero de tienda, o folio del ticket..." (ionChange)="onSearchChange($event)" [debounce]="500"></ion-searchbar>
+          <ion-col>
+            <ion-searchbar mode="ios" placeholder="Buscar por nombre o numero de tienda, o folio del ticket..."
+              (ionChange)="onSearchChange($event)" [debounce]="500"></ion-searchbar>
           </ion-col>
         </ion-item>
       </ion-col>
@@ -26,102 +27,122 @@
     <ion-row class="ion-justify-content-center ion-align-items-center round fondo-white">
       <ion-col size-md="2" size-sm="12">
         <ion-item>
-          <ion-label><strong>Tiendas</strong></ion-label>
-          <ion-select placeholder="Seleccione tienda" interface="popover"
+          <ion-label [ngClass]="esMobile ? 'styleMobile':''"><strong>Tiendas</strong></ion-label>
+          <ion-select [ngClass]="esMobile ? 'styleMobile':''" placeholder="Seleccione tienda" interface="popover"
             (ionChange)="onChangeTienda(tiendaTicket.value)" #tiendaTicket [(ngModel)]="laTiendaSeleccionadaId">
             <ion-select-option [value]="tienda.tiendaId" *ngFor="let tienda of lasTiendasUser">{{ tienda.nombre }}
             </ion-select-option>
           </ion-select>
         </ion-item>
       </ion-col>
-      <ion-col size-md="2" size-sm="12">
+      <ion-col size-md="3" size-sm="12">
         <ion-item>
-          <ion-label><b>Estatus</b></ion-label>
-          <ion-select placeholder="Seleccione estatus" interface="popover"
+          <ion-label [ngClass]="esMobile ? 'styleMobile':''"><strong>Estatus</strong></ion-label>
+          <ion-select [ngClass]="esMobile ? 'styleMobile':''" placeholder="Seleccione estatus" interface="popover"
             (ionChange)="onChangeEstatus(estatusTicket.value)" #estatusTicket>
             <ion-select-option [value]="estatus.estatusId" *ngFor="let estatus of this.losEstatus">{{ estatus.nombre }}
             </ion-select-option>
           </ion-select>
         </ion-item>
       </ion-col>
-      <ion-col size-md="2" size-sm="12">
+      <ion-col size-md="" size-sm="12">
         <ion-item>
-          <ion-label> <b>Tipo</b></ion-label>
-          <ion-select placeholder="Seleccione tipo" interface="popover" (ionChange)="onChangeTipo(tipoTicket.value)" #tipoTicket>
+          <ion-label [ngClass]="esMobile ? 'styleMobile':''"> <strong>Tipo</strong></ion-label>
+          <ion-select [ngClass]="esMobile ? 'styleMobile':''" placeholder="Seleccione tipo" interface="popover" (ionChange)="onChangeTipo(tipoTicket.value)"
+            #tipoTicket>
             <ion-select-option *ngFor="let tipos of this.losTipos" [value]="tipos.tipoId">
               <ion-icon slot="start" name="caret-forward-outline"></ion-icon> {{tipos.nombre }}
             </ion-select-option>
           </ion-select>
         </ion-item>
       </ion-col>
-      <ion-col size-md="3" size-sm="12">
-
-        <ion-item button="true" id="open-modal-ini">
-          <ion-label><b>Fecha Inicio</b>
+      <ion-col size-md="2" size-sm="12">
+        <ion-item>
+          <ion-label [ngClass]="esMobile ? 'styleMobile':''"><strong>Fecha Inicio</strong>
           </ion-label>
-          <ion-input [value]="dateFechaIni"></ion-input>
-          <ion-icon name="calendar-outline"></ion-icon>
-          <ion-modal trigger="open-modal-ini" id="modal-bottom">
-            <ng-template>
-              <ion-content>
-                <ion-datetime class="ion-text-center" #popoverDatetime presentation="date"
-                  (ionChange)="onFechaIniSelected($event)">
-                </ion-datetime>
-              </ion-content>
-            </ng-template>
-          </ion-modal>
+          <ion-input type="date" #fechaIni [value]="dateFechaIni" (ionChange)="onFechaIniSelected($event)"></ion-input>
+          <ion-icon slot="end" name="calendar-outline"></ion-icon>
         </ion-item>
-
       </ion-col>
-      <ion-col size-md="3" size-sm="12">
-
-        <ion-item button="true" id="open-modal-fin">
-          <ion-label><b>Fecha Fin</b>
+      <ion-col size-md="2" size-sm="12">
+        <ion-item>
+          <ion-label [ngClass]="esMobile ? 'styleMobile':''"><strong>Fecha Fin</strong>
           </ion-label>
-          <ion-input [value]="dateFechaFin"></ion-input>
-          <ion-icon name="calendar-outline"></ion-icon>
-          <ion-modal trigger="open-modal-fin" id="modal-bottom">
-            <ng-template>
-              <ion-content>
-                <ion-datetime class="ion-text-center" #popoverDatetime presentation="date"
-                  (ionChange)="onFechaFinSelected($event)">
-                </ion-datetime>
-              </ion-content>
-            </ng-template>
-          </ion-modal>
-        </ion-item>
-
+          <ion-input type="date" [value]="dateFechaFin" (ionChange)="onFechaFinSelected($event)"></ion-input>
+          <ion-icon slot="end" name="calendar-outline"></ion-icon>
+          </ion-item>
       </ion-col>
     </ion-row>
 
-    <ion-row *ngIf="!cargando">
+    <ion-list *ngIf="!cargando && esMobile">
+      <ion-item *ngFor="let elticket of this.listadoTickets">
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-label class="TextoItemComentarios">{{elticket.comentarios | slice: 0:30}}...</ion-label>
+            </ion-col>
+            <ion-col>
+              <ion-label class="TextoItemMediano ion-text-right">
+                <ion-icon name="storefront-outline" class="cursor"></ion-icon>
+                {{elticket.tienda.identificadorExterno | slice: 0:5}}
+              </ion-label>
+            </ion-col>
+          </ion-row>
+          <ion-row class="ion-align-items-center ion-justify-content-center">
+                <ion-col size="10">
+                  <app-estatus-color [icon]="elticket.estatus.iconName" [status]="elticket.estatus.nombre">
+                  </app-estatus-color>
+                </ion-col>
+                <ion-col size="2">
+                  <ion-buttons>
+                    <ion-button color="danger" (click)="mostrarMenu($event, elticket)">
+                      <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+                    </ion-button>
+                  </ion-buttons>
+                </ion-col>
+              </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-label class="TextoItemTimeAgo">{{elticket.fechaAlta|timeAgo}}</ion-label>
+            </ion-col>
+            <ion-col class="ion-text-right">
+              <app-tipos-ticket [ticketTipos]="elticket.ticketTipos"></app-tipos-ticket>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+    </ion-list>
+
+
+    <ion-row *ngIf="!cargando && !esMobile">
       <ion-col size="12">
         <ion-item>
 
           <ion-grid fixed>
             <ion-row class="header">
-              <ion-col size="3">Folio</ion-col>
-              <ion-col size="1">Fecha</ion-col>
+              <ion-col size="2">Folio</ion-col>
+              <ion-col size="2">Fecha</ion-col>
               <ion-col size="3">Tienda</ion-col>
               <ion-col size="2" class="ion-hide-sm-down">Tipo</ion-col>
               <ion-col size="2" class="ion-hide-sm-down">Estatus</ion-col>
               <ion-col size="1"></ion-col>
             </ion-row>
             <ion-row *ngFor="let ticket of listadoTickets" class="border-grid-row">
-              <ion-col size="3">
+              <ion-col size="2">
                 {{ ticket.folio}}
               </ion-col>
-              <ion-col size="1">
-                {{ ticket.fechaAlta | date: 'dd/MM/yy' }}
+              <ion-col size="2">
+                {{ ticket.fechaAlta | date: 'dd/MM/yy h:mm a' }}
               </ion-col>
               <ion-col size="3">
                 {{ ticket.tienda.nombre }} | {{ ticket.tienda.identificadorExterno }}
               </ion-col>
               <ion-col size="2" class="ion-hide-sm-down">
-                <app-tipos-ticket [ticketTipos] ="ticket.ticketTipos"></app-tipos-ticket>
+                <app-tipos-ticket [ticketTipos]="ticket.ticketTipos"></app-tipos-ticket>
               </ion-col>
               <ion-col size="2" class="ion-hide-sm-down">
-                <app-estatus-color [icon]="ticket.estatus.iconName" [status]="ticket.estatus.nombre"></app-estatus-color>
+                <app-estatus-color [icon]="ticket.estatus.iconName" [status]="ticket.estatus.nombre">
+                </app-estatus-color>
               </ion-col>
               <ion-col size="1">
                 <ion-buttons>
@@ -161,5 +182,6 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  <app-no-hay-resultados *ngIf="!cargando && listadoTickets.length === 0" [text]="'No hay resultados...'"></app-no-hay-resultados>
+  <app-no-hay-resultados *ngIf="!cargando && listadoTickets.length === 0" [text]="'No hay resultados...'">
+  </app-no-hay-resultados>
 </ion-content>

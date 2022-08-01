@@ -9,6 +9,7 @@ import { TicketsPageRoutingModule } from './tickets-routing.module';
 import { TicketsPage } from './tickets.page';
 import { TicketModule } from '../../components/ticket/ticket.module';
 import { ComunesModule } from '../../components/common/comunes.module';
+import { PipesModule } from '../../pipes/pipes.module';
 
 @NgModule({
   imports: [
@@ -17,7 +18,8 @@ import { ComunesModule } from '../../components/common/comunes.module';
     IonicModule,
     TicketsPageRoutingModule,
     TicketModule,
-    ComunesModule
+    ComunesModule,
+    PipesModule
   ],
   declarations: [TicketsPage]
 })

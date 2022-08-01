@@ -2,6 +2,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { format, parseISO } from 'date-fns';
 import Swal from 'sweetalert2';
+import { Subscription } from 'rxjs';
 
 // controllers
 import { ModalController, PopoverController } from '@ionic/angular';
@@ -18,15 +19,15 @@ import { EstatusMotivoTicketComponent } from 'src/app/components/ticket/estatus-
 import { CatalogoService } from 'src/app/services/catalogo.service';
 import { HelperService } from 'src/app/services/helper.service';
 import { TicketService } from 'src/app/services/ticket.service';
+import { TiendaService } from '../../services/tienda.service';
 
 // models
 import { EstatusApiResponse, EstatusResponse } from '../../models/response/estatus.model';
 import { TipoApiResponse, TipoResponse } from '../../models/response/tipo.model';
 import { TicketApiResponse, TicketResponse, TicketsApiResponse } from 'src/app/models/response/ticket.model';
 import { TicketStatusRequest } from 'src/app/models/request/ticket.model';
-import { TiendaService } from '../../services/tienda.service';
 import { TiendasApiResponse, TiendaResponse } from '../../models/response/tiendaresponse.model';
-import { Subscription } from 'rxjs';
+
 
 
 @Component({
@@ -59,6 +60,7 @@ export class TicketsPage implements OnInit, OnDestroy {
   dateFechaFin = '';
   activePage = 0;
   subscriptionListadoTickets: Subscription;
+  esMobile: boolean;
 
   constructor(private catalogoService: CatalogoService,
     private ticketService: TicketService,
@@ -66,7 +68,6 @@ export class TicketsPage implements OnInit, OnDestroy {
     private tiendaService: TiendaService,
     private popVerCtrl: PopoverController,
     private modalCtrl: ModalController,
-    private modalCrtl: ModalController
   ) { }
 
   ngOnDestroy(): void {
@@ -82,8 +83,10 @@ export class TicketsPage implements OnInit, OnDestroy {
     this.getTickets();
     this.obtenerEstatus();
     this.obtenerTipo();
-
-    console.log('ngOnInit tickets');
+    this.helperService.isMobile().then((result)=>{
+      this.esMobile = result;
+      console.log('is mobile', this.esMobile);
+    });
   }
 
 
@@ -162,8 +165,7 @@ export class TicketsPage implements OnInit, OnDestroy {
   }
 
   async onFechaFinSelected(event) {
-    this.dateFechaFin = this.formatDate(event.detail.value);
-    this.modalCtrl.dismiss({});
+    this.dateFechaFin = event.detail.value;
 
     if (this.dateFechaIni === '') {
       Swal.fire({
@@ -220,7 +222,7 @@ export class TicketsPage implements OnInit, OnDestroy {
   }
 
   async intervenirModal(ticketSelected: TicketResponse) {
-    const modalShow = await this.modalCrtl.create(
+    const modalShow = await this.modalCtrl.create(
       {
         component: EstatusMotivoTicketComponent,
         componentProps: {
@@ -241,7 +243,7 @@ export class TicketsPage implements OnInit, OnDestroy {
   }
 
   async cerrarCasoModal(ticketSelected: TicketResponse) {
-    const modalShow = await this.modalCrtl.create(
+    const modalShow = await this.modalCtrl.create(
       {
         component: EstatusMotivoTicketComponent,
         componentProps: {
@@ -262,7 +264,7 @@ export class TicketsPage implements OnInit, OnDestroy {
   }
 
   async atenderCasoModal(ticketSelected: TicketResponse) {
-    const modalShow = await this.modalCrtl.create(
+    const modalShow = await this.modalCtrl.create(
       {
         component: EstatusMotivoTicketComponent,
         componentProps: {
@@ -283,7 +285,7 @@ export class TicketsPage implements OnInit, OnDestroy {
   }
 
   async reabrirCasoModal(ticketSelected: TicketResponse) {
-    const modalShow = await this.modalCrtl.create(
+    const modalShow = await this.modalCtrl.create(
       {
         component: EstatusMotivoTicketComponent,
         componentProps: {
@@ -668,8 +670,9 @@ export class TicketsPage implements OnInit, OnDestroy {
   }
 
   onFechaIniSelected(event) {
-    this.dateFechaIni = this.formatDate(event.detail.value);
-    this.modalCtrl.dismiss({});
+    this.dateFechaIni = event.detail.value;
+   // this.dateFechaIni = this.formatDate(event.detail.value);
+   // this.modalCtrl.dismiss({});
   }
 
   obtenerTiendas() {
