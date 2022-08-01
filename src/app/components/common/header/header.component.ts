@@ -6,7 +6,7 @@ import { MenuPerfilComponent } from '../menu-perfil/menu-perfil.component';
 
 // services
 import { HelperService } from '../../../services/helper.service';
-import { TiendaApiResponse, TiendaResponse, TiendasApiResponse } from 'src/app/models/response/tiendaresponse.model';
+import { TiendaResponse, TiendasApiResponse } from 'src/app/models/response/tiendaresponse.model';
 import { TiendaService } from 'src/app/services/tienda.service';
 
 
@@ -21,41 +21,47 @@ export class HeaderComponent implements OnInit, OnChanges {
   @Input() entradaRolName: string;
   @Input() entradaTiendaName: string;
 
-  listadoTiendasUsuario: TiendaResponse[]=[];
- 
+  listadoTiendasUsuario: TiendaResponse[] = [];
+  esMobile: boolean;
+
 
   @ViewChild('productbtn', { read: ElementRef }) productbtn: ElementRef;
   dropdown = false;
 
-  constructor( private popVerCtrl: PopoverController, private helperService: HelperService, private tiendasAPI:TiendaService ) { }
+  constructor(private popVerCtrl: PopoverController, private helperService: HelperService, private tiendasAPI: TiendaService) { }
   ngOnChanges(changes: SimpleChanges): void {
 
-    console.log('ngonchages',  this.entradaCadenaId );
+    console.log('ngonchages', this.entradaCadenaId);
 
     this.tiendasAPI.obtenerTiendasUsuario().subscribe(
-      (exito:TiendasApiResponse)=>{
-        console.log('obtener tiendas',  exito );
+      (exito: TiendasApiResponse) => {
+        console.log('obtener tiendas', exito);
 
-          if(exito.result==="OK"){
-            this.listadoTiendasUsuario = exito.dtoResult;
-          }
+        if (exito.result === 'OK') {
+          this.listadoTiendasUsuario = exito.dtoResult;
+        }
       },
-      error=>{}
- );
+      error => { }
+    );
   }
 
   ngOnInit() {
-    console.log('nginit',  this.entradaCadenaId );
-      this.tiendasAPI.obtenerTiendasUsuario().subscribe(
+    console.log('nginit', this.entradaCadenaId);
+    this.tiendasAPI.obtenerTiendasUsuario().subscribe(
 
-          (exito:TiendasApiResponse)=>{
-            console.log('obtener tiendas',  exito );
-              if(exito.result==="OK"){
-                this.listadoTiendasUsuario = exito.dtoResult;
-              }
-          },
-          error=>{}
-     );
+      (exito: TiendasApiResponse) => {
+        console.log('obtener tiendas', exito);
+        if (exito.result === 'OK') {
+          this.listadoTiendasUsuario = exito.dtoResult;
+        }
+      },
+      error => { }
+    );
+
+    this.helperService.isMobile().then((result) => {
+      this.esMobile = result;
+      console.log('is mobile', this.esMobile);
+    });
   }
 
   async mostrarMenu(evento: any) {

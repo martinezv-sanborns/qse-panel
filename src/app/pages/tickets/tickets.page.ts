@@ -85,7 +85,6 @@ export class TicketsPage implements OnInit, OnDestroy {
     this.obtenerTipo();
     this.helperService.isMobile().then((result)=>{
       this.esMobile = result;
-      console.log('is mobile', this.esMobile);
     });
   }
 
@@ -98,7 +97,6 @@ export class TicketsPage implements OnInit, OnDestroy {
     .obtenerTicketsListado(this.lacadenaSelectedId, 1, environment.tamPagina)
       .subscribe((exito: TicketsApiResponse) => {
       this.helperService.hideLoading();
-      console.log('close loading');
       if (exito.result === 'OK') {
         this.listadoTickets = exito.dtoResult;
         this.paginaActual = exito.paginaActual;
@@ -110,7 +108,7 @@ export class TicketsPage implements OnInit, OnDestroy {
 
     }, (errr) => {
       this.cargando = false;
-      console.log(errr);
+      console.log('error get tickets', errr);
       this.helperService.hideLoading();
     });
   }
@@ -348,7 +346,7 @@ export class TicketsPage implements OnInit, OnDestroy {
       this.helperService.hideLoading();
     }, (err) => {
       this.helperService.hideLoading();
-      console.log(err);
+      console.log('error cerrar caso', err);
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
@@ -402,7 +400,7 @@ export class TicketsPage implements OnInit, OnDestroy {
       this.helperService.hideLoading();
 
     }, (err) => {
-      console.log(err);
+      console.log('error a intervenir caso', err);
       this.helperService.hideLoading();
       Swal.fire({
         icon: 'error',
@@ -458,7 +456,7 @@ export class TicketsPage implements OnInit, OnDestroy {
 
     }, (err) => {
       this.helperService.hideLoading();
-      console.log(err);
+      console.log('error atender caso', err);
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
@@ -513,7 +511,7 @@ export class TicketsPage implements OnInit, OnDestroy {
     }, (err) => {
 
       this.helperService.hideLoading();
-      console.log(err);
+      console.log('error reabrir caso', err);
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
@@ -544,7 +542,7 @@ export class TicketsPage implements OnInit, OnDestroy {
         (err) => {
           this.helperService.hideLoading();
           this.cargando = false;
-          console.log(err);
+          console.log('error filtrar datos', err);
         });
   }
 
@@ -568,7 +566,6 @@ export class TicketsPage implements OnInit, OnDestroy {
   obtenerTipo() {
     this.catalogoService.obtenerTipos(1, 100).subscribe(
       (exito: TipoApiResponse) => {
-        //console.log('Los Tipos', exito)
         this.losTipos = exito.dtoResult;
         const tiposTodos: TipoResponse = {
           tipoId: 0,
@@ -697,8 +694,6 @@ export class TicketsPage implements OnInit, OnDestroy {
           activo: false
         };
         this.lasTiendasUser.unshift(todasTiendas);
-
-        console.log(this.lasTiendasUser.length);
 
         if(this.lasTiendasUser.length === 2){
           this.laTiendaSeleccionadaId =  this.lasTiendasUser[1].tiendaId;

@@ -1,5 +1,5 @@
 <ion-header class="mobile-header">
-    <ion-toolbar>
+    <ion-toolbar color="danger">
         <ion-buttons slot="start">
             <ion-menu-button menu="myMenu"></ion-menu-button>
         </ion-buttons>
@@ -8,13 +8,12 @@
             entradaCadenaName }}
         </ion-title>
         <ion-buttons slot="end">
-            <ion-button>
-                <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
+            <ion-button (click)="mostrarMenu($event)">
+                <ion-icon color="light" slot="icon-only" name="log-out-outline"></ion-icon>
             </ion-button>
         </ion-buttons>
     </ion-toolbar>
 </ion-header>
-
 
 <ion-grid>
     <ion-row class="ion-align-items-center">
@@ -42,8 +41,8 @@
         </ion-col>
         <ion-col size="4" class="ion-text-right">
             <ion-chip color="primary" *ngIf="entradaCadenaName">
-                <label *ngIf="entradaRolName=='TDA'">{{ entradaCadenaName }} | {{ entradaRolName}} ({{ this.listadoTiendasUsuario[0]?.nombreCorto }})  </label>
-                <label *ngIf="entradaRolName!='TDA'">{{ entradaCadenaName }} | {{ entradaRolName}}   </label>
+                <label *ngIf="entradaRolName ==='TDA'">{{ entradaCadenaName }} | {{ entradaRolName}} ({{ this.listadoTiendasUsuario[0]?.nombreCorto }})  </label>
+                <label *ngIf="entradaRolName !=='TDA'">{{ entradaCadenaName }} | {{ entradaRolName}}   </label>
             </ion-chip>
             <ion-button (click)="mostrarMenu($event)" fill="clear">
                 <ion-icon color="danger" slot="icon-only" name="menu-outline"></ion-icon>

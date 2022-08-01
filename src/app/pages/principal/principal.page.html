@@ -1,6 +1,6 @@
 <ion-menu contentId="main" menuId="myMenu" side="start">
   <ion-header>
-      <ion-toolbar>
+      <ion-toolbar color="danger">
           <ion-title>Menu</ion-title>
       </ion-toolbar>
   </ion-header>
@@ -17,6 +17,10 @@
       <ion-item button routerLink="/usuarios" (click)="setTitle('Espacios')" routerDirection="root" routerLinkActive="active-item" [routerLinkActiveOptions]="{exact: true}">
           <ion-icon  name="person-circle-outline" slot="start"></ion-icon>
           Usuarios
+      </ion-item>
+      <ion-item button routerLink="/tienda" routerDirection="root" routerLinkActive="active-item" [routerLinkActiveOptions]="{exact: true}">
+        <ion-icon name="storefront-outline" slot="start"></ion-icon>
+        Tiendas
       </ion-item>
   </ion-menu-toggle>
   </ion-content>
