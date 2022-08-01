@@ -25,23 +25,76 @@
     border-bottom: 0px !important;
     box-shadow: none !important;
 }
-.row {
-    border-radius: 5px !important;
-    margin-bottom: 10px;
-    border: 5px solid #e6b6b8;
-   
-    background-color:  #ffffff;;
-   // border-bottom: 10px !important;
-    box-shadow: none !important;
-}
 
 
 
-.button{
 
-    color: #ec1b22;
-}
+
 
 .blanco{
     background-color: #ffffff;
 }
+
+ion-grid {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 98%;
+    #grid-heading {
+        background-color: rgb(17, 161, 184);
+        border: 1px solid rgb(22, 142, 153);
+    }
+    ion-row {
+        border: 0px solid #dddddd;
+        margin-top: 0px;
+        padding-top: 0px;
+        margin-bottom: 0px;
+        padding-bottom: 0px;
+    }
+    ion-row:nth-child(even) {
+        background-color: #dddddd;
+    }
+    ion-col {
+        border-right: 0px solid #dddddd;
+        margin-top: 1px;
+        padding-top: 1px;
+        margin-bottom: 1px;
+        padding-bottom: 1px;
+    }
+
+}
+
+.round {
+    border-radius: 30px !important;
+    margin-bottom: 10px;
+    border: 1px solid #ffffff;
+    border-bottom: 0px !important;
+    box-shadow: none !important;
+}
+
+.fondo-white {
+    background-color: #ffffff;
+    padding: 10px;
+}
+
+
+ion-modal#modal-bottom::part(content) {
+    top: unset !important;
+    left: 0 !important;
+    bottom: 0;
+    width: 100vw;
+    border-radius: 0;
+    max-width: 300px;
+    max-height: 400px;
+}
+
+.modal.closed {
+    display: none;
+}
+
+.activo{
+     color: green;
+ }
+ 
+ .inactivo{
+     color:red;
+ }
