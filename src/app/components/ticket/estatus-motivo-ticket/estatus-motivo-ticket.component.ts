@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 
 import Swal from 'sweetalert2';
+import { EstatusResponse } from '../../../models/response/estatus.model';
 
 
 @Component({
@@ -13,10 +14,10 @@ import Swal from 'sweetalert2';
 export class EstatusMotivoTicketComponent implements OnInit {
   @Input() icon: string;
   @Input() titleWindow: string;
-  @Input() titleMessage: string;
   @Input() txtMessage: string;
   @Input() messageErr: string;
   @Input() titleErr: string;
+  @Input() accion: string;
 
 
   estatusForm: FormGroup;

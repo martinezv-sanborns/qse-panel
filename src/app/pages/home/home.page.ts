@@ -1,5 +1,7 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, getPlatform, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Platform } from '@ionic/angular';
 import { TicketResponse } from 'src/app/models/response/ticket.model';
+import { HelperService } from 'src/app/services/helper.service';
 
 @Component({
   selector: 'app-home',
@@ -10,19 +12,28 @@ export class HomePage implements OnInit, OnChanges {
   cadenaId: string='';
   rolName='';
   ticketSeleccionado : TicketResponse;
+  ticketCambiado:boolean=false;
+  isMobile : boolean=false;
 
-
-  constructor() {
+  constructor(private helperAPI:HelperService) {
     //this.cadenaId = localStorage.getItem('cadenaSelectedId');
-    //console.log('La cadena en el home constructor', this.cadenaId );
+    this.helperAPI.isMobile().then(
+      (data)=>{
+      this.isMobile = data;
+      }
+    );
    }
 
   ngOnChanges(changes: SimpleChanges): void {
     //this.cadenaId = localStorage.getItem('cadenaSelectedId');
     //console.log('La cadena en el home on onchanges', this.cadenaId );
+    console.log('ngOnChanges home');
   }
 
   ngOnInit() {
+
+    console.log('ngOnInit home');
+
       this.cadenaId = localStorage.getItem('cadenaSelectedId');
       this.rolName = localStorage.getItem('rolName');
       //console.log('La cadena en el home ininit', this.cadenaId );
@@ -30,6 +41,11 @@ export class HomePage implements OnInit, OnChanges {
 
   ticketSeleccionadoChanged(elTicket: TicketResponse){
       this.ticketSeleccionado = elTicket;
+  }
+  HaCambiado(){
+    //console.log("HOME PAGE RECIBIO NOTIFICACION");
+    this.ticketCambiado= !this.ticketCambiado;
+
   }
 
 }

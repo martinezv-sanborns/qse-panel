@@ -1,13 +1,22 @@
 <ion-content>
 
-  <ion-grid >
+  <ion-grid *ngIf="!this.isMobile">
     <ion-row>
       <ion-col size="4">
-        <app-top-ten *ngIf="this.cadenaId!==undefined" (salidaTicketSeleccionado)="ticketSeleccionadoChanged($event)"  [entradaCadenaId]="this.cadenaId"  ></app-top-ten>
+        <app-top-ten [actualizarListados]="this.ticketCambiado" *ngIf="this.cadenaId!==undefined" (salidaTicketSeleccionado)="ticketSeleccionadoChanged($event)"  [entradaCadenaId]="this.cadenaId"  ></app-top-ten>
       </ion-col>
       <ion-col size="8">
-        <app-detalle-ticket *ngIf="this.ticketSeleccionado" [elRolUsuario]="this.rolName" [elTicket]="this.ticketSeleccionado" [isModal]="false" ></app-detalle-ticket>   
+        <app-detalle-ticket  *ngIf="this.ticketSeleccionado" [elRolUsuario]="this.rolName" [elTicket]="this.ticketSeleccionado" [isModal]="false" (salidaTicketCambiado)="this.HaCambiado()" ></app-detalle-ticket>   
       </ion-col>
     </ion-row>
   </ion-grid>
+  <ion-grid *ngIf="this.isMobile">
+    <ion-row>
+      <ion-col >
+        <app-top-ten [actualizarListados]="this.ticketCambiado" *ngIf="this.cadenaId!==undefined" (salidaTicketSeleccionado)="ticketSeleccionadoChanged($event)"  [entradaCadenaId]="this.cadenaId"  ></app-top-ten>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
 </ion-content>

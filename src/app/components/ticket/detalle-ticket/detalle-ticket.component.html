@@ -13,9 +13,9 @@
     <ion-grid>
       <ion-row>
         <ion-col>
-          <ion-label><ion-icon color="danger" slot="start" name="calendar-outline"></ion-icon> {{elTicket.fechaAlta | date }}</ion-label>
+          <ion-label><ion-icon color="danger" slot="start" name="calendar-outline"></ion-icon> {{elTicket.fechaAlta | date : 'MMM d, y, h:mm a'}}</ion-label>
         </ion-col>
-        <ion-col class="ion-no-padding" *ngIf="!isModal">
+        <ion-col class="ion-no-padding" *ngIf="!isModal && (elTicket.estatus.nombreCorto !== 'CERRTDA' && elTicket.estatus.nombreCorto !== 'CERRDIS' && elTicket.estatus.nombreCorto !== 'CERRCOR') ">
           <ion-buttons class="ion-float-right">
             <ion-button color="danger" slot="end" (click)="mostrarDetalleMenu($event)">
               <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
@@ -32,7 +32,7 @@
       <ion-row>
         <ion-col size="6"> <ion-icon color="danger" size="small" name="mail-outline"></ion-icon>&nbsp;{{ elTicket.email }}</ion-col>
         <ion-col size="6">
-          <ion-icon color="danger" size="small" name="call-outline"></ion-icon>&nbsp;{{ elTicket.telefono }}
+          <ion-icon color="danger" size="small" name="call-outline"></ion-icon>&nbsp;{{ elTicket.telefono | phone }}
         </ion-col>
       </ion-row>
       <ion-row>
@@ -44,7 +44,7 @@
           <ion-label>
             <strong>Último estatus:</strong>
           </ion-label>
-          <app-estatus-color [status]="elTicket.estatus.nombre "></app-estatus-color>
+          &nbsp;<app-estatus-color [icon]="elTicket.estatus.iconName" [status]="elTicket.estatus.nombre"></app-estatus-color>
         </ion-col>
       </ion-row>
       <ion-row>

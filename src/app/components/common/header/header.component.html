@@ -42,7 +42,7 @@
         </ion-col>
         <ion-col size="4" class="ion-text-right">
             <ion-chip color="primary" *ngIf="entradaCadenaName">
-                <label *ngIf="entradaRolName=='TDA'">{{ entradaCadenaName }} | {{ entradaRolName}}  </label>
+                <label *ngIf="entradaRolName=='TDA'">{{ entradaCadenaName }} | {{ entradaRolName}} ({{ this.listadoTiendasUsuario[0]?.nombreCorto }})  </label>
                 <label *ngIf="entradaRolName!='TDA'">{{ entradaCadenaName }} | {{ entradaRolName}}   </label>
             </ion-chip>
             <ion-button (click)="mostrarMenu($event)" fill="clear">
