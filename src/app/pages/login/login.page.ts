@@ -1,4 +1,4 @@
-import { Component, NgZone, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController, ModalController } from '@ionic/angular';
@@ -8,19 +8,23 @@ import { OlvidePasswordComponent } from '../../components/common/olvide-password
 import { AuthService } from '../../services/auth.service';
 import { CadenaSelectorComponent } from '../../components/common/cadena-selector/cadena-selector.component';
 import { CambioCadenaService } from 'src/app/services/cambio-cadena.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage implements OnInit {
+export class LoginPage implements OnInit, OnDestroy {
 
   loginForm: FormGroup;
   logueando = false;
+  subscriptionLoginTickets: Subscription;
+
   private captchaPassed: boolean = false;
   private captchaResponse: string;
   token: string|undefined;
+
 
 
   constructor(private formB: FormBuilder,
@@ -31,15 +35,18 @@ export class LoginPage implements OnInit {
     private modalCtrl: ModalController,
     private elrouter: Router,
     private canalService: CambioCadenaService,
-  ) { 
+  ) {
 
 
     this.token = undefined;
 
   }
+  ngOnDestroy(): void {
+    this.subscriptionLoginTickets.unsubscribe();
+  }
 
 
-  
+
   ngOnInit() {
 
     this.loginForm = this.formB.group({
@@ -97,12 +104,12 @@ export class LoginPage implements OnInit {
       await alertValidateData.present();
 
       const { data } = await alertValidateData.onDidDismiss();
-    
-  
+
+
   }
 
 
-    
+
 
     else if (this.loginForm.invalid) {
 
@@ -143,11 +150,11 @@ export class LoginPage implements OnInit {
 
       this.logueando = true;
       this.spinnerService.setTitulo = 'Iniciando sesión...';
-      this.authService.login(this.loginForm.value.nickname, this.loginForm.value.password)
+      this.subscriptionLoginTickets = this.authService.login(this.loginForm.value.nickname, this.loginForm.value.password)
         .subscribe(async (exito) => {
           this.logueando = false;
           this.spinnerService.setTitulo = '';
-  
+
           if (exito.result === 'OK') {
             // mostrar portal
             const modalShowPortal = await this.modalCtrl.create(
@@ -160,17 +167,24 @@ export class LoginPage implements OnInit {
               }
             );
             await modalShowPortal.present();
+
             const { data } = await modalShowPortal.onWillDismiss();
-  
+
+            console.log("el data",data);
+
             if (data !== undefined) {
-  
+
               if (data.portalSelected) {
+                console.log("entre a obtener datos de cadena",data)
                 localStorage.setItem('cadenaSelectedId', data.portalId);
                 localStorage.setItem('cadenaName', data.name);
-  
+
                 this.canalService.onChangeadena();
-  
-                this.elrouter.navigate(['/home']);
+
+                this.elrouter.navigate(['/home'])
+                .then(() => {
+                  window.location.reload();
+                });
               } else {
                 const alertMsj = await this.alertCtrl.create({
                   cssClass: 'alertDanger',
@@ -188,10 +202,10 @@ export class LoginPage implements OnInit {
               }
             }
           }
-  
+
           if (exito.result === 'KO') {
             if (exito.error === 'Not authorized') {
-  
+
               const alertMsj = await this.alertCtrl.create({
                 cssClass: 'alertDanger',
                 message: this.helperService.getMessageAlert(`Verifique sus datos de acceso`, 'danger'),
@@ -204,12 +218,12 @@ export class LoginPage implements OnInit {
                     }
                   }]
               });
-  
+
               await alertMsj.present();
-  
+
             } else {
-  
-  
+
+
               const msjErr = await this.alertCtrl.create({
                 cssClass: 'alertDanger',
                 message: this.helperService.getMessageAlert(`${exito.error}`, 'danger'),
@@ -223,10 +237,10 @@ export class LoginPage implements OnInit {
               });
               await msjErr.present();
             }
-  
-  
+
+
           }
-  
+
         }, async (err) => {
           console.log(err);
           this.spinnerService.setTitulo = '';

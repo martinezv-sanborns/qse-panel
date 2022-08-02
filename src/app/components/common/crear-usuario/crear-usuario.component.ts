@@ -241,7 +241,7 @@ export class CrearUsuarioComponent implements OnInit {
   cargarFormulario() {
     this.usuarioForm = this.fb.group({
       nombre: ['', [Validators.required]],
-      nickName: ['',[ Validators.required, Validators.maxLength(8)]],
+      nickName: ['',[ Validators.required, Validators.maxLength(23)]],
       email: ['', [Validators.minLength(5), Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')]]
     });
   }

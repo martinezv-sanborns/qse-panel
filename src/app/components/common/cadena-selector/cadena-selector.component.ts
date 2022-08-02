@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { CadenasAPIResponse } from 'src/app/models/response/cadena.model';
+import { CadenasAPIResponse, CadenaUsuarioResponse } from 'src/app/models/response/cadena.model';
 import { CadenaService } from 'src/app/services/cadena.service';
+import { HelperService } from 'src/app/services/helper.service';
 import { Cadena } from '../../../models/response/cadena.model';
 
 @Component({
@@ -13,11 +14,11 @@ export class CadenaSelectorComponent implements OnInit {
 
   @Input() usuarioId;
 
-  lasCadenas: Cadena[] = [];
-  canalIdSeleccionado: number;
+  lasCadenas: CadenaUsuarioResponse[] = [];
+  canalIdSeleccionado: string;
   canalName: string;
 
-  constructor(private cadenasAPI: CadenaService, private modalCtrl: ModalController) { }
+  constructor(private cadenasAPI: CadenaService, private modalCtrl: ModalController,  private helperService: HelperService,) { }
 
   ngOnInit() {
     this.obtenerCanales();
@@ -25,7 +26,27 @@ export class CadenaSelectorComponent implements OnInit {
 
   obtenerCanales() {
     this.cadenasAPI.obtenerCanales(this.usuarioId).subscribe((exito: CadenasAPIResponse) => {
+
          this.lasCadenas = exito.dtoResult;
+
+         if(this.lasCadenas?.length==1){
+
+          console.log(this.lasCadenas)
+          this.canalIdSeleccionado=this.lasCadenas[0].cadena.cadenaId;
+          this.canalName= this.lasCadenas[0].cadena.nombre;
+
+          console.log("cadena id", this.canalIdSeleccionado);
+          console.log("nombre canal",this.canalName);
+          console.log("objetoooo",this.lasCadenas)
+          this.helperService.showLoading("Cargando","circles");
+          this.EnviaCanal(this.canalIdSeleccionado,this.canalName);
+
+        //  localStorage.setItem('cadenaSelectedId',this.canalIdSeleccionado);
+         // localStorage.setItem('cadenaName', data.name);
+
+          
+
+         }
       },
       (error) => {
         console.log('error', error);
@@ -33,7 +54,7 @@ export class CadenaSelectorComponent implements OnInit {
     );
   }
 
-  onSelectedCanal(portalSelected: number, name: string) {
+  onSelectedCanal(portalSelected: string, name: string) {
     this.canalIdSeleccionado = portalSelected;
     this.canalName = name;
     this.saveCanal();
@@ -47,6 +68,26 @@ export class CadenaSelectorComponent implements OnInit {
       name: this.canalName
     });
   }
+
+
+  EnviaCanal(id,nombre) {
+
+
+
+    setTimeout(() => {
+      this.helperService.hideLoading();
+      
+      this.modalCtrl.dismiss({
+        close: true,
+        portalSelected: true,
+        portalId: id,
+        name: nombre
+      });
+    }, 1000 );
+
+  
+  }
+
 
   cerrarModal() {
     this.modalCtrl.dismiss({

@@ -1,7 +1,8 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { format, parseISO } from 'date-fns';
 import Swal from 'sweetalert2';
+import { Subscription } from 'rxjs';
 
 // controllers
 import { ModalController, PopoverController } from '@ionic/angular';
@@ -18,14 +19,15 @@ import { EstatusMotivoTicketComponent } from 'src/app/components/ticket/estatus-
 import { CatalogoService } from 'src/app/services/catalogo.service';
 import { HelperService } from 'src/app/services/helper.service';
 import { TicketService } from 'src/app/services/ticket.service';
+import { TiendaService } from '../../services/tienda.service';
 
 // models
 import { EstatusApiResponse, EstatusResponse } from '../../models/response/estatus.model';
 import { TipoApiResponse, TipoResponse } from '../../models/response/tipo.model';
 import { TicketApiResponse, TicketResponse, TicketsApiResponse } from 'src/app/models/response/ticket.model';
 import { TicketStatusRequest } from 'src/app/models/request/ticket.model';
-import { TiendaService } from '../../services/tienda.service';
 import { TiendasApiResponse, TiendaResponse } from '../../models/response/tiendaresponse.model';
+
 
 
 @Component({
@@ -33,7 +35,7 @@ import { TiendasApiResponse, TiendaResponse } from '../../models/response/tienda
   templateUrl: './tickets.page.html',
   styleUrls: ['./tickets.page.scss'],
 })
-export class TicketsPage implements OnInit {
+export class TicketsPage implements OnInit, OnDestroy {
 
   listadoTickets: TicketResponse[] = [];
   cargando: boolean;
@@ -57,6 +59,8 @@ export class TicketsPage implements OnInit {
   dateFechaIni = '';
   dateFechaFin = '';
   activePage = 0;
+  subscriptionListadoTickets: Subscription;
+  esMobile: boolean;
 
   constructor(private catalogoService: CatalogoService,
     private ticketService: TicketService,
@@ -64,8 +68,11 @@ export class TicketsPage implements OnInit {
     private tiendaService: TiendaService,
     private popVerCtrl: PopoverController,
     private modalCtrl: ModalController,
-    private modalCrtl: ModalController
   ) { }
+
+  ngOnDestroy(): void {
+   this.subscriptionListadoTickets.unsubscribe();
+  }
 
   ngOnInit() {
 
@@ -76,17 +83,20 @@ export class TicketsPage implements OnInit {
     this.getTickets();
     this.obtenerEstatus();
     this.obtenerTipo();
+    this.helperService.isMobile().then((result)=>{
+      this.esMobile = result;
+    });
   }
 
 
   getTickets() {
-    console.log('gettickets');
     this.listadoTickets = [];
     this.cargando = true;
     this.helperService.showLoading('Espere un momento, estamos cargando los casos', 'bubbles');
-    this.ticketService.obtenerTicketsListado(this.lacadenaSelectedId, 1, environment.tamPagina).subscribe((exito: TicketsApiResponse) => {
+    this.subscriptionListadoTickets = this.ticketService
+    .obtenerTicketsListado(this.lacadenaSelectedId, 1, environment.tamPagina)
+      .subscribe((exito: TicketsApiResponse) => {
       this.helperService.hideLoading();
-      console.log('close loading');
       if (exito.result === 'OK') {
         this.listadoTickets = exito.dtoResult;
         this.paginaActual = exito.paginaActual;
@@ -98,7 +108,7 @@ export class TicketsPage implements OnInit {
 
     }, (errr) => {
       this.cargando = false;
-      console.log(errr);
+      console.log('error get tickets', errr);
       this.helperService.hideLoading();
     });
   }
@@ -114,7 +124,8 @@ export class TicketsPage implements OnInit {
       component: MenuTicketComponent,
       componentProps: {
         elEstatus: ticketSelected.estatus,
-        elRolUsuario: this.elRolUser
+        elRolUsuario: this.elRolUser,
+        fechaAlta: ticketSelected.fechaAlta
       },
       event: evento,
       cssClass: 'my-custom-class',
@@ -152,8 +163,7 @@ export class TicketsPage implements OnInit {
   }
 
   async onFechaFinSelected(event) {
-    this.dateFechaFin = this.formatDate(event.detail.value);
-    this.modalCtrl.dismiss({});
+    this.dateFechaFin = event.detail.value;
 
     if (this.dateFechaIni === '') {
       Swal.fire({
@@ -210,16 +220,16 @@ export class TicketsPage implements OnInit {
   }
 
   async intervenirModal(ticketSelected: TicketResponse) {
-    const modalShow = await this.modalCrtl.create(
+    const modalShow = await this.modalCtrl.create(
       {
         component: EstatusMotivoTicketComponent,
         componentProps: {
           icon: 'help-circle-outline',
           titleWindow: 'Intervenir Caso',
-          titleMessage: 'Nueva intervención sobre el caso:',
-          txtMessage: 'Escriba aquí su intervención:',
+          txtMessage: 'Escriba aqui las acciones que realizó',
           titleErr: 'Nueva intervención',
-          messageErr: 'Escriba una intervención'
+          messageErr: 'Escriba una intervención',
+          accion: 'intervenir',
         }
       });
     await modalShow.present();
@@ -231,16 +241,16 @@ export class TicketsPage implements OnInit {
   }
 
   async cerrarCasoModal(ticketSelected: TicketResponse) {
-    const modalShow = await this.modalCrtl.create(
+    const modalShow = await this.modalCtrl.create(
       {
         component: EstatusMotivoTicketComponent,
         componentProps: {
           icon: 'chatbox-outline',
           titleWindow: 'Cerrar Caso',
-          titleMessage: '¿Está seguro que desea Cerrar el Q&SE?',
           txtMessage: 'Escriba aquí el motivo',
           titleErr: '¿Motivo?',
-          messageErr: 'Por favor escriba el motivo'
+          messageErr: 'Por favor escriba el motivo',
+          accion: 'cerrar',
         }
       });
     await modalShow.present();
@@ -252,16 +262,16 @@ export class TicketsPage implements OnInit {
   }
 
   async atenderCasoModal(ticketSelected: TicketResponse) {
-    const modalShow = await this.modalCrtl.create(
+    const modalShow = await this.modalCtrl.create(
       {
         component: EstatusMotivoTicketComponent,
         componentProps: {
           icon: 'help-circle-outline',
           titleWindow: 'Atender Caso',
-          titleMessage: 'Nueva observación sobre el caso:',
           txtMessage: 'Escriba aquí su observación:',
           titleErr: 'Nueva observación',
-          messageErr: 'Escriba una observación'
+          messageErr: 'Escriba una observación',
+          accion: 'atender',
         }
       });
     await modalShow.present();
@@ -273,16 +283,16 @@ export class TicketsPage implements OnInit {
   }
 
   async reabrirCasoModal(ticketSelected: TicketResponse) {
-    const modalShow = await this.modalCrtl.create(
+    const modalShow = await this.modalCtrl.create(
       {
         component: EstatusMotivoTicketComponent,
         componentProps: {
           icon: 'help-circle-outline',
           titleWindow: 'Reabrir Caso',
-          titleMessage: 'Reabrir caso',
           txtMessage: 'Escriba aquí ¿Por qué reabrió el caso?',
           titleErr: 'Reabrir caso',
-          messageErr: 'Por favor escriba un motivo.'
+          messageErr: 'Por favor escriba un motivo.',
+          accion: 'reabrir',
         }
       });
     await modalShow.present();
@@ -336,7 +346,7 @@ export class TicketsPage implements OnInit {
       this.helperService.hideLoading();
     }, (err) => {
       this.helperService.hideLoading();
-      console.log(err);
+      console.log('error cerrar caso', err);
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
@@ -390,7 +400,7 @@ export class TicketsPage implements OnInit {
       this.helperService.hideLoading();
 
     }, (err) => {
-      console.log(err);
+      console.log('error a intervenir caso', err);
       this.helperService.hideLoading();
       Swal.fire({
         icon: 'error',
@@ -446,7 +456,7 @@ export class TicketsPage implements OnInit {
 
     }, (err) => {
       this.helperService.hideLoading();
-      console.log(err);
+      console.log('error atender caso', err);
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
@@ -501,7 +511,7 @@ export class TicketsPage implements OnInit {
     }, (err) => {
 
       this.helperService.hideLoading();
-      console.log(err);
+      console.log('error reabrir caso', err);
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
@@ -532,7 +542,7 @@ export class TicketsPage implements OnInit {
         (err) => {
           this.helperService.hideLoading();
           this.cargando = false;
-          console.log(err);
+          console.log('error filtrar datos', err);
         });
   }
 
@@ -556,7 +566,6 @@ export class TicketsPage implements OnInit {
   obtenerTipo() {
     this.catalogoService.obtenerTipos(1, 100).subscribe(
       (exito: TipoApiResponse) => {
-        //console.log('Los Tipos', exito)
         this.losTipos = exito.dtoResult;
         const tiposTodos: TipoResponse = {
           tipoId: 0,
@@ -658,8 +667,9 @@ export class TicketsPage implements OnInit {
   }
 
   onFechaIniSelected(event) {
-    this.dateFechaIni = this.formatDate(event.detail.value);
-    this.modalCtrl.dismiss({});
+    this.dateFechaIni = event.detail.value;
+   // this.dateFechaIni = this.formatDate(event.detail.value);
+   // this.modalCtrl.dismiss({});
   }
 
   obtenerTiendas() {
@@ -684,8 +694,6 @@ export class TicketsPage implements OnInit {
           activo: false
         };
         this.lasTiendasUser.unshift(todasTiendas);
-
-        console.log(this.lasTiendasUser.length);
 
         if(this.lasTiendasUser.length === 2){
           this.laTiendaSeleccionadaId =  this.lasTiendasUser[1].tiendaId;

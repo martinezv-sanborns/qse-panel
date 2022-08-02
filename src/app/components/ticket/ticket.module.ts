@@ -12,6 +12,7 @@ import { SeguimientoTicketComponent } from './seguimiento-ticket/seguimiento-tic
 import { EstatusMotivoTicketComponent } from './estatus-motivo-ticket/estatus-motivo-ticket.component';
 import { MenuDetalleCasoComponent } from './menu-detalle-caso/menu-detalle-caso.component';
 import { NumeroTicketTiendaComponent } from './numero-ticket-tienda/numero-ticket-tienda.component';
+import { PipesModule } from '../../pipes/pipes.module';
 
 
 @NgModule({
@@ -20,7 +21,7 @@ import { NumeroTicketTiendaComponent } from './numero-ticket-tienda/numero-ticke
     DetalleTicketComponent,
     SeguimientoTicketComponent,
     EstatusMotivoTicketComponent,
-    MenuDetalleCasoComponent, 
+    MenuDetalleCasoComponent,
     NumeroTicketTiendaComponent
   ],
   imports: [
@@ -28,7 +29,8 @@ import { NumeroTicketTiendaComponent } from './numero-ticket-tienda/numero-ticke
     IonicModule,
     FormsModule,
     ReactiveFormsModule,
-    ComunesModule
+    ComunesModule,
+    PipesModule
   ],
   exports:[
     MenuTicketComponent,

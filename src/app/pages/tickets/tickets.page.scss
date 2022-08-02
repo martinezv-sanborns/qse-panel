@@ -57,3 +57,42 @@ ion-modal#modal-bottom::part(content) {
 ion-icon{
   color:#ec1b22;
 }
+
+
+/* estilos mobile */
+
+.TituloSegment{
+  font-size: x-small;
+}
+.TextoItem{
+  font-size: x-small;
+}
+.TextoItemMediano{
+  font-size: small;
+}
+.TextoItemComentarios{
+  font-size: small;
+  font-style: italic;
+  font-weight: bold;
+}
+.TextoItemTimeAgo{
+  font-size: x-small;
+
+}
+
+ion-col{
+  padding: 0px;
+}
+ion-list{
+  margin-top: 10px;
+}
+
+.styleMobile {
+  font-size: 12px;
+
+  ion-select::placeholder {
+    font-size: 5px;
+  }
+}
+
+
