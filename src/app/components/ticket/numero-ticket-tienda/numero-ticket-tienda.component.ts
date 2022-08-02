@@ -35,15 +35,17 @@ export class NumeroTicketTiendaComponent implements OnInit {
   getNumeroTiendasEstatus() {
     this.ListaTicEsta = [];
     this.lacadenaSelectedId = localStorage.getItem('cadenaSelectedId');
-    console.log("Tienda", this.laTienda);
+    //console.log("Tienda", this.laTienda);
 
     this.ticketService.obtenerTicketsNumero(this.lacadenaSelectedId, this.laTienda, 1, 100)
     .subscribe((exito: NumerosTicketsResponseApiResponse) => {
       if (exito.result === 'OK') {
         this.ListaTicEsta = exito.dtoResult;
-        console.log('el listado de tiendas', exito);
-        console.log('# de Registros', exito.totalRegistros);
+        //console.log('el listado de tiendas', exito);
+        //console.log('# de Registros', exito.totalRegistros);
 
+        this.ListaTicEsta = this.ListaTicEsta.sort((a,b) => (a.secuencia > b.secuencia) ? 1 : -1);
+        //console.log('Lista de Tickets' , this.ListaTicEsta);
       }
       //this.cargando = false;
     }, (errr) => {

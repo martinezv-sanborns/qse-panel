@@ -13,6 +13,7 @@ export class DiaSemana {
     conteo: number;
     color: string;
     iconname: string;
+    secuencia: number;
   }
 
   export class NumeroTicketsResponseApiResponse extends ApiResponse {

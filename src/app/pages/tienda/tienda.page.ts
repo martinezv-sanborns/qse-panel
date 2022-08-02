@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AlertController, ModalController, PopoverController } from '@ionic/angular';
 import { CrearTiendaComponent } from 'src/app/components/tienda/crear-tienda/crear-tienda.component';
 import { DetalleTiendaComponent } from 'src/app/components/tienda/detalle-tienda/detalle-tienda.component';
+import { EditarTiendaComponent } from 'src/app/components/tienda/editar-tienda/editar-tienda.component';
 import { MenuTiendaComponent } from 'src/app/components/tienda/menu-tienda/menu-tienda.component';
 import { TiendaActivaRequest } from 'src/app/models/request/tienda.model';
 import { TicketsApiResponse } from 'src/app/models/response/ticket.model';
@@ -48,10 +49,13 @@ export class TiendaPage implements OnInit {
         this.listadoTiendas = exito.dtoResult;
         this.paginaActual = exito.paginaActual;
         this.totalPaginasArray = new Array((exito.totalPaginas > 10 ? 10 : exito.totalPaginas));
-        this.totalRegistros = exito.totalRegistros;
+        this.paginaActual = exito.totalRegistros;
         this.noPaginas = exito.totalPaginas;
 
-        console.log('el listado de tiendas', this.listadoTiendas);
+        // console.log('el listado de tiendas', this.listadoTiendas);
+        // console.log('Pagina', this.paginaActual);
+        // console.log('Total', this.paginaActual);
+        // console.log('Total', this.noPaginas);
       }
       this.cargando = false;
     }, (errr) => {
@@ -81,13 +85,16 @@ export class TiendaPage implements OnInit {
 
     const { data } = await popover.onDidDismiss();
 
+
+    console.log("Estoy en el MENU");
+
     if (data !== undefined) {
       switch (data) {
         case 'detalle-tienda':
           this.detalleTienda(tiendaSelected);
           break;
-        case 'edit-user':
-          //this.editTienda(tiendaSelected);
+        case 'edit-tienda':
+          this.editTienda(tiendaSelected);
           break;
         case 'activar-tienda':
           this.changeStatusTienda(tiendaSelected, true);
@@ -185,11 +192,12 @@ export class TiendaPage implements OnInit {
     if (this.elFiltroEstablecido.trim().length >= 3) {
       this.filtrosFinales.push(`'numerotienda':'${this.elFiltroEstablecido}'`);
     }
-
+    console.log('El valor del filtro', this.elFiltroEstablecido);
     this.filtrosFinales.forEach((filtro, index) => {
       this.losFiltrosOk = this.losFiltrosOk + filtro + ',';
     });
 
+    console.log('El valor del filtro', this.losFiltrosOk);
     if (this.losFiltrosOk !== '') {
       const resultado = `{${this.losFiltrosOk.substring(0, this.losFiltrosOk.length - 1)}}`;
       this.getTiendasFiltro(this.lacadenaSelectedId, resultado, paginaActual, tamPagina);
@@ -280,5 +288,24 @@ export class TiendaPage implements OnInit {
 
   }
 
+  async editTienda(tiendaSelected: TiendaResponse) {
+
+    console.log("Editar TIENDA");
+    const modalRegisterUser = await this.modalCtrl.create(
+      {
+        component: EditarTiendaComponent,
+        backdropDismiss: false,
+        componentProps: {
+          laTienda: tiendaSelected,
+        }
+      }
+    );
+    await modalRegisterUser.present();
+    const { data } = await modalRegisterUser.onWillDismiss();
+
+    if (data.registrado) {
+      this.listadoTiendas .unshift(data.nuevo);
+    }
+  }
 
 }

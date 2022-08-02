@@ -7,6 +7,8 @@ import { ComunesModule } from '../common/comunes.module';
 import { MenuTiendaComponent } from './menu-tienda/menu-tienda.component';
 import { DetalleTiendaComponent } from './detalle-tienda/detalle-tienda.component';
 import { CrearTiendaComponent } from './crear-tienda/crear-tienda.component';
+import { UsuarioTiendaComponent } from './usuario-tienda/usuario-tienda.component';
+import { EditarTiendaComponent } from './editar-tienda/editar-tienda.component';
 
 
 
@@ -14,7 +16,9 @@ import { CrearTiendaComponent } from './crear-tienda/crear-tienda.component';
   declarations: [
     MenuTiendaComponent,
     DetalleTiendaComponent,
-    CrearTiendaComponent
+    CrearTiendaComponent,
+    UsuarioTiendaComponent,
+    EditarTiendaComponent
   ],
   imports: [
     CommonModule,
@@ -26,7 +30,9 @@ import { CrearTiendaComponent } from './crear-tienda/crear-tienda.component';
   exports:[
     MenuTiendaComponent,
     DetalleTiendaComponent,
-    CrearTiendaComponent
+    CrearTiendaComponent,
+    UsuarioTiendaComponent,
+    EditarTiendaComponent
   ]
 })
 export class TiendaModule { }

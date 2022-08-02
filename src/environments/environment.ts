@@ -17,7 +17,8 @@ export const environment = {
   admin : 'ADMIN',
   corp: 'CORP',
   tda: 'TDA',
-  dis: 'DIST'
+  dis: 'DIST',
+  DistritalId: '177C8A45-EC2A-4449-9640-241842C37EC4',
 };
 
 /*

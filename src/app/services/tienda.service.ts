@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { TiendaActivaRequest, TiendaRequest } from '../models/request/tienda.model';
-import { TiendaApiResponse, TiendasApiResponse } from '../models/response/tiendaresponse.model';
+import { TiendaApiResponse, TiendasApiResponse, UsuariosTiendaApiResponse, UsuarioTiendaApiResponse } from '../models/response/tiendaresponse.model';
 import { GeneralService } from './general.service';
 
 @Injectable({
@@ -54,5 +54,17 @@ export class TiendaService {
       map(
         (laRespuesta:TiendaApiResponse)=>laRespuesta)
         );
+  }
+
+  obtenerUsuarioRolTienda(tiendasid: string, rolid: string) {
+    const queryuser = `/api/tienda/usuario/rol/listado/async/${tiendasid}/${rolid}`;
+    //console.log('El query', queryuser);
+    return this.generalService
+      .getQuery(queryuser)
+      .pipe(
+        map(
+          (laRespuesta: UsuariosTiendaApiResponse) => laRespuesta)
+          
+      );
   }
 }

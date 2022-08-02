@@ -19,7 +19,7 @@ export class MenuTiendaComponent implements OnInit {
     },
     {
       id: 'edit-tienda',
-      valor: 'Editar',
+      valor: 'Editar Tienda',
       icono: 'pencil-outline'
     }
 
@@ -53,6 +53,7 @@ export class MenuTiendaComponent implements OnInit {
  
 
 opcionSeleccionada(valor: ItemMenu) {
+  console.log("Valor en Menu", valor);
   this.popCtrl.dismiss(
     valor.id
   );

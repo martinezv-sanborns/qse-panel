@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertController, ModalController } from '@ionic/angular';
 import { DiaSemana } from 'src/app/models/helper.model';
 import { HelperService } from 'src/app/services/helper.service';
@@ -35,9 +35,7 @@ export class CrearTiendaComponent implements OnInit {
     private catalogoService: CatalogoService, private tiendaService: TiendaService, private alertCtrl: AlertController) { }
 
   ngOnInit() {
-
-
-    console.log('Dias Semana', this.listaDiasSemana);
+    //console.log('Dias Semana', this.listaDiasSemana);
     this.CargarFormulario();
     this.getZonaHoraria();
   }
@@ -48,15 +46,65 @@ export class CrearTiendaComponent implements OnInit {
     });
   }
 
+  get nombreKNoValido() {
+    return this.tiendaForm.get('nombre').invalid && this.tiendaForm.get('nombre').touched;
+  }
+
+  get identificadorNoValido() {
+    return this.tiendaForm.get('identificador').invalid && this.tiendaForm.get('identificador').touched;
+  }
+
+  get emailNoValido() {
+    return this.tiendaForm.get('email').invalid && this.tiendaForm.get('email').touched;
+  }
+
+  // get hourLanaperNoValido() {
+  //   return this.tiendaForm.get('hourLandingaper').invalid && this.tiendaForm.get('hourLandingaper').touched;
+  // }
+
+  // get hourLancieNoValido() {
+  //   return this.tiendaForm.get('hourLandingcierre').invalid && this.tiendaForm.get('hourLandingcierre').touched;
+  // }
+
+  
+  get zonaNoValido() {
+    return this.tiendaForm.get('zona').invalid && this.tiendaForm.get('zona').touched;
+  }
+
   crearTienda(){
-    // return Object.values(this.tiendaForm.controls).forEach(async (control, index) => {
-    //   if (control instanceof FormGroup) {
-    //     Object.values(control.controls).forEach(controlHijo => controlHijo.markAsTouched());
-    //     console.log('Entra');
-    //   } else {
-    //     control.markAsTouched();
-    //     console.log('No entra');
-    //   }
+
+    const elTiendaModel: TiendaRequest = {
+      email: this.tiendaForm.value.email,
+      nombre: this.tiendaForm.value.nombre,
+      nombreCorto: this.tiendaForm.value.nombrecorto === null ? '' : this.tiendaForm.value.nombrecorto,
+      identificadorExterno: this.tiendaForm.value.identificador,
+      coordenadas: this.tiendaForm.value.coordenadas,
+      apertura: this.hourLandingaper.toString(),
+      cierre: this.hourLandingcierre.toString(),
+      umt: '5',
+      diasOperacion: this.diasseleccionados,
+      cadenaId: localStorage.getItem('cadenaSelectedId'),
+      zonaHorariaId: this.tiendaForm.value.zona,
+    };
+
+    console.log('La tienda creada', elTiendaModel);
+
+    if(this.tiendaForm.invalid){
+
+      return Object.values(this.tiendaForm.controls).forEach(control =>{
+        if(control instanceof FormGroup){
+          Object.values(control.controls).forEach(controlHijo => controlHijo.markAsTouched());
+
+          console.log('IF del Invalid');
+        }
+        else{
+          control.markAsTouched();
+
+          console.log('ELSE del Invalid');
+        }
+      });
+
+    }
 
     //   console.log('Numero de campos', index);
     //   if (index === 0) {
@@ -82,24 +130,6 @@ export class CrearTiendaComponent implements OnInit {
       this.checkedItems.forEach(obj => {
         this.diasseleccionados += obj.name.toLowerCase( ) + "|";
       });
-
-      console.log('Dias seleccionado', this.diasseleccionados);
-
-      const elTiendaModel: TiendaRequest = {
-        email: this.tiendaForm.value.email,
-        nombre: this.tiendaForm.value.nombre,
-        nombreCorto: this.tiendaForm.value.nombrecorto,
-        identificadorExterno: this.tiendaForm.value.identificador,
-        coordenadas: this.tiendaForm.value.coordenadas,
-        apertura: this.hourLandingaper.toString(),
-        cierre: this.hourLandingcierre.toString(),
-        umt: '5',
-        diasOperacion: this.diasseleccionados,
-        cadenaId: localStorage.getItem('cadenaSelectedId'),
-        zonaHorariaId: this.tiendaForm.value.zona,
-      };
-
-      console.log('La tienda creada', elTiendaModel);
 
       //this.spinnerService.setTitulo = 'Registrando...';
       this.tiendaService.crearTienda(elTiendaModel).subscribe(async (exito: TiendaApiResponse) => {
@@ -180,14 +210,16 @@ export class CrearTiendaComponent implements OnInit {
 
   CargarFormulario(){
     this.tiendaForm = this.fb.group({
-      nombre:[''],
-      identificador:[''],
+      nombre:['', [Validators.required, Validators.minLength(4)]],
+      identificador:['', [Validators.required, Validators.minLength(4)]],
       nombrecorto:[''],
-      email:[''],
+      email:['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')]],
       coordenadas:[''],
+      // apertura:['', [Validators.required]],
+      // cierre:['', [Validators.required]],
       apertura:[''],
       cierre:[''],
-      zona:[''],
+      zona:['', [Validators.required]],
       checkedItems : ['']
     })
     this.hourLandingaper='';
@@ -212,12 +244,42 @@ export class CrearTiendaComponent implements OnInit {
   
   onChange(item) {
     console.log('Item checado', item);
-    if(this.checkedItems.includes(item)) {
-      this.checkedItems = this.checkedItems.filter((value)=>value!=item);
-    } else {
-      this.checkedItems.push(item)
-    }
-    console.log('Lista', this.checkedItems)
+    this.checkedItems =[];
+      // if(item === undefined){
+      //   console.log('IF', this.checkedItems);
+      //   this.listaDiasSemana.forEach(obj => {
+      //     this.checkedItems.push(obj);
+      //     //console.log('IF', obj);
+      //   });
+
+
+      //   for (let item = 0; item < this.checkedItems.length; item++) {
+      //     this.checkedItems[item].checked = true;
+      //     //console.log(this.checkedItems[item].checked = true);
+      // }
+      // }
+      // else{
+      if(this.checkedItems.includes(item)) {
+        this.checkedItems = this.checkedItems.filter((value)=>value!=item);
+      } else {
+        this.checkedItems.push(item)
+      }
+    // }
+  }
+
+
+  onChangeT(){
+    console.log('Entrando a onChange');
+    console.log('IF', this.checkedItems);
+    this.listaDiasSemana.forEach(obj => {
+      this.checkedItems.push(obj);
+      //console.log('IF', obj);
+    });
+
+    for (let item = 0; item < this.checkedItems.length; item++) {
+      this.checkedItems[item].checked = true;
+      //console.log(this.checkedItems[item].checked = true);
+  }
   }
 
   checkMaster(eve) {
@@ -227,6 +289,7 @@ export class CrearTiendaComponent implements OnInit {
       });
     });
   }
+  
 LimpiarCheck(){
   this.checkedItems.forEach(obj => {
     obj.isChecked = false;

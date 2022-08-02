@@ -17,19 +17,18 @@
           <ion-col size="2">
             <ion-label><b>Tiendas</b></ion-label>
           </ion-col>
-          <ion-col size="8">
-            <ion-searchbar searchIcon="search" showcancelbutton="OK" class="forminput ion-margin"
+          <ion-col size="9">
+            <ion-searchbar mode="ios" searchIcon="search"  class="forminput ion-margin"
               placeholder="Buscar por nombre o numero de tienda"
-              (ionChange)="onSearchChange($event)" [debounce]="250" showCancelButton="OK"></ion-searchbar>
+              (ionChange)="onSearchChange($event)" [debounce]="250"></ion-searchbar>
           </ion-col>
-          <ion-col size="2">
-            <ion-row>
+          <ion-col size="1">
+
                 <ion-col>
-                    <ion-button id="trigger-button" (click)="crearTienda()">
-                        <ion-icon size="default" name="add-circle-outline"></ion-icon>Nuevo
+                    <ion-button color="ligth"  id="trigger-button" (click)="crearTienda()" expand="block"  shape="round">
+                        <ion-icon slot="icon-only" name="add"></ion-icon>Nuevo
                     </ion-button>
                 </ion-col>
-            </ion-row>
         </ion-col>
         </ion-item>
       </ion-col>
@@ -38,17 +37,16 @@
       <ion-col size="12">
         <ion-item>
 
-          <ion-grid fixed>
+          <ion-grid fixed class="blanco">
             <ion-row class="header">
               <ion-col size="2">Número</ion-col>
               <ion-col size="2">Tienda</ion-col>
-              <ion-col size="2">Distrital</ion-col>
+              <ion-col class="ion-text-center" size="3">Distrital<br><ion-icon style="zoom:1.5;" name="telescope-outline"></ion-icon></ion-col>
               <ion-col size="3" class="ion-text-center">Tickets <br>
-                <ion-icon color="dark" size="large" name="add-outline"></ion-icon><ion-icon color="dark" size="large" name="flag-outline"></ion-icon><ion-icon color="dark" size="large" name="hourglass-outline"></ion-icon>
+                <ion-icon style="zoom:1.5;" name="add-outline"></ion-icon><ion-icon style="zoom:1.5;" name="flag-outline"></ion-icon><ion-icon style="zoom:1.5;" name="hourglass-outline"></ion-icon>
               </ion-col>
-              <ion-col size="1">Estatus</ion-col>
-              <ion-col size="1"></ion-col>
-              <ion-col size="1"></ion-col>
+              <ion-col size="1">Activo</ion-col>
+              <ion-col size="1">Menú</ion-col>
             </ion-row>
             <ion-row *ngFor="let tienda of listadoTiendas" class="border-grid-row">
               <ion-col size="2">
@@ -57,20 +55,16 @@
               <ion-col size="2">
                 {{ tienda.nombre | lowercase}}
               </ion-col>
-              <ion-col size="2">
-                <!-- {{ tienda.apertura }} -->
+              <ion-col size="3" class="ion-text-center">
+                <app-usuario-tienda *ngIf="tienda.tiendaId != undefined" [laTienda]="tienda.tiendaId"></app-usuario-tienda>
               </ion-col>
               <ion-col size="3" class="ion-text-center">
                 <app-numero-ticket-tienda *ngIf="tienda.tiendaId != undefined" [laTienda]="tienda.tiendaId"></app-numero-ticket-tienda>
               </ion-col>
               <ion-col size="1">
 
-        <ion-icon *ngIf="tienda.activo === false" color="danger" title="Activo" size="small" name="cloud-offline-outline"></ion-icon>
-        <ion-icon *ngIf="tienda.activo === true" color="primary" title="Desactivo" size="small" name="cloudy-outline"></ion-icon>
-       
-              </ion-col>
-              <ion-col size="1">
-                <!-- {{ tienda.diasOperacion }} -->
+        <ion-icon *ngIf="tienda.activo === false" [class]="'inactivo'" title="Activo" size="small" name="ellipse"></ion-icon>
+        <ion-icon *ngIf="tienda.activo === true" [class]="'activo'" title="Desactivo" size="small" name="ellipse"></ion-icon>
               </ion-col>
               <ion-col size="1">
                 <ion-buttons>
